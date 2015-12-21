@@ -11,13 +11,13 @@ import org.bukkit.World
  * Created by molenzwiebel on 20-12-15.
  */
 class RMatch {
-    public val map: RMap
-    public val world: World
-    public var state: State = State.LOADED
+    val map: RMap
+    val world: World
+    var state: State = State.LOADED
 
     private val moduleContext: RModuleContext
 
-    public val players: Collection<RPlayer>
+    val players: Collection<RPlayer>
         get() = RPlayer.getPlayers() { it.match == this }
 
     constructor(map: RMap, world: World) {

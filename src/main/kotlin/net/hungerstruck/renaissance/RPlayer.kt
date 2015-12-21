@@ -27,7 +27,7 @@ class RPlayer {
     }
 
     private val bukkit: Player
-    public var match: RMatch? = null
+    var match: RMatch? = null
 
     constructor(bukkit: Player) {
         this.bukkit = bukkit

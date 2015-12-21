@@ -15,8 +15,8 @@ class RModuleContext {
     protected final val match: RMatch
     protected final val document: Document
 
-    public final val regionManager: RegionManager = RegionManager()
-    public final val regionParser: RegionParser = RegionParser(regionManager)
+    final val regionManager: RegionManager = RegionManager()
+    final val regionParser: RegionParser = RegionParser(regionManager)
 
     constructor(match: RMatch, document: Document) {
         this.match = match

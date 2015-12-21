@@ -18,7 +18,7 @@ import java.io.File
  * Created by molenzwiebel on 20-12-15.
  */
 class Renaissance : JavaPlugin(), Listener {
-    public val mapContext: RMapContext = RMapContext()
+    val mapContext: RMapContext = RMapContext()
 
     override fun onEnable() {
         logger.info("Hello world!")

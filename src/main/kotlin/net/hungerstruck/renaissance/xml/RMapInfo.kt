@@ -20,7 +20,7 @@ data class RMapInfo(
         val friendlyFire: Boolean) {
 
     public val friendlyDescription: String
-        get() = "name by ${authors.map { it.name }.joinToString(", ")}"
+        get() = "$name by ${authors.map { it.name }.joinToString(", ")}"
 }
 
 /**
