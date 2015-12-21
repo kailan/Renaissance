@@ -14,4 +14,17 @@ import org.jdom2.Document
  *
  * Created by molenzwiebel on 21-12-15.
  */
-t
+@Dependencies(RegionModule::class)
+class PedestalModule(match: RMatch, document: Document, modCtx: RModuleContext) : RModule(match, document, modCtx) {
+    val pedestals: List<BlockRegion>
+
+    init {
+        pedestals = document.rootElement.flatten("pedestals", "pedestal").map {
+            val parsed = modCtx.regionParser.parse(it.children[0])
+            if (parsed !is BlockRegion) throw IllegalArgumentException("Pedestal must be BlockRegion")
+            parsed as BlockRegion
+        }
+
+        print("Loaded ${pedestals.size} pedestals. Here they are: ${pedestals}")
+    }
+}
