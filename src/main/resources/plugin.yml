@@ -1,0 +1,5 @@
+name: Renaissance
+version: ${version}
+description: ${description}
+authors: [molenzwiebel]
+main: net.hungerstruck.renaissance.Renaissance
