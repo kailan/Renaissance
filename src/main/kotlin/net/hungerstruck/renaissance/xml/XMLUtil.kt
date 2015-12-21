@@ -38,6 +38,36 @@ public fun String?.toBool(defaultValue: Boolean = true): Boolean {
     return false
 }
 
+public fun String?.toLong(defaultValue: Long = 0): Long {
+    if (this == null) return defaultValue
+    if (this == "oo" || this == "∞") return java.lang.Long.MAX_VALUE
+    if (this == "-oo" || this == "-∞") return java.lang.Long.MIN_VALUE
+
+    var str = this
+    if (this.length > 0 && this.get(0) == '@') str = substring(1)
+
+    return try {
+        str.toLong()
+    } catch (nfe: NumberFormatException) {
+        defaultValue
+    }
+}
+
+public fun String?.toInt(defaultValue: Int = 0): Int {
+    if (this == null) return defaultValue
+    if (this == "oo" || this == "∞") return java.lang.Integer.MAX_VALUE
+    if (this == "-oo" || this == "-∞") return java.lang.Integer.MIN_VALUE
+
+    var str = this
+    if (this.length > 0 && this.get(0) == '@') str = substring(1)
+
+    return try {
+        str.toInt()
+    } catch (nfe: NumberFormatException) {
+        defaultValue
+    }
+}
+
 public inline fun <reified T : Enum<*>> String?.toEnum(defaultValue: T? = null): T? {
     if (this == null) return defaultValue
     val values = T::class.java.getDeclaredMethod("values").invoke(null) as Array<T>
