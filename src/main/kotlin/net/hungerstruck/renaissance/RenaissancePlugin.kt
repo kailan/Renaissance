@@ -28,9 +28,14 @@ class RenaissancePlugin : JavaPlugin() {
             sessions[sender]!!
         }
 
-        val res = engine.eval(args.joinToString(" "))
+        try {
+            val res = engine.eval(args.joinToString(" "))
 
-        sender.sendMessage("${ChatColor.GRAY}> ${ChatColor.WHITE}$res")
+            sender.sendMessage("${ChatColor.GRAY}> ${ChatColor.WHITE}$res")
+        } catch (e: Exception) {
+            sender.sendMessage("${ChatColor.GRAY}> ${ChatColor.RED}${e.message}")
+        }
+
         return true
     }
 }
