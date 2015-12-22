@@ -30,12 +30,11 @@ public fun Element.copyAttributesTo(to: Element): Element {
 }
 
 public fun String?.toBool(defaultValue: Boolean = true): Boolean {
-    if (this == null) return false
-    if (this.toLowerCase().equals("on") || this.toLowerCase().equals("true")
-            || this.toLowerCase().equals("yes")) return true
-    if (this.toLowerCase().equals("off") || this.toLowerCase().equals("false")
-            || this.toLowerCase().equals("no")) return false
-    return false
+    when (this) {
+        "on", "true", "yes" -> return true
+        "off", "false", "no" -> return false
+        else -> return defaultValue
+    }
 }
 
 public fun String?.toLong(defaultValue: Long = 0): Long {
