@@ -1,6 +1,7 @@
 package net.hungerstruck.renaissance
 
 import jdk.nashorn.api.scripting.NashornScriptEngineFactory
+import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
@@ -24,9 +25,14 @@ class RenaissancePlugin : JavaPlugin() {
         val engine = if (sessions[sender] != null) {
             sessions[sender]!!
         } else {
-            sessions[sender] = nashornEngine.scriptEngine
+            sessions[sender] = nashornEngine.getScriptEngine(classLoader)
             sessions[sender]!!
         }
+
+        engine.put("player", sender)
+        engine.put("Renaissance", Renaissance)
+        engine.put("server", Bukkit.getServer())
+        engine.eval("var Bukkit = org.bukkit.Bukkit")
 
         try {
             val res = engine.eval(args.joinToString(" "))

@@ -1,6 +1,6 @@
 package net.hungerstruck.renaissance
 
-import net.hungerstruck.renaissance.match.RMatch
+import net.hungerstruck.renaissance.match.RMatchManager
 import net.hungerstruck.renaissance.modules.*
 import net.hungerstruck.renaissance.modules.region.RegionModule
 import net.hungerstruck.renaissance.xml.RMapContext
@@ -19,6 +19,7 @@ object Renaissance {
 
     val mapContext: RMapContext = RMapContext()
     val rotationManager: RRotationManager = RRotationManager(File("rotation.txt"), mapContext)
+    val matchManager: RMatchManager = RMatchManager(mapContext, rotationManager)
 
     fun initialize(plugin: JavaPlugin) {
         this.plugin = plugin
@@ -35,12 +36,7 @@ object Renaissance {
         mapContext.loadMaps(File("maps"))
         rotationManager.load()
 
-        for (map in mapContext.getMaps())
-            println(map.mapInfo)
-
-        println("Rotation: ${rotationManager.rotation.map { it.mapInfo.friendlyDescription }}")
-
-        RMatch(mapContext.matchMap("Alps")!!, Bukkit.getWorld("world"))
+        matchManager.cycle()
 
         Bukkit.getPluginManager().registerEvents(RPlayer.Companion, plugin)
     }

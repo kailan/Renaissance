@@ -26,7 +26,7 @@ class RMatchManager {
         this.rotationManager = rotMan
     }
 
-    public fun cycle(oldMatch: RMatch?) {
+    public fun cycle(oldMatch: RMatch? = null) {
         val worldName = "match-${matchCount++}"
         val nextMap = rotationManager.getNextAndIncrement()
 
