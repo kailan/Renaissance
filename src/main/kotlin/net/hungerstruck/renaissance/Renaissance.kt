@@ -1,7 +1,7 @@
 package net.hungerstruck.renaissance
 
 import net.hungerstruck.renaissance.match.RMatch
-import net.hungerstruck.renaissance.modules.PedestalModule
+import net.hungerstruck.renaissance.modules.*
 import net.hungerstruck.renaissance.modules.region.RegionModule
 import net.hungerstruck.renaissance.xml.RMapContext
 import net.hungerstruck.renaissance.xml.module.RModuleRegistry
@@ -25,6 +25,12 @@ class Renaissance : JavaPlugin(), Listener {
 
         RModuleRegistry.register<RegionModule>()
         RModuleRegistry.register<PedestalModule>()
+        RModuleRegistry.register<BoundaryModule>()
+        RModuleRegistry.register<EventLocationModule>()
+        RModuleRegistry.register<GameRuleModule>()
+        RModuleRegistry.register<SanityModule>()
+        RModuleRegistry.register<TimeLockModule>()
+        RModuleRegistry.register<TimeSetModule>()
 
         mapContext.loadMaps(File("maps"))
 
