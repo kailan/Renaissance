@@ -16,8 +16,7 @@ data class RMapInfo(
         val contributors: List<Contributor>,
         val rules: List<String>,
         val difficulty: Difficulty,
-        val dimension: World.Environment,
-        val friendlyFire: Boolean) {
+        val dimension: World.Environment) {
 
     public val friendlyDescription: String
         get() = "$name by ${authors.map { it.name }.joinToString(", ")}"
