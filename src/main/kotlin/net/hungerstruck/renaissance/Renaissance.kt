@@ -6,9 +6,6 @@ import net.hungerstruck.renaissance.modules.region.RegionModule
 import net.hungerstruck.renaissance.xml.RMapContext
 import net.hungerstruck.renaissance.xml.module.RModuleRegistry
 import org.bukkit.Bukkit
-import org.bukkit.event.EventHandler
-import org.bukkit.event.Listener
-import org.bukkit.event.player.PlayerLoginEvent
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
 
@@ -17,12 +14,14 @@ import java.io.File
  *
  * Created by molenzwiebel on 20-12-15.
  */
-class Renaissance : JavaPlugin(), Listener {
+object Renaissance {
+    var plugin: JavaPlugin? = null
+
     val mapContext: RMapContext = RMapContext()
     val rotationManager: RRotationManager = RRotationManager(File("rotation.txt"), mapContext)
 
-    override fun onEnable() {
-        logger.info("Hello world!")
+    fun initialize(plugin: JavaPlugin) {
+        this.plugin = plugin
 
         RModuleRegistry.register<RegionModule>()
         RModuleRegistry.register<PedestalModule>()
@@ -43,14 +42,6 @@ class Renaissance : JavaPlugin(), Listener {
 
         RMatch(mapContext.matchMap("Alps")!!, Bukkit.getWorld("world"))
 
-        Bukkit.getPluginManager().registerEvents(RPlayer.Companion, this)
-
-        super.onEnable()
-    }
-
-    @EventHandler
-    fun onLogin(event: PlayerLoginEvent) {
-        println("Player logged in: ${event.player.name}")
-        println("RPlayer: ${event.player.getRPlayer()}")
+        Bukkit.getPluginManager().registerEvents(RPlayer.Companion, plugin)
     }
 }
