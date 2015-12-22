@@ -5,7 +5,7 @@ import kotlin.reflect.KProperty
 /**
  * Created by molenzwiebel on 22-12-15.
  */
-internal class ConfigEntry<T>(private val path: String) {
+class ConfigEntry<T>(private val path: String) {
     operator fun getValue(thisRef: Any?, property: KProperty<*>): T {
         return RConfig.config.get(path) as T
     }
@@ -16,7 +16,7 @@ internal class ConfigEntry<T>(private val path: String) {
     }
 }
 
-internal class DefaultConfigEntry<T>(private val path: String, private val default: T) {
+class DefaultConfigEntry<T>(private val path: String, private val default: T) {
     operator fun getValue(thisRef: Any?, property: KProperty<*>): T {
         return RConfig.config.get(path, default) as T
     }
@@ -27,7 +27,7 @@ internal class DefaultConfigEntry<T>(private val path: String, private val defau
     }
 }
 
-internal class ComputedConfigEntry<T>(private val path: String, private val read: (String) -> T, private val write: (T) -> String) {
+class ComputedConfigEntry<T>(private val path: String, private val read: (String) -> T, private val write: (T) -> String) {
     operator fun getValue(thisRef: Any?, property: KProperty<*>): T {
         return read(RConfig.config.getString(path))
     }
