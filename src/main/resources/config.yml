@@ -1,0 +1,13 @@
+general:
+    debugging: true
+maps:
+    map-dir: "maps"
+    map-file: "map.xml"
+    rotation-file: "rotation.txt"
+    world-prefix: "match-"
+lobby:
+    spawn-vector: "world,0,70,0"
+    lobby-countdown:
+        seconds: 20
+        minutes: 0
+        hours: 0

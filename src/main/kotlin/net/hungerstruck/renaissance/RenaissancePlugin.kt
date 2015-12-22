@@ -18,6 +18,8 @@ class RenaissancePlugin : JavaPlugin() {
     private val nashornEngine: NashornScriptEngineFactory = NashornScriptEngineFactory()
 
     override fun onEnable() {
+        saveDefaultConfig()
+
         Renaissance.initialize(this)
     }
 
