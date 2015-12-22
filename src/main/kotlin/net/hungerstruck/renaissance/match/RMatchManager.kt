@@ -36,7 +36,7 @@ class RMatchManager {
         FileUtil.delete(File(worldFolder, "uid.dat"))
         FileUtil.delete(File(worldFolder, "players"))
 
-        val gen = WorldCreator(worldName).generator(object : ChunkGenerator() {}).environment(nextMap.mapInfo.dimension)
+        val gen = WorldCreator(worldName).generator(object : ChunkGenerator() {}).generateStructures(false).environment(nextMap.mapInfo.dimension)
         val world = Bukkit.createWorld(gen)
         world.isAutoSave = false
         world.difficulty = nextMap.mapInfo.difficulty
