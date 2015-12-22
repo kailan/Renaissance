@@ -19,6 +19,7 @@ import java.io.File
  */
 class Renaissance : JavaPlugin(), Listener {
     val mapContext: RMapContext = RMapContext()
+    val rotationManager: RRotationManager = RRotationManager(File("rotation.txt"), mapContext)
 
     override fun onEnable() {
         logger.info("Hello world!")
@@ -33,9 +34,12 @@ class Renaissance : JavaPlugin(), Listener {
         RModuleRegistry.register<TimeSetModule>()
 
         mapContext.loadMaps(File("maps"))
+        rotationManager.load()
 
         for (map in mapContext.getMaps())
             println(map.mapInfo)
+
+        println("Rotation: ${rotationManager.rotation.map { it.mapInfo.friendlyDescription }}")
 
         RMatch(mapContext.matchMap("Alps")!!, Bukkit.getWorld("world"))
 

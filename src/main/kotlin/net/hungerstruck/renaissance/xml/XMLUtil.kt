@@ -82,6 +82,6 @@ public fun String?.parseVector3D(): Vector {
 
 public fun String?.parseVector2D(): Vector {
     if (this == null) throw IllegalArgumentException("Parsing vector on null string")
-    if (split(",").size != 3) throw IllegalArgumentException("2D Vector should contain 2 numbers. Given " + this)
+    if (split(",").size != 2) throw IllegalArgumentException("2D Vector should contain 2 numbers. Given " + this)
     return Vector(split(",")[0].toDouble(), 0.0, split(",")[1].toDouble())
 }

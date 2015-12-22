@@ -22,11 +22,9 @@ class BoundaryModule(match: RMatch, document: Document, modCtx: RModuleContext) 
     val region: RectangleRegion
 
     init {
-        val boundaryEl = document.rootElement.getChild("boundary")
-        if (boundaryEl != null)
-            throw IllegalArgumentException("Map ${match.map.mapInfo.name} has no boundary element")
+        val boundaryEl = document.rootElement.getChild("boundary") ?: throw IllegalArgumentException("Map ${match.map.mapInfo.name} has no boundary element")
 
-        val region = modCtx.regionParser.parse(boundaryEl.getChildren()[0])
+        val region = modCtx.regionParser.parse(boundaryEl.children[0])
         if (region !is RectangleRegion)
             throw IllegalArgumentException("Expected boundary of ${match.map.mapInfo.name} to be a rectangle")
 
