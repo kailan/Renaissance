@@ -11,3 +11,30 @@ lobby:
         seconds: 20
         minutes: 0
         hours: 0
+    minimum-players: 2
+    maximum-players: 24
+match:
+    start-countdown:
+        seconds: 20
+        minutes: 0
+        hours: 0
+    cornucopia:
+        time-between-feasts:
+            seconds: 0
+            minutes: 10
+            hours: 0
+    post-game-countdown:
+        seconds: 15
+        minutes: 0
+        hours: 0
+thirst:
+    refresh-rate: 250
+    thirst-decrement: 1
+    dehydration-level: 10
+    health-damage: 1
+    hunger-damage: 0
+    container-settings:
+        waterbottle-regened: 100
+        waterbucket-regened: 100
+chat:
+    radius: 30
