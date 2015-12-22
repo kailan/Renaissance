@@ -3,3 +3,9 @@ version: ${version}
 description: ${description}
 authors: [molenzwiebel]
 main: net.hungerstruck.renaissance.RenaissancePlugin
+
+commands:
+   debug:
+       description: This should be removed.
+       permission: renaissance.debug
+       usage: Enter a script idiot.
