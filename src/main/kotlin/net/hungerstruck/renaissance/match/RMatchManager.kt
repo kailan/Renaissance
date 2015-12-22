@@ -52,6 +52,12 @@ class RMatchManager {
     }
 
     public fun unloadMatch(oldMatch: RMatch) {
+        for (participant in oldMatch.players) {
+            participant.match = null
+            participant.previousState?.restore(participant.bukkit)
+            participant.previousState = null
+        }
+
         val dir = oldMatch.world.worldFolder
         Bukkit.unloadWorld(oldMatch.world, true)
         FileUtil.delete(dir)
