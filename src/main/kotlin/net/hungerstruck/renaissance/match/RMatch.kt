@@ -27,6 +27,15 @@ class RMatch {
         this.moduleContext = RModuleContext(this, map.document)
     }
 
+    /**
+     * Performs any unloading and cleanup that this map might want to do.
+     */
+    public fun cleanup() {
+        for (module in moduleContext.modules) {
+            module.cleanup()
+        }
+    }
+
     public enum class State {
         // Loaded. Players might be in already, but countdown for start is not yet running.
         LOADED,

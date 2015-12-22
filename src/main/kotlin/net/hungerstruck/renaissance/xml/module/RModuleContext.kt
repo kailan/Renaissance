@@ -10,7 +10,7 @@ import kotlin.reflect.KClass
  * Created by molenzwiebel on 20-12-15.
  */
 class RModuleContext {
-    protected final val modules: MutableSet<RModule> = hashSetOf()
+    final val modules: MutableSet<RModule> = hashSetOf()
 
     protected final val match: RMatch
     protected final val document: Document
