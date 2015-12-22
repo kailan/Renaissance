@@ -40,6 +40,8 @@ class RMap {
         val difficulty = root.getChildTextNormalize("difficulty").toEnum(Difficulty.NORMAL)!!
         val dimension = root.getChildTextNormalize("dimension").toEnum(World.Environment.NORMAL)!!
 
-        return RMapInfo(name, version, objective, authors, contributors, rules, difficulty, dimension)
+        var lobby = root.getChildTextNormalize("lobby").toBool(false)
+
+        return RMapInfo(name, version, lobby, objective, authors, contributors, rules, difficulty, dimension)
     }
 }

@@ -11,6 +11,7 @@ import org.bukkit.World
 data class RMapInfo(
         val name: String,
         val version: String,
+        val lobby: Boolean,
         val objective: String,
         val authors: List<Contributor>,
         val contributors: List<Contributor>,
