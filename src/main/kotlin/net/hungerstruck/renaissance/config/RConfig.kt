@@ -1,10 +1,7 @@
 package net.hungerstruck.renaissance.config
 
-import org.bukkit.Bukkit
-import org.bukkit.Location
 import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.configuration.file.YamlConfiguration
-import org.bukkit.util.Vector
 import java.io.File
 
 /**
@@ -34,12 +31,6 @@ object RConfig {
         var autoStart: Boolean by path("lobby.auto-start", true)
         var minimumPlayerStartCount: Int by path("lobby.minimum-players", 2)
         var maximumPlayerStartCount: Int by path("lobby.maximum-players", 24)
-        // needs the countdown
-
-        var spawnLocation: Location by path("lobby.spawn-vector", {
-            val parts = it.split(",")
-            Vector(parts[1].toInt(), parts[2].toInt(), parts[3].toInt()).toLocation(Bukkit.getWorld(parts[0]))
-        }, { "${it.world.name},${it.blockX},${it.blockY},${it.blockZ}" })
     }
 
     object Match {
