@@ -20,7 +20,7 @@ class RPlayer(val bukkit: Player) : Player by bukkit {
         final var INSTANCES: MutableMap<Player, RPlayer> = hashMapOf()
 
         fun getPlayers(fn: (RPlayer) -> Boolean = { true }): Collection<RPlayer> {
-            return INSTANCES.values.filter { fn(it) }
+            return INSTANCES.values.filter(fn)
         }
 
         fun updateVisibility() {
