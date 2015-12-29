@@ -28,6 +28,10 @@ class RMapContext {
         }
     }
 
+    public fun resolveLobbies() {
+
+    }
+
     public fun matchMap(query: String): RMap? {
         return LiquidMetal.fuzzyMatch(getMaps(), query, { it.mapInfo.name }, 0.9)
     }

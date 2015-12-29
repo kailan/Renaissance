@@ -40,8 +40,19 @@ class RMap {
         val difficulty = root.getChildTextNormalize("difficulty").toEnum(Difficulty.NORMAL)!!
         val dimension = root.getChildTextNormalize("dimension").toEnum(World.Environment.NORMAL)!!
 
-        var lobby = root.getChildTextNormalize("lobby").toBool(false)
+        val lobbyEl = root.getChild("lobby")
+        var lobbyProperties: RLobbyProperties? = null
+        if (lobbyEl != null) {
+            val lobbyName = if (lobbyEl.getChildTextNormalize("name") != null) {
+                lobbyEl.getChildTextNormalize("name")
+            } else lobbyEl.textNormalize
 
-        return RMapInfo(name, version, lobby, objective, authors, contributors, rules, difficulty, dimension)
+            val blockBreaking = lobbyEl.getChild("blockbreaking") != null
+            val damage = lobbyEl.getChild("damage") != null
+
+            lobbyProperties = RLobbyProperties(lobbyName, blockBreaking, damage)
+        }
+
+        return RMapInfo(name, version, lobbyProperties, objective, authors, contributors, rules, difficulty, dimension)
     }
 }
