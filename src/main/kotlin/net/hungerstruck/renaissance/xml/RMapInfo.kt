@@ -11,7 +11,8 @@ import org.bukkit.World
 data class RMapInfo(
         val name: String,
         val version: String,
-        val lobby: RLobbyProperties?,
+        val lobby: String?,
+        val lobbyProperties: RLobbyProperties?,
         val objective: String,
         val authors: List<Contributor>,
         val contributors: List<Contributor>,
@@ -25,16 +26,7 @@ data class RMapInfo(
         get() = "$name by ${authors.map { it.name }.joinToString(", ")}"
 }
 
-/**
- * Contains lobby configuration, both for maps _referencing_ lobbies and for maps that _are_ lobbies.
- * lobbyName is only set if the map references a lobby, otherwise the others are set.
- *
- * Example:
- * <lobby>Foo</lobby> transforms into RLobbyProperties("Foo", false, false)
- * <lobby><name>Foo</name></lobby> transforms into RLobbyProperties("Foo", false, false)
- * <lobby><blockbreaking /><damage /></lobby> transforms into RLobbyProperties(null, true, true)
- */
-data class RLobbyProperties(val lobbyName: String?, val canBreakBlocks: Boolean, val canTakeDamage: Boolean)
+data class RLobbyProperties(val canBreakBlocks: Boolean, val canTakeDamage: Boolean)
 
 /**
  * Simple contributor data class.
