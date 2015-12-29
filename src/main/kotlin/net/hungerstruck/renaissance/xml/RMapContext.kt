@@ -36,7 +36,7 @@ class RMapContext {
 
             val lobbyName = map.mapInfo.lobby ?: RConfig.Lobby.defaultLobby
             map.mapInfo.lobbyMap = matchMap(lobbyName) ?: throw IllegalArgumentException("Unknown lobby $lobbyName, (implicitly) referenced by ${map.mapInfo.friendlyDescription}")
-            if (map.mapInfo.lobbyMap.mapInfo.lobby == null) throw IllegalArgumentException("Lobby $lobbyName, (implicitly) referenced by ${map.mapInfo.friendlyDescription}, is not a lobby.")
+            if (map.mapInfo.lobbyMap.mapInfo.lobbyProperties == null) throw IllegalArgumentException("Lobby $lobbyName, (implicitly) referenced by ${map.mapInfo.friendlyDescription}, is not a lobby.")
         }
     }
 
