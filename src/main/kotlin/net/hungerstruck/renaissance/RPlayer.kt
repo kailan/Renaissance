@@ -1,6 +1,6 @@
 package net.hungerstruck.renaissance
 
-import net.hungerstruck.renaissance.match.RLobby
+import net.hungerstruck.renaissance.lobby.RLobby
 import net.hungerstruck.renaissance.match.RMatch
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player

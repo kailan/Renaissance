@@ -1,14 +1,15 @@
-package net.hungerstruck.renaissance.match
+package net.hungerstruck.renaissance.lobby
 
 import net.hungerstruck.renaissance.RPlayer
 import net.hungerstruck.renaissance.RPlayerState
+import net.hungerstruck.renaissance.xml.RMap
 
 /**
  * Manages a simple server-wide lobby.
 
  * Created by molenzwiebel on 22-12-15.
  */
-class RLobby {
+class RLobby(val lobbyMap: RMap, val nextMap: RMap) {
     val members: Collection<RPlayer>
         get() = RPlayer.getPlayers() { it.lobby == this }
 

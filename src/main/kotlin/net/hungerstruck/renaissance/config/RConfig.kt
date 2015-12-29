@@ -1,5 +1,6 @@
 package net.hungerstruck.renaissance.config
 
+import net.hungerstruck.renaissance.lobby.RLobbyManager
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.configuration.file.FileConfiguration
@@ -29,6 +30,7 @@ object RConfig {
 
     object Lobby {
         var defaultLobby: String by path("lobby.default-lobby")
+        var joinStrategy: RLobbyManager.LobbyStrategy by path("lobby.join-strategy", { RLobbyManager.LobbyStrategy.valueOf(it) }, { it.name })
 
         var autoStart: Boolean by path("lobby.auto-start", true)
         var minimumPlayerStartCount: Int by path("lobby.minimum-players", 2)

@@ -31,10 +31,7 @@ class RMatchManager {
         val nextMap = rotationManager.getNextAndIncrement()
 
         val worldFolder = File(Bukkit.getServer().worldContainer, worldName)
-        FileUtil.copy(nextMap.location, worldFolder)
-        FileUtil.delete(File(worldFolder, "session.lock"))
-        FileUtil.delete(File(worldFolder, "uid.dat"))
-        FileUtil.delete(File(worldFolder, "players"))
+        FileUtil.copyWorldFolder(nextMap.location, worldFolder)
 
         val gen = WorldCreator(worldName).generator(object : ChunkGenerator() {}).generateStructures(false).environment(nextMap.mapInfo.dimension)
         val world = Bukkit.createWorld(gen)
