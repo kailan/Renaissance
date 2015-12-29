@@ -28,6 +28,8 @@ object RConfig {
     }
 
     object Lobby {
+        var defaultLobby: String by path("lobby.default-lobby")
+
         var autoStart: Boolean by path("lobby.auto-start", true)
         var minimumPlayerStartCount: Int by path("lobby.minimum-players", 2)
         var maximumPlayerStartCount: Int by path("lobby.maximum-players", 24)

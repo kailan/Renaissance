@@ -1,6 +1,7 @@
 package net.hungerstruck.renaissance.xml
 
 import com.google.common.collect.ImmutableList
+import net.hungerstruck.renaissance.config.RConfig
 import net.hungerstruck.renaissance.util.LiquidMetal
 import java.io.File
 
@@ -29,7 +30,10 @@ class RMapContext {
     }
 
     public fun resolveLobbies() {
-
+        for (map in maps.values) {
+            val lobbyName = map.mapInfo.lobby?.lobbyName ?: RConfig.Lobby.defaultLobby
+            map.mapInfo.lobbyMap = matchMap(lobbyName) ?: throw IllegalArgumentException("Unknown lobby ${lobbyName} (referenced by ${map.mapInfo.friendlyDescription})")
+        }
     }
 
     public fun matchMap(query: String): RMap? {
