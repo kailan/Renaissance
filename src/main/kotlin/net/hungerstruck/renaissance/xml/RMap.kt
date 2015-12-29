@@ -43,10 +43,7 @@ class RMap {
         val lobbyEl = root.getChild("lobby")
         var lobbyProperties: RLobbyProperties? = null
         if (lobbyEl != null) {
-            val lobbyName = if (lobbyEl.getChildTextNormalize("name") != null) {
-                lobbyEl.getChildTextNormalize("name")
-            } else lobbyEl.textNormalize
-
+            val lobbyName = lobbyEl.getChildTextNormalize("name") ?: lobbyEl.textNormalize
             val blockBreaking = lobbyEl.getChild("blockbreaking") != null
             val damage = lobbyEl.getChild("damage") != null
 
