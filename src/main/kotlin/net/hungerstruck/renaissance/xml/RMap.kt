@@ -1,5 +1,6 @@
 package net.hungerstruck.renaissance.xml
 
+import net.hungerstruck.renaissance.config.RConfig
 import net.hungerstruck.renaissance.get
 import net.hungerstruck.renaissance.mapAs
 import org.bukkit.Difficulty
@@ -21,7 +22,7 @@ class RMap {
 
     constructor(loc: File) {
         this.location = loc
-        this.document = SAXBuilder().build(File(loc, "map.xml"))
+        this.document = SAXBuilder().build(File(loc, RConfig.Maps.mapFileName))
         this.mapInfo = loadMapInfo()
     }
 

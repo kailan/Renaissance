@@ -22,7 +22,7 @@ class RMapContext {
         for (f in directory.listFiles()) {
             if (!f.isDirectory) continue
 
-            if (File(f, "map.xml").exists()) {
+            if (File(f, RConfig.Maps.mapFileName).exists()) {
                 val map = RMap(f)
                 maps.put(map.mapInfo.name, map)
             }
@@ -31,6 +31,9 @@ class RMapContext {
 
     public fun resolveLobbies() {
         for (map in maps.values) {
+            // Ignore lobbies, those can't reference lobbies.
+            if (map.mapInfo.lobbyProperties != null) continue
+
             val lobbyName = map.mapInfo.lobby ?: RConfig.Lobby.defaultLobby
             map.mapInfo.lobbyMap = matchMap(lobbyName) ?: throw IllegalArgumentException("Unknown lobby $lobbyName, (implicitly) referenced by ${map.mapInfo.friendlyDescription}")
             if (map.mapInfo.lobbyMap.mapInfo.lobby == null) throw IllegalArgumentException("Lobby $lobbyName, (implicitly) referenced by ${map.mapInfo.friendlyDescription}, is not a lobby.")
