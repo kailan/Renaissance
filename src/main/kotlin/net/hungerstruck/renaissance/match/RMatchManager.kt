@@ -1,6 +1,7 @@
 package net.hungerstruck.renaissance.match
 
 import net.hungerstruck.renaissance.RRotationManager
+import net.hungerstruck.renaissance.config.RConfig
 import net.hungerstruck.renaissance.util.FileUtil
 import net.hungerstruck.renaissance.xml.RMapContext
 import org.bukkit.Bukkit
@@ -8,6 +9,7 @@ import org.bukkit.World
 import org.bukkit.WorldCreator
 import org.bukkit.generator.ChunkGenerator
 import java.io.File
+import java.util.*
 
 /**
  * Manages matches.
@@ -61,5 +63,16 @@ class RMatchManager {
         matches.remove(oldMatch.world)
 
         println("[+] Unloaded ${oldMatch.map.mapInfo.friendlyDescription}")
+    }
+
+    // Note: May return null if there are no active matches.
+    public fun findMatch(strategy: RConfig.JoinStrategy): RMatch? {
+        if (matches.isEmpty()) return null
+
+        return when (strategy) {
+            RConfig.JoinStrategy.FIRST -> matches.values.first()
+            RConfig.JoinStrategy.RANDOM -> matches.values.toArrayList()[Random().nextInt(matches.size)]
+            RConfig.JoinStrategy.SMALLEST -> matches.values.minBy { it.players.size }
+        }
     }
 }

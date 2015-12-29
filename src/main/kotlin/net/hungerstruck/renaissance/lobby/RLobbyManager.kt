@@ -1,5 +1,6 @@
 package net.hungerstruck.renaissance.lobby
 
+import net.hungerstruck.renaissance.config.RConfig
 import net.hungerstruck.renaissance.util.FileUtil
 import net.hungerstruck.renaissance.xml.RMap
 import org.bukkit.Bukkit
@@ -37,32 +38,13 @@ class RLobbyManager {
     }
 
     // Note: May return null if there are no active lobbies.
-    public fun findLobby(strategy: LobbyStrategy): RLobby? {
+    public fun findLobby(strategy: RConfig.JoinStrategy): RLobby? {
         if (lobbies.isEmpty()) return null
 
         return when (strategy) {
-            LobbyStrategy.FIRST -> lobbies.values.first()
-            LobbyStrategy.RANDOM -> lobbies.values.toArrayList()[Random().nextInt(lobbies.size)]
-            LobbyStrategy.SMALLEST -> lobbies.values.minBy { it.members.size }
+            RConfig.JoinStrategy.FIRST -> lobbies.values.first()
+            RConfig.JoinStrategy.RANDOM -> lobbies.values.toArrayList()[Random().nextInt(lobbies.size)]
+            RConfig.JoinStrategy.SMALLEST -> lobbies.values.minBy { it.members.size }
         }
-    }
-
-    /**
-     * The strategy for which a player gets assigned a lobby when he/she first joins.
-     * <b>NOTE:</b> This is only for _joining_, not after a cycle. After a cycle, the player will join the next lobby.
-     */
-    enum class LobbyStrategy {
-        /**
-         * The first lobby in the lobbies map will be the one joined.
-         */
-        FIRST,
-        /**
-         * A random lobby will be selected.
-         */
-        RANDOM,
-        /**
-         * The lobby with the lowest amount of participants will be selected.
-         */
-        SMALLEST;
     }
 }
