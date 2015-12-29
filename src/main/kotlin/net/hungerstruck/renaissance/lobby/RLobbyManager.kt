@@ -31,7 +31,7 @@ class RLobbyManager {
         world.isAutoSave = false
         world.difficulty = lobbyMap.mapInfo.difficulty
 
-        val lobby = RLobby(lobbyMap = lobbyMap, nextMap = map)
+        val lobby = RLobby(world, lobbyMap = lobbyMap, nextMap = map)
         lobbies[world] = lobby
 
         return lobby
