@@ -28,7 +28,7 @@ class RMatchManager {
         this.rotationManager = rotMan
     }
 
-    public fun cycle(oldMatch: RMatch? = null) {
+    public fun loadMatch() {
         val worldName = "match-${matchCount++}"
         val nextMap = rotationManager.getNextAndIncrement()
 
@@ -43,17 +43,13 @@ class RMatchManager {
         val match = RMatch(nextMap, world)
         matches[world] = match
 
-        if (oldMatch != null) {
-            unloadMatch(oldMatch)
-        }
-
         println("[+] Loaded ${nextMap.mapInfo.friendlyDescription}")
     }
 
     public fun unloadMatch(oldMatch: RMatch) {
         for (participant in oldMatch.players) {
             participant.match = null
-            participant.previousState?.restore(participant.bukkit)
+            participant.previousState?.restore(participant)
             participant.previousState = null
         }
 

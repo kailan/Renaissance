@@ -58,25 +58,25 @@ class RPlayer(val bukkit: Player) : Player by bukkit {
         }
 
     public fun reset() {
-        bukkit.health = 20.0
-        bukkit.saturation = 20.0f
-        bukkit.exhaustion = 20.0f
-        bukkit.fireTicks = 0
-        bukkit.foodLevel = 20
-        bukkit.exp = 0.0f
-        bukkit.level = 0
-        bukkit.noDamageTicks = 0
-        bukkit.isSneaking = false
-        bukkit.isSprinting = false
-        bukkit.fallDistance = 0.0f
+        health = 20.0
+        saturation = 20.0f
+        exhaustion = 20.0f
+        fireTicks = 0
+        foodLevel = 20
+        exp = 0.0f
+        level = 0
+        noDamageTicks = 0
+        isSneaking = false
+        isSprinting = false
+        fallDistance = 0.0f
 
-        for (effect in bukkit.activePotionEffects)
-            bukkit.removePotionEffect(effect.type)
+        for (effect in activePotionEffects)
+            removePotionEffect(effect.type)
 
-        bukkit.inventory.clear()
-        bukkit.inventory.armorContents = arrayOfNulls<ItemStack>(bukkit.inventory.armorContents.size)
+        inventory.clear()
+        inventory.armorContents = arrayOfNulls<ItemStack>(inventory.armorContents.size)
 
-        bukkit.updateInventory()
+        updateInventory()
     }
 
     /**
