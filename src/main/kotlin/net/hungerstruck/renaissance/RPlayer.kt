@@ -15,7 +15,7 @@ import org.bukkit.inventory.ItemStack
  *
  * Created by molenzwiebel on 20-12-15.
  */
-class RPlayer {
+class RPlayer(val bukkit: Player) : Player by bukkit {
     companion object : Listener {
         final var INSTANCES: MutableMap<Player, RPlayer> = hashMapOf()
 
@@ -47,8 +47,6 @@ class RPlayer {
         }
     }
 
-    val bukkit: Player
-
     var match: RMatch? = null
     var lobby: RLobby? = null
     var previousState: RPlayerState? = null
@@ -58,10 +56,6 @@ class RPlayer {
             assert(x == State.NONE || match != null, { "Cannot set state to ${x} if not in a match" })
             field = x
         }
-
-    constructor(bukkit: Player) {
-        this.bukkit = bukkit
-    }
 
     public fun reset() {
         bukkit.health = 20.0
