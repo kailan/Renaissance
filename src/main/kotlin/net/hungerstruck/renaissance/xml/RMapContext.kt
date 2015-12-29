@@ -1,6 +1,7 @@
 package net.hungerstruck.renaissance.xml
 
 import com.google.common.collect.ImmutableList
+import net.hungerstruck.renaissance.config.RConfig
 import net.hungerstruck.renaissance.util.LiquidMetal
 import java.io.File
 
@@ -21,10 +22,21 @@ class RMapContext {
         for (f in directory.listFiles()) {
             if (!f.isDirectory) continue
 
-            if (File(f, "map.xml").exists()) {
+            if (File(f, RConfig.Maps.mapFileName).exists()) {
                 val map = RMap(f)
                 maps.put(map.mapInfo.name, map)
             }
+        }
+    }
+
+    public fun resolveLobbies() {
+        for (map in maps.values) {
+            // Ignore lobbies, those can't reference lobbies.
+            if (map.mapInfo.lobbyProperties != null) continue
+
+            val lobbyName = map.mapInfo.lobby ?: RConfig.Lobby.defaultLobby
+            map.mapInfo.lobbyMap = matchMap(lobbyName) ?: throw IllegalArgumentException("Unknown lobby $lobbyName, (implicitly) referenced by ${map.mapInfo.friendlyDescription}")
+            if (map.mapInfo.lobbyMap.mapInfo.lobbyProperties == null) throw IllegalArgumentException("Lobby $lobbyName, (implicitly) referenced by ${map.mapInfo.friendlyDescription}, is not a lobby.")
         }
     }
 

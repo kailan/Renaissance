@@ -1,6 +1,7 @@
 package net.hungerstruck.renaissance.match
 
 import net.hungerstruck.renaissance.RRotationManager
+import net.hungerstruck.renaissance.config.RConfig
 import net.hungerstruck.renaissance.util.FileUtil
 import net.hungerstruck.renaissance.xml.RMapContext
 import org.bukkit.Bukkit
@@ -8,6 +9,7 @@ import org.bukkit.World
 import org.bukkit.WorldCreator
 import org.bukkit.generator.ChunkGenerator
 import java.io.File
+import java.util.*
 
 /**
  * Manages matches.
@@ -26,15 +28,12 @@ class RMatchManager {
         this.rotationManager = rotMan
     }
 
-    public fun cycle(oldMatch: RMatch? = null) {
+    public fun loadMatch() {
         val worldName = "match-${matchCount++}"
         val nextMap = rotationManager.getNextAndIncrement()
 
         val worldFolder = File(Bukkit.getServer().worldContainer, worldName)
-        FileUtil.copy(nextMap.location, worldFolder)
-        FileUtil.delete(File(worldFolder, "session.lock"))
-        FileUtil.delete(File(worldFolder, "uid.dat"))
-        FileUtil.delete(File(worldFolder, "players"))
+        FileUtil.copyWorldFolder(nextMap.location, worldFolder)
 
         val gen = WorldCreator(worldName).generator(object : ChunkGenerator() {}).generateStructures(false).environment(nextMap.mapInfo.dimension)
         val world = Bukkit.createWorld(gen)
@@ -44,17 +43,13 @@ class RMatchManager {
         val match = RMatch(nextMap, world)
         matches[world] = match
 
-        if (oldMatch != null) {
-            unloadMatch(oldMatch)
-        }
-
         println("[+] Loaded ${nextMap.mapInfo.friendlyDescription}")
     }
 
     public fun unloadMatch(oldMatch: RMatch) {
         for (participant in oldMatch.players) {
             participant.match = null
-            participant.previousState?.restore(participant.bukkit)
+            participant.previousState?.restore(participant)
             participant.previousState = null
         }
 
@@ -64,5 +59,16 @@ class RMatchManager {
         matches.remove(oldMatch.world)
 
         println("[+] Unloaded ${oldMatch.map.mapInfo.friendlyDescription}")
+    }
+
+    // Note: May return null if there are no active matches.
+    public fun findMatch(strategy: RConfig.JoinStrategy): RMatch? {
+        if (matches.isEmpty()) return null
+
+        return when (strategy) {
+            RConfig.JoinStrategy.FIRST -> matches.values.first()
+            RConfig.JoinStrategy.RANDOM -> matches.values.toArrayList()[Random().nextInt(matches.size)]
+            RConfig.JoinStrategy.SMALLEST -> matches.values.minBy { it.players.size }
+        }
     }
 }

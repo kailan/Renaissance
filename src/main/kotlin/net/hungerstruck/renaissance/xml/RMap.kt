@@ -1,5 +1,7 @@
 package net.hungerstruck.renaissance.xml
 
+import net.hungerstruck.renaissance.config.RConfig
+import net.hungerstruck.renaissance.get
 import net.hungerstruck.renaissance.mapAs
 import org.bukkit.Difficulty
 import org.bukkit.World
@@ -20,12 +22,13 @@ class RMap {
 
     constructor(loc: File) {
         this.location = loc
-        this.document = SAXBuilder().build(File(loc, "map.xml"))
+        this.document = SAXBuilder().build(File(loc, RConfig.Maps.mapFileName))
         this.mapInfo = loadMapInfo()
     }
 
     private fun loadMapInfo(): RMapInfo {
         val root = document.rootElement
+        val lobbyName = root["lobby"]
 
         val name = root.getChildTextNormalize("name") ?: throw RuntimeException("Map must have name")
         val version = root.getChildTextNormalize("version") ?: throw RuntimeException("Map must have version")
@@ -40,8 +43,15 @@ class RMap {
         val difficulty = root.getChildTextNormalize("difficulty").toEnum(Difficulty.NORMAL)!!
         val dimension = root.getChildTextNormalize("dimension").toEnum(World.Environment.NORMAL)!!
 
-        var lobby = root.getChildTextNormalize("lobby").toBool(false)
+        val lobbyEl = root.getChild("lobby")
+        var lobbyProperties: RLobbyProperties? = null
+        if (lobbyEl != null) {
+            val blockBreaking = lobbyEl.getChild("blockbreaking") != null
+            val damage = lobbyEl.getChild("damage") != null
 
-        return RMapInfo(name, version, lobby, objective, authors, contributors, rules, difficulty, dimension)
+            lobbyProperties = RLobbyProperties(blockBreaking, damage)
+        }
+
+        return RMapInfo(name, version, lobbyName, lobbyProperties, objective, authors, contributors, rules, difficulty, dimension)
     }
 }

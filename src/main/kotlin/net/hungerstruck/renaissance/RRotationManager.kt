@@ -29,6 +29,8 @@ class RRotationManager {
             rotation = contents.map {
                 mapCtx.matchMap(it) ?: throw IllegalArgumentException("Unknown map in rotation: ${it}")
             }
+
+            rotation.forEach { if (it.mapInfo.lobbyProperties != null) throw IllegalArgumentException("Map ${it.mapInfo.friendlyDescription} is referenced in rotation, but is a lobby.") }
         } catch (e: Exception) {
             throw IllegalArgumentException("Could not read rotation: ${e.message}")
         }

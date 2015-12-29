@@ -11,7 +11,8 @@ import org.bukkit.World
 data class RMapInfo(
         val name: String,
         val version: String,
-        val lobby: Boolean,
+        val lobby: String?,
+        val lobbyProperties: RLobbyProperties?,
         val objective: String,
         val authors: List<Contributor>,
         val contributors: List<Contributor>,
@@ -19,9 +20,13 @@ data class RMapInfo(
         val difficulty: Difficulty,
         val dimension: World.Environment) {
 
+    lateinit var lobbyMap: RMap
+
     public val friendlyDescription: String
         get() = "$name by ${authors.map { it.name }.joinToString(", ")}"
 }
+
+data class RLobbyProperties(val canBreakBlocks: Boolean, val canTakeDamage: Boolean)
 
 /**
  * Simple contributor data class.

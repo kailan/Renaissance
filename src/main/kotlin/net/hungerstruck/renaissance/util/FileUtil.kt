@@ -26,6 +26,13 @@ object FileUtil {
         }
     }
 
+    fun copyWorldFolder(from: File, to: File) {
+        FileUtil.copy(from, to)
+        FileUtil.delete(File(to, "session.lock"))
+        FileUtil.delete(File(to, "uid.dat"))
+        FileUtil.delete(File(to, "players"))
+    }
+
     private fun copyDirectory(source: File, destination: File) {
         if (!destination.mkdirs()) {
             throw IOException("Failed to create destination directories")

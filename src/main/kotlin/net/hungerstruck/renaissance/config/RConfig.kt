@@ -1,10 +1,7 @@
 package net.hungerstruck.renaissance.config
 
-import org.bukkit.Bukkit
-import org.bukkit.Location
 import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.configuration.file.YamlConfiguration
-import org.bukkit.util.Vector
 import java.io.File
 
 /**
@@ -28,18 +25,16 @@ object RConfig {
     }
 
     object Lobby {
+        var defaultLobby: String by path("lobby.default-lobby")
+        var joinStrategy: JoinStrategy by path("lobby.join-strategy", { JoinStrategy.valueOf(it) }, { it.name })
+
         var autoStart: Boolean by path("lobby.auto-start", true)
         var minimumPlayerStartCount: Int by path("lobby.minimum-players", 2)
         var maximumPlayerStartCount: Int by path("lobby.maximum-players", 24)
-        // needs the countdown
-
-        var spawnLocation: Location by path("lobby.spawn-vector", {
-            val parts = it.split(",")
-            Vector(parts[1].toInt(), parts[2].toInt(), parts[3].toInt()).toLocation(Bukkit.getWorld(parts[0]))
-        }, { "${it.world.name},${it.blockX},${it.blockY},${it.blockZ}" })
     }
 
     object Match {
+        var joinStrategy: JoinStrategy by path("match.join-strategy", { JoinStrategy.valueOf(it) }, { it.name })
         // not sure how to do the countdowns
     }
 
@@ -56,5 +51,24 @@ object RConfig {
 
     object Chat {
         var radius: Int by path("chat.radius", 30)
+    }
+
+    /**
+     * The strategy for which a player gets assigned a lobby/match when he/she first joins.
+     * <b>NOTE:</b> This is only for _joining_, not after a cycle. After a cycle, the player will join the next lobby.
+     */
+    enum class JoinStrategy {
+        /**
+         * The first lobby or map in the manager will be the one joined.
+         */
+        FIRST,
+        /**
+         * A random lobby/map will be selected.
+         */
+        RANDOM,
+        /**
+         * The lobby/map with the lowest amount of participants will be selected.
+         */
+        SMALLEST;
     }
 }

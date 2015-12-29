@@ -6,7 +6,8 @@ maps:
     rotation-file: "rotation.txt"
     world-prefix: "match-"
 lobby:
-    spawn-vector: "world,0,70,0"
+    default-lobby: "Lobby"
+    join-strategy: "SMALLEST"
     lobby-countdown:
         seconds: 20
         minutes: 0
@@ -14,6 +15,7 @@ lobby:
     minimum-players: 2
     maximum-players: 24
 match:
+    join-strategy: "SMALLEST"
     start-countdown:
         seconds: 20
         minutes: 0
