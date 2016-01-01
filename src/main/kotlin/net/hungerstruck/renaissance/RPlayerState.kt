@@ -24,6 +24,8 @@ class RPlayerState internal constructor() {
     private var saturation: Float = 0.0f
     private var fire: Int = 0
 
+    private var allowFlight: Boolean = false
+
     fun restore(target: Player) {
         target.inventory.contents = inventory
         target.inventory.armorContents = armorSlots
@@ -42,6 +44,7 @@ class RPlayerState internal constructor() {
         target.foodLevel = food
         target.saturation = saturation
         target.fireTicks = fire
+        target.allowFlight = allowFlight
     }
 
     companion object {
@@ -60,6 +63,8 @@ class RPlayerState internal constructor() {
             ret.food = player.foodLevel
             ret.saturation = player.saturation
             ret.fire = player.fireTicks
+
+            ret.allowFlight = player.allowFlight
 
             return ret
         }

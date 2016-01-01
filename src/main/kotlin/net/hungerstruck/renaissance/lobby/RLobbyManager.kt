@@ -37,6 +37,13 @@ class RLobbyManager {
         return lobby
     }
 
+    public fun unloadLobby(lobby: RLobby) {
+        val dir = lobby.lobbyWorld.worldFolder
+        Bukkit.unloadWorld(lobby.lobbyWorld, true)
+        FileUtil.delete(dir)
+        lobbies.remove(lobby.lobbyWorld)
+    }
+
     // Note: May return null if there are no active lobbies.
     public fun findLobby(strategy: RConfig.JoinStrategy): RLobby? {
         if (lobbies.isEmpty()) return null

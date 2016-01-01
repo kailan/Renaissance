@@ -3,8 +3,12 @@ package net.hungerstruck.renaissance.lobby
 import net.hungerstruck.renaissance.RPlayer
 import net.hungerstruck.renaissance.RPlayerState
 import net.hungerstruck.renaissance.Renaissance
+import net.hungerstruck.renaissance.config.RConfig
+import net.hungerstruck.renaissance.event.RLobbyEndEvent
 import net.hungerstruck.renaissance.match.RMatch
 import net.hungerstruck.renaissance.xml.RMap
+import org.bukkit.Bukkit
+import org.bukkit.GameMode
 import org.bukkit.World
 
 /**
@@ -35,10 +39,22 @@ class RLobby {
         player.lobby = this
         player.previousState = RPlayerState.create(player)
         player.reset()
+        player.gameMode = GameMode.SURVIVAL
 
         player.teleport(lobbyWorld.spawnLocation)
 
-        //FIXME: Start countdown once enough players are in
+        if (members.size >= RConfig.Lobby.minimumPlayerStartCount && members.size <= RConfig.Lobby.maximumPlayerStartCount && RConfig.Lobby.autoStart) {
+            if (!Renaissance.countdownManager.hasCountdown(RLobbyEndCountdown::class.java)) {
+                //FIXME: Config value, not hardcoded to 10s.
+                Renaissance.countdownManager.start(RLobbyEndCountdown(this), 10)
+            }
+        }
+    }
+
+    public fun end() {
+        Bukkit.getPluginManager().callEvent(RLobbyEndEvent(this))
+        assert(members.size == 0, { "Still players left in lobby after end." })
+        Renaissance.lobbyManager.unloadLobby(this)
     }
 
     public fun sendMessage(msg: String) {

@@ -53,7 +53,7 @@ class RPlayer(val bukkit: Player) : Player by bukkit {
 
     var state = State.NONE
         set(x) {
-            assert(x == State.NONE || match != null, { "Cannot set state to ${x} if not in a match" })
+            assert(x == State.NONE || match != null, { "Cannot set state to $x if not in a match" })
             field = x
         }
 
@@ -69,6 +69,8 @@ class RPlayer(val bukkit: Player) : Player by bukkit {
         isSneaking = false
         isSprinting = false
         fallDistance = 0.0f
+        isFlying = false
+        allowFlight = false
 
         for (effect in activePotionEffects)
             removePotionEffect(effect.type)

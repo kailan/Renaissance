@@ -36,13 +36,13 @@ class LobbyListener : Listener {
     @EventHandler
     public fun onItemDrop(event: ItemSpawnEvent) {
         val lobby = getLobby(event.entity.world) ?: return
-        event.isCancelled = lobby.lobbyMap.mapInfo.lobbyProperties!!.canBreakBlocks
+        event.isCancelled = !lobby.lobbyMap.mapInfo.lobbyProperties!!.canBreakBlocks
     }
 
     @EventHandler
     public fun onBlockBreak(event: BlockBreakEvent) {
         val lobby = getLobby(event.block.world) ?: return
-        event.isCancelled = lobby.lobbyMap.mapInfo.lobbyProperties!!.canBreakBlocks
+        event.isCancelled = !lobby.lobbyMap.mapInfo.lobbyProperties!!.canBreakBlocks
     }
 
     @EventHandler
@@ -59,7 +59,7 @@ class LobbyListener : Listener {
                 return
             }
 
-            event.isCancelled = lobby.lobbyMap.mapInfo.lobbyProperties!!.canTakeDamage
+            event.isCancelled = !lobby.lobbyMap.mapInfo.lobbyProperties!!.canTakeDamage
         } else {
             // Always cancel any non-player damage. Teleport them to spawn if it is void damage.
             event.isCancelled = true

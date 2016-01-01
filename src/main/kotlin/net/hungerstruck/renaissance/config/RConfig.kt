@@ -15,6 +15,7 @@ object RConfig {
 
     object General {
         var debugging: Boolean by path("general.debugging")
+        var noMatchesMessage: String by path("general.no-matches", "There are no lobbies or matches available.\n\nRejoin later!")
     }
 
     object Maps {
@@ -33,6 +34,8 @@ object RConfig {
         var autoStart: Boolean by path("lobby.auto-start", true)
         var minimumPlayerStartCount: Int by path("lobby.minimum-players", 2)
         var maximumPlayerStartCount: Int by path("lobby.maximum-players", 24)
+
+        var tickMessage: String by path("match.start-countdown.tick-message", "The games will begin in %s")
     }
 
     object Match {

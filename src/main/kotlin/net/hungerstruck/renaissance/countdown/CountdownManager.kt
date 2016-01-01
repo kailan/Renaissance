@@ -12,7 +12,7 @@ class CountdownManager {
         runningCountdowns.add(wrapper)
     }
 
-    public fun cancel(clazz: Class<in Countdown>) {
+    public fun cancel(clazz: Class<out Countdown>) {
         runningCountdowns.removeAll {
             if (it.javaClass == clazz) {
                 it.cancel()
@@ -28,5 +28,5 @@ class CountdownManager {
         }
     }
 
-    public fun hasCountdown(clazz: Class<in Countdown>) = runningCountdowns.filterIsInstance(clazz).any()
+    public fun hasCountdown(clazz: Class<out Countdown>) = runningCountdowns.filterIsInstance(clazz).any()
 }

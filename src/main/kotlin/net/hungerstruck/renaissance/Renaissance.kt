@@ -1,6 +1,8 @@
 package net.hungerstruck.renaissance
 
 import net.hungerstruck.renaissance.config.RConfig
+import net.hungerstruck.renaissance.countdown.CountdownManager
+import net.hungerstruck.renaissance.listeners.ConnectionListener
 import net.hungerstruck.renaissance.listeners.LobbyListener
 import net.hungerstruck.renaissance.lobby.RLobbyManager
 import net.hungerstruck.renaissance.match.RMatchManager
@@ -24,6 +26,7 @@ object Renaissance {
     val rotationManager: RRotationManager = RRotationManager(File("rotation.txt"), mapContext)
     val matchManager: RMatchManager = RMatchManager(mapContext, rotationManager)
     val lobbyManager: RLobbyManager = RLobbyManager()
+    val countdownManager: CountdownManager = CountdownManager()
 
     fun initialize(plugin: JavaPlugin) {
         this.plugin = plugin
@@ -48,5 +51,6 @@ object Renaissance {
 
         Bukkit.getPluginManager().registerEvents(RPlayer.Companion, plugin)
         Bukkit.getPluginManager().registerEvents(LobbyListener(), plugin)
+        Bukkit.getPluginManager().registerEvents(ConnectionListener(), plugin)
     }
 }
