@@ -41,9 +41,9 @@ class RMatch {
     }
 
     public enum class State {
-        // Loaded. Players might be in already, but countdown for start is not yet running.
+        // Loaded. Players are not in already, they are still in the lobby for this match.
         LOADED,
-        // Countdown for start is running.
+        // Countdown for start is running, players are in.
         STARTING,
         // The match is currently in progress.
         PLAYING,

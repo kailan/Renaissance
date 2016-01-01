@@ -3,6 +3,7 @@ package net.hungerstruck.renaissance.match
 import net.hungerstruck.renaissance.RRotationManager
 import net.hungerstruck.renaissance.config.RConfig
 import net.hungerstruck.renaissance.util.FileUtil
+import net.hungerstruck.renaissance.xml.RMap
 import net.hungerstruck.renaissance.xml.RMapContext
 import org.bukkit.Bukkit
 import org.bukkit.World
@@ -28,9 +29,8 @@ class RMatchManager {
         this.rotationManager = rotMan
     }
 
-    public fun loadMatch() {
+    public fun constructMatch(nextMap: RMap): RMatch {
         val worldName = "match-${matchCount++}"
-        val nextMap = rotationManager.getNextAndIncrement()
 
         val worldFolder = File(Bukkit.getServer().worldContainer, worldName)
         FileUtil.copyWorldFolder(nextMap.location, worldFolder)
@@ -44,9 +44,11 @@ class RMatchManager {
         matches[world] = match
 
         println("[+] Loaded ${nextMap.mapInfo.friendlyDescription}")
+        return match
     }
 
     public fun unloadMatch(oldMatch: RMatch) {
+        //FIXME: Move this somewhere else, players should be teleported out of the world before this is called.
         for (participant in oldMatch.players) {
             participant.match = null
             participant.previousState?.restore(participant)
