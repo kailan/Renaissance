@@ -35,12 +35,12 @@ object RConfig {
         var minimumPlayerStartCount: Int by path("lobby.minimum-players", 2)
         var maximumPlayerStartCount: Int by path("lobby.maximum-players", 24)
 
-        var tickMessage: String by path("match.start-countdown.tick-message", "The games will begin in %s")
+        var tickMessage: String by path("lobby.start-countdown.tick-message", "The lobby will end in %s seconds")
     }
 
     object Match {
         var joinStrategy: JoinStrategy by path("match.join-strategy", { JoinStrategy.valueOf(it) }, { it.name })
-        // not sure how to do the countdowns
+        var tickMessage: String by path("match.start-countdown.tick-message", "The games will begin in %s seconds")
     }
 
     object Thirst {

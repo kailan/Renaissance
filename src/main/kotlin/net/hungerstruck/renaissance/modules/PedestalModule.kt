@@ -1,7 +1,9 @@
 package net.hungerstruck.renaissance.modules
 
 import com.google.common.collect.Iterables
+import net.hungerstruck.renaissance.RPlayer
 import net.hungerstruck.renaissance.event.RLobbyEndEvent
+import net.hungerstruck.renaissance.getRPlayer
 import net.hungerstruck.renaissance.match.RMatch
 import net.hungerstruck.renaissance.modules.region.BlockRegion
 import net.hungerstruck.renaissance.modules.region.RegionModule
@@ -10,6 +12,7 @@ import net.hungerstruck.renaissance.xml.module.Dependencies
 import net.hungerstruck.renaissance.xml.module.RModule
 import net.hungerstruck.renaissance.xml.module.RModuleContext
 import org.bukkit.event.EventHandler
+import org.bukkit.event.player.PlayerMoveEvent
 import org.jdom2.Document
 
 /**
@@ -39,9 +42,22 @@ class PedestalModule(match: RMatch, document: Document, modCtx: RModuleContext) 
         for (player in event.lobby.members) {
             player.lobby = null
             player.match = match
+            player.state = RPlayer.State.ALIVE
 
             player.reset()
             player.teleport(pedestalIt.next().loc.toLocation(match.world))
+        }
+
+        match.beginCountdown()
+    }
+
+    @EventHandler
+    public fun onPlayerMove(event: PlayerMoveEvent) {
+        if (event.player.getRPlayer().match != match) return
+
+        if (match.state == RMatch.State.STARTING && event.player.getRPlayer().state == RPlayer.State.ALIVE) {
+            if (event.to.blockX != event.from.blockX || event.to.blockZ != event.from.blockZ)
+                event.to = event.from
         }
     }
 }

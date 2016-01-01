@@ -1,8 +1,11 @@
 package net.hungerstruck.renaissance.match
 
 import net.hungerstruck.renaissance.RPlayer
+import net.hungerstruck.renaissance.Renaissance
+import net.hungerstruck.renaissance.event.RMatchStartEvent
 import net.hungerstruck.renaissance.xml.RMap
 import net.hungerstruck.renaissance.xml.module.RModuleContext
+import org.bukkit.Bukkit
 import org.bukkit.World
 
 /**
@@ -29,6 +32,24 @@ class RMatch {
 
     public fun sendMessage(msg: String) {
         players.forEach { it.sendMessage(msg) }
+    }
+
+    /**
+     * Begins the starting countdown for this match.
+     */
+    public fun beginCountdown() {
+        assert(state == State.LOADED, { "Cannot begin countdown from state $state" })
+        state = State.STARTING
+        //FIXME: Don't hardcode 10s
+        Renaissance.countdownManager.start(RMatchStartCountdown(this), 10)
+    }
+
+    /**
+     * Starts the match.
+     */
+    public fun startMatch() {
+        state = State.PLAYING
+        Bukkit.getPluginManager().callEvent(RMatchStartEvent(this))
     }
 
     /**

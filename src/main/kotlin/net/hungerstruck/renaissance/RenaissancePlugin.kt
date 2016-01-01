@@ -5,6 +5,7 @@ import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
+import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
 import javax.script.ScriptEngine
 
@@ -32,6 +33,7 @@ class RenaissancePlugin : JavaPlugin() {
         }
 
         engine.put("player", sender)
+        if (sender is Player) engine.put("rplayer", sender.getRPlayer())
         engine.put("Renaissance", Renaissance)
         engine.put("server", Bukkit.getServer())
         engine.eval("var Bukkit = org.bukkit.Bukkit")
