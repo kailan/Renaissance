@@ -21,12 +21,12 @@ As such, it is not RLobby's task to transport the players to the pedestals, as t
 
 ## Lobby and Match flow
 
-1a. Lobby gets constructed by either the startup procedure or after the ending of a previous match.
-1b. Lobby already loads match in the background and emits an `MatchLoadEvent`. This event is mainly for ore generation, so that this can happen while players are not yet in the world.
-2. `PlayerJoinEvent` listeners add players to the lobby, clearing their state and setting their `lobby` property.
-3a. Once the lobby recognizes enough players are in (as set in the config), a countdown starts for the end of said lobby.
-3b. If a player at this point leaves, the countdown automatically cancels.
-4. Once the countdown successfully ends, a `LobbyEndEvent` gets emitted. The lobby then assumes that any module or the match itself transports the players out. After the `LobbyEndEvent`, it asserts that the amount of players still in the lobby `== 0`, and after that unloads itself.
-5. RMatch is initially dormant until any module starts its countdown to the start. As such, it does not contain any movement cancelling code itself (remember, modularity). This countdown is almost always started by the same module as the module responsible for teleporting the players to the match.
-6. Modules then handle every aspect about the match, communicating with the match via various events (`MatchStartEvent`, `MatchLoadEvent` etc...). The match object itself is just a simple container that keeps the world, modules and map together.
+1a. Lobby gets constructed by either the startup procedure or after the ending of a previous match.   
+1b. Lobby already loads match in the background and emits an `MatchLoadEvent`. This event is mainly for ore generation, so that this can happen while players are not yet in the world.  
+2. `PlayerJoinEvent` listeners add players to the lobby, clearing their state and setting their `lobby` property.  
+3a. Once the lobby recognizes enough players are in (as set in the config), a countdown starts for the end of said lobby.  
+3b. If a player at this point leaves, the countdown automatically cancels.  
+4. Once the countdown successfully ends, a `LobbyEndEvent` gets emitted. The lobby then assumes that any module or the match itself transports the players out. After the `LobbyEndEvent`, it asserts that the amount of players still in the lobby `== 0`, and after that unloads itself.  
+5. RMatch is initially dormant until any module starts its countdown to the start. As such, it does not contain any movement cancelling code itself (remember, modularity). This countdown is almost always started by the same module as the module responsible for teleporting the players to the match.  
+6. Modules then handle every aspect about the match, communicating with the match via various events (`MatchStartEvent`, `MatchLoadEvent` etc...). The match object itself is just a simple container that keeps the world, modules and map together.  
 7. Once a module decides the match has ended, other modules come available for transitioning Match -> Lobby. RMatch itself does not make assumptions about any rotation and the upcoming map.
