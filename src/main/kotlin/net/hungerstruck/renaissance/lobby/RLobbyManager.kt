@@ -47,4 +47,8 @@ class RLobbyManager {
             RConfig.JoinStrategy.SMALLEST -> lobbies.values.minBy { it.members.size }
         }
     }
+
+    public fun findLobby(world: World): RLobby? {
+        return lobbies[world]
+    }
 }

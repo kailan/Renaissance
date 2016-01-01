@@ -1,6 +1,7 @@
 package net.hungerstruck.renaissance
 
 import net.hungerstruck.renaissance.config.RConfig
+import net.hungerstruck.renaissance.listeners.LobbyListener
 import net.hungerstruck.renaissance.lobby.RLobbyManager
 import net.hungerstruck.renaissance.match.RMatchManager
 import net.hungerstruck.renaissance.modules.*
@@ -46,5 +47,6 @@ object Renaissance {
         lobbyManager.createLobbyFor(rotationManager.getNextAndIncrement())
 
         Bukkit.getPluginManager().registerEvents(RPlayer.Companion, plugin)
+        Bukkit.getPluginManager().registerEvents(LobbyListener(), plugin)
     }
 }

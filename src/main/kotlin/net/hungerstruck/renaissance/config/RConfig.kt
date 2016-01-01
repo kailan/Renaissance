@@ -28,6 +28,8 @@ object RConfig {
         var defaultLobby: String by path("lobby.default-lobby")
         var joinStrategy: JoinStrategy by path("lobby.join-strategy", { JoinStrategy.valueOf(it) }, { it.name })
 
+        var chatFormat: String by path("lobby.chat-format", "<%s> %s")
+
         var autoStart: Boolean by path("lobby.auto-start", true)
         var minimumPlayerStartCount: Int by path("lobby.minimum-players", 2)
         var maximumPlayerStartCount: Int by path("lobby.maximum-players", 24)
