@@ -1,5 +1,7 @@
 package net.hungerstruck.renaissance.modules
 
+import com.google.common.collect.Iterables
+import net.hungerstruck.renaissance.event.RLobbyEndEvent
 import net.hungerstruck.renaissance.match.RMatch
 import net.hungerstruck.renaissance.modules.region.BlockRegion
 import net.hungerstruck.renaissance.modules.region.RegionModule
@@ -7,6 +9,7 @@ import net.hungerstruck.renaissance.xml.flatten
 import net.hungerstruck.renaissance.xml.module.Dependencies
 import net.hungerstruck.renaissance.xml.module.RModule
 import net.hungerstruck.renaissance.xml.module.RModuleContext
+import org.bukkit.event.EventHandler
 import org.jdom2.Document
 
 /**
@@ -25,6 +28,18 @@ class PedestalModule(match: RMatch, document: Document, modCtx: RModuleContext) 
             parsed as BlockRegion
         }
 
-        print("Loaded ${pedestals.size} pedestals. Here they are: ${pedestals}")
+        registerEvents()
+    }
+
+    @EventHandler
+    public fun onLobbyEnd(event: RLobbyEndEvent) {
+        val pedestalIt = Iterables.cycle(pedestals).iterator()
+        for (player in event.lobby.members) {
+            player.lobby = null
+            player.match = match
+
+            player.reset()
+            player.teleport(pedestalIt.next().loc.toLocation(match.world))
+        }
     }
 }
