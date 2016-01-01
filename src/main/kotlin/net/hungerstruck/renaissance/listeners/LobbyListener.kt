@@ -11,6 +11,7 @@ import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.entity.EntityDamageEvent
+import org.bukkit.event.entity.ItemSpawnEvent
 import org.bukkit.event.player.AsyncPlayerChatEvent
 
 /**
@@ -31,15 +32,22 @@ class LobbyListener : Listener {
         event.isCancelled = true
     }
 
+    // Cancel item drops if we don't allow breaking of blocks. Otherwise, go ahead.
+    @EventHandler
+    public fun onItemDrop(event: ItemSpawnEvent) {
+        val lobby = getLobby(event.entity.world) ?: return
+        event.isCancelled = lobby.lobbyMap.mapInfo.lobbyProperties!!.canBreakBlocks
+    }
+
     @EventHandler
     public fun onBlockBreak(event: BlockBreakEvent) {
         val lobby = getLobby(event.block.world) ?: return
-
         event.isCancelled = lobby.lobbyMap.mapInfo.lobbyProperties!!.canBreakBlocks
     }
 
     @EventHandler
     public fun onPlayerDamageEvent(event: EntityDamageEvent) {
+        if (event.entity !is Player) return // We don't care about non-players
         val lobby = getLobby(event.entity.world) ?: return
 
         if (event is EntityDamageByEntityEvent) {
