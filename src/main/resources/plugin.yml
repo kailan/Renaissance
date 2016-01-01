@@ -1,7 +1,7 @@
 name: Renaissance
 version: ${version}
 description: ${description}
-authors: [molenzwiebel, Komp]
+authors: [molenzwiebel, Komp, skreem]
 main: net.hungerstruck.renaissance.RenaissancePlugin
 
 commands:
