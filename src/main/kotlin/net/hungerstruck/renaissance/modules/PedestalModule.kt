@@ -33,6 +33,8 @@ class PedestalModule(match: RMatch, document: Document, modCtx: RModuleContext) 
 
     @EventHandler
     public fun onLobbyEnd(event: RLobbyEndEvent) {
+        if (event.lobby.match != match) return
+
         val pedestalIt = Iterables.cycle(pedestals).iterator()
         for (player in event.lobby.members) {
             player.lobby = null
