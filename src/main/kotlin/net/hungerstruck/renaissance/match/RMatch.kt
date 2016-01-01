@@ -27,6 +27,10 @@ class RMatch {
         this.moduleContext = RModuleContext(this, map.document)
     }
 
+    public fun sendMessage(msg: String) {
+        players.forEach { it.sendMessage(msg) }
+    }
+
     /**
      * Performs any unloading and cleanup that this map might want to do.
      */
