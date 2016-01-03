@@ -19,7 +19,7 @@ class RPlayer(val bukkit: Player) : Player by bukkit {
     companion object : Listener {
         final var INSTANCES: MutableMap<Player, RPlayer> = hashMapOf()
 
-        fun getPlayers(fn: (RPlayer) -> Boolean = { true }): Collection<RPlayer> {
+        fun getPlayers(fn: (RPlayer) -> Boolean = { true }): List<RPlayer> {
             return INSTANCES.values.filter(fn)
         }
 
@@ -85,15 +85,15 @@ class RPlayer(val bukkit: Player) : Player by bukkit {
      * @return if this player can see the provided player.
      */
     public fun canSee(other: RPlayer): Boolean {
-        return other.match == match && (other.state == state || (other.state == State.ALIVE && state == State.SPECTATING))
+        return other.match == match && (other.state == state || (other.state == State.PARTICIPATING && state == State.SPECTATING))
     }
 
     enum class State {
         // Not in a match at the moment.
         NONE,
-        // Still alive.
-        ALIVE,
-        // Dead or joined later, spectating in a match.
+        // Participating in the match.
+        PARTICIPATING,
+        // Not participating in the match, but still part of said match.
         SPECTATING;
     }
 }

@@ -21,8 +21,11 @@ class RMatch {
 
     private val moduleContext: RModuleContext
 
-    val players: Collection<RPlayer>
+    val players: List<RPlayer>
         get() = RPlayer.getPlayers() { it.match == this }
+
+    val alivePlayers: List<RPlayer>
+        get() = RPlayer.getPlayers() { it.match == this && it.state == RPlayer.State.PARTICIPATING }
 
     constructor(map: RMap, world: World) {
         this.map = map

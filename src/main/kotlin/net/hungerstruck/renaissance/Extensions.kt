@@ -23,6 +23,16 @@ operator fun Element.get(attrName: String): String? {
     return getAttributeValue(attrName)
 }
 
+fun <E> List<E>.getIgnoreBounds(i: Int): E {
+    var index = i
+    if (i < 0) {
+        index = if ((i * -1) % size == 0) 0 else size - ((i * -1) % size)
+    } else if (i >= size) {
+        index = i % size
+    }
+    return get(index)
+}
+
 fun Int.times(f: () -> Unit) {
     var i = 0
     while (i < this) {

@@ -36,6 +36,7 @@ object Renaissance {
         RModuleRegistry.register<RegionModule>()
         RModuleRegistry.register<ChestModule>()
         RModuleRegistry.register<ChatModule>()
+        RModuleRegistry.register<DeathModule>()
         RModuleRegistry.register<PedestalModule>()
         RModuleRegistry.register<BoundaryModule>()
         RModuleRegistry.register<EventLocationModule>()

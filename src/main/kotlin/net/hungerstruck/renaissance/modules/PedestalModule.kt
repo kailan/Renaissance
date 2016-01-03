@@ -42,7 +42,7 @@ class PedestalModule(match: RMatch, document: Document, modCtx: RModuleContext) 
         for (player in event.lobby.members) {
             player.lobby = null
             player.match = match
-            player.state = RPlayer.State.ALIVE
+            player.state = RPlayer.State.PARTICIPATING
 
             player.reset()
             player.teleport(pedestalIt.next().loc.toLocation(match.world))
@@ -55,7 +55,7 @@ class PedestalModule(match: RMatch, document: Document, modCtx: RModuleContext) 
     public fun onPlayerMove(event: PlayerMoveEvent) {
         if (!isMatch(event.player)) return
 
-        if (match.state == RMatch.State.STARTING && event.player.getRPlayer().state == RPlayer.State.ALIVE) {
+        if (match.state == RMatch.State.STARTING && event.player.getRPlayer().state == RPlayer.State.PARTICIPATING) {
             if (event.to.blockX != event.from.blockX || event.to.blockZ != event.from.blockZ)
                 event.to = event.from
         }
