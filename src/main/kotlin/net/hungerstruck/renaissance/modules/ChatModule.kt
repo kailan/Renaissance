@@ -21,6 +21,7 @@ class ChatModule(match: RMatch, document: Document, modCtx: RModuleContext) : RM
         registerEvents()
     }
 
+    //FIXME: Currently, if a player is not in a match or lobby, everyone (including people in a match) hears their message. Maybe change this behaviour?
     @EventHandler
     public fun onChat(event: AsyncPlayerChatEvent) {
         if (!isMatch(event.player)) return
