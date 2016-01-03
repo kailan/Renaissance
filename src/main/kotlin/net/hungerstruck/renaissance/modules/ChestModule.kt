@@ -57,6 +57,8 @@ class ChestModule(match: RMatch, document: Document, modCtx: RModuleContext) : R
 
     @EventHandler
     public fun onMatchLoad(event: RMatchLoadEvent) {
+        if (!isMatch(event.match)) return
+
         // Nothing to do here if we are manual :D
         if (mode == Mode.MANUAL) return
 
@@ -71,6 +73,8 @@ class ChestModule(match: RMatch, document: Document, modCtx: RModuleContext) : R
     // FIXME: Maybe move this over to match load?
     @EventHandler
     public fun onMatchStart(event: RMatchStartEvent) {
+        if (!isMatch(event.match)) return
+
         fillChests(initialItems)
     }
 
