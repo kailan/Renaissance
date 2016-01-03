@@ -36,7 +36,7 @@ class PedestalModule(match: RMatch, document: Document, modCtx: RModuleContext) 
 
     @EventHandler
     public fun onLobbyEnd(event: RLobbyEndEvent) {
-        if (event.lobby.match != match) return
+        if (!isMatch(event.lobby.match)) return
 
         val pedestalIt = Iterables.cycle(pedestals).iterator()
         for (player in event.lobby.members) {
@@ -53,7 +53,7 @@ class PedestalModule(match: RMatch, document: Document, modCtx: RModuleContext) 
 
     @EventHandler
     public fun onPlayerMove(event: PlayerMoveEvent) {
-        if (event.player.getRPlayer().match != match) return
+        if (!isMatch(event.player)) return
 
         if (match.state == RMatch.State.STARTING && event.player.getRPlayer().state == RPlayer.State.ALIVE) {
             if (event.to.blockX != event.from.blockX || event.to.blockZ != event.from.blockZ)

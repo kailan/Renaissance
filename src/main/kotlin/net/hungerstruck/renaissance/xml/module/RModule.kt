@@ -1,8 +1,14 @@
 package net.hungerstruck.renaissance.xml.module
 
+import net.hungerstruck.renaissance.RPlayer
 import net.hungerstruck.renaissance.Renaissance
+import net.hungerstruck.renaissance.getRPlayer
 import net.hungerstruck.renaissance.match.RMatch
 import org.bukkit.Bukkit
+import org.bukkit.World
+import org.bukkit.block.Block
+import org.bukkit.entity.Entity
+import org.bukkit.entity.Player
 import org.bukkit.event.HandlerList
 import org.bukkit.event.Listener
 import org.jdom2.Document
@@ -37,6 +43,13 @@ abstract class RModule : Listener {
         listeners.add(instance)
         Bukkit.getPluginManager().registerEvents(instance, Renaissance.plugin)
     }
+
+    protected fun isMatch(block: Block) = isMatch(block.world)
+    protected fun isMatch(entity: Entity) = isMatch(entity.world)
+    protected fun isMatch(world: World) = world == match.world
+    protected fun isMatch(player: Player) = isMatch(player.getRPlayer())
+    protected fun isMatch(player: RPlayer) = player.match == match
+    protected fun isMatch(match: RMatch) = match == this.match
 
     /**
      * Called when the module gets unloaded. Can be overwritten by the module.
