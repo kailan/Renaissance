@@ -33,8 +33,8 @@ class RMatch {
         Bukkit.getPluginManager().callEvent(RMatchLoadEvent(this))
     }
 
-    public fun sendMessage(msg: String) {
-        players.forEach { it.sendMessage(msg) }
+    public fun sendMessage(msg: String, f: (RPlayer) -> Boolean = { true }) {
+        players.filter(f).forEach { it.sendMessage(msg) }
     }
 
     /**
