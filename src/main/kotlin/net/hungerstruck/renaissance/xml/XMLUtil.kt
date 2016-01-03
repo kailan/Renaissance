@@ -67,6 +67,18 @@ public fun String?.toInt(defaultValue: Int = 0): Int {
     }
 }
 
+public fun String?.toDouble(defaultValue: Double = 0.0): Double {
+    if (this == null) return defaultValue
+    if (this == "oo" || this == "∞") return Double.MAX_VALUE
+    if (this == "-oo" || this == "-∞") return Double.MIN_VALUE
+
+    return try {
+        this.toDouble()
+    } catch (nfe: NumberFormatException) {
+        defaultValue
+    }
+}
+
 public inline fun <reified T : Enum<*>> String?.toEnum(defaultValue: T? = null): T? {
     if (this == null) return defaultValue
     val values = T::class.java.getDeclaredMethod("values").invoke(null) as Array<T>

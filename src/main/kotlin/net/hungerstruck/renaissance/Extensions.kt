@@ -23,6 +23,14 @@ operator fun Element.get(attrName: String): String? {
     return getAttributeValue(attrName)
 }
 
+fun Int.times(f: () -> Unit) {
+    var i = 0
+    while (i < this) {
+        f()
+        i++
+    }
+}
+
 fun Vector.minX(other: Vector): Double {
     return if (x <= other.x) x else other.x
 }

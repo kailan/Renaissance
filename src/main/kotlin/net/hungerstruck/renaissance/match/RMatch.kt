@@ -2,6 +2,7 @@ package net.hungerstruck.renaissance.match
 
 import net.hungerstruck.renaissance.RPlayer
 import net.hungerstruck.renaissance.Renaissance
+import net.hungerstruck.renaissance.event.RMatchLoadEvent
 import net.hungerstruck.renaissance.event.RMatchStartEvent
 import net.hungerstruck.renaissance.xml.RMap
 import net.hungerstruck.renaissance.xml.module.RModuleContext
@@ -28,6 +29,8 @@ class RMatch {
         this.world = world
 
         this.moduleContext = RModuleContext(this, map.document)
+
+        Bukkit.getPluginManager().callEvent(RMatchLoadEvent(this))
     }
 
     public fun sendMessage(msg: String) {

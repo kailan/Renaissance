@@ -34,6 +34,7 @@ object Renaissance {
         //ConfvarPlugin.get().register(RenaissanceDebug())
 
         RModuleRegistry.register<RegionModule>()
+        RModuleRegistry.register<ChestModule>()
         RModuleRegistry.register<PedestalModule>()
         RModuleRegistry.register<BoundaryModule>()
         RModuleRegistry.register<EventLocationModule>()
