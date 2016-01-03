@@ -30,10 +30,10 @@ public fun Element.copyAttributesTo(to: Element): Element {
 }
 
 public fun String?.toBool(defaultValue: Boolean = true): Boolean {
-    when (this) {
-        "on", "true", "yes" -> return true
-        "off", "false", "no" -> return false
-        else -> return defaultValue
+    return when (this) {
+        "on", "true", "yes" -> true
+        "off", "false", "no" -> false
+        else -> defaultValue
     }
 }
 
@@ -43,7 +43,7 @@ public fun String?.toLong(defaultValue: Long = 0): Long {
     if (this == "-oo" || this == "-∞") return java.lang.Long.MIN_VALUE
 
     var str = this
-    if (this.length > 0 && this.get(0) == '@') str = substring(1)
+    if (this.length > 0 && this[0] == '@') str = substring(1)
 
     return try {
         str.toLong()
@@ -58,7 +58,7 @@ public fun String?.toInt(defaultValue: Int = 0): Int {
     if (this == "-oo" || this == "-∞") return java.lang.Integer.MIN_VALUE
 
     var str = this
-    if (this.length > 0 && this.get(0) == '@') str = substring(1)
+    if (this.length > 0 && this[0] == '@') str = substring(1)
 
     return try {
         str.toInt()
