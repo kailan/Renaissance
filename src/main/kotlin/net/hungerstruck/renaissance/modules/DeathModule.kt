@@ -54,17 +54,26 @@ class DeathModule(match: RMatch, document: Document, modCtx: RModuleContext) : R
     @EventHandler
     fun onPlayerDeath(event: PlayerDeathEvent) {
         if (!isMatch(event.entity)) return
+        if (match.state != RMatch.State.PLAYING) return
 
         val victim = event.entity.getRPlayer()
-
         victim.state = RPlayer.State.SPECTATING
         victim.spigot().collidesWithEntities = false
         victim.allowFlight = true
-        RPlayer.updateVisibility()
 
-        match.sendMessage("${victim.displayName} died. R.I.P.")
-        event.deathMessage = null
+        if (match.alivePlayers.size != 1) {
+            // Still players alive.
+            match.sendMessage("${victim.displayName} died. ${match.alivePlayers.size} players remain.")
+        } else {
+            // We have a winner.
+            match.sendMessage("${match.alivePlayers[0].displayName} won!")
+            match.endMatch()
+            RPlayer.updateVisibility()
+        }
+
         match.world.strikeLightningEffect(victim.location)
+        event.deathMessage = null
+        RPlayer.updateVisibility()
     }
 
     @EventHandler

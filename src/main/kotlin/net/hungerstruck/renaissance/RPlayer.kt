@@ -85,7 +85,7 @@ class RPlayer(val bukkit: Player) : Player by bukkit {
      * @return if this player can see the provided player.
      */
     public fun canSee(other: RPlayer): Boolean {
-        return other.match == match && (other.state == state || (other.state == State.PARTICIPATING && state == State.SPECTATING))
+        return other.match == match && (other.state == state || (other.state == State.PARTICIPATING && state == State.SPECTATING) || match?.state != RMatch.State.PLAYING)
     }
 
     enum class State {

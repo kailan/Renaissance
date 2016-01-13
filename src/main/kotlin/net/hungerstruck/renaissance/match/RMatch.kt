@@ -2,6 +2,7 @@ package net.hungerstruck.renaissance.match
 
 import net.hungerstruck.renaissance.RPlayer
 import net.hungerstruck.renaissance.Renaissance
+import net.hungerstruck.renaissance.event.RMatchEndEvent
 import net.hungerstruck.renaissance.event.RMatchLoadEvent
 import net.hungerstruck.renaissance.event.RMatchStartEvent
 import net.hungerstruck.renaissance.xml.RMap
@@ -56,6 +57,14 @@ class RMatch {
     public fun startMatch() {
         state = State.PLAYING
         Bukkit.getPluginManager().callEvent(RMatchStartEvent(this))
+    }
+
+    /**
+     * Ends the match
+     */
+    public fun endMatch() {
+        state = State.ENDED
+        Bukkit.getPluginManager().callEvent(RMatchEndEvent(this))
     }
 
     /**
