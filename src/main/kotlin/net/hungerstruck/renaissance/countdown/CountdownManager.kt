@@ -28,5 +28,5 @@ class CountdownManager {
         }
     }
 
-    public fun hasCountdown(clazz: Class<out Countdown>) = runningCountdowns.filterIsInstance(clazz).any()
+    public fun hasCountdown(clazz: Class<out Countdown>) = runningCountdowns.filter { it.countdown.javaClass == clazz }.any()
 }
