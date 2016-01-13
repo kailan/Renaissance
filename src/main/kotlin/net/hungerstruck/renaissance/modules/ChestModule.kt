@@ -1,5 +1,6 @@
 package net.hungerstruck.renaissance.modules
 
+import net.hungerstruck.renaissance.Renaissance
 import net.hungerstruck.renaissance.event.RMatchLoadEvent
 import net.hungerstruck.renaissance.event.RMatchStartEvent
 import net.hungerstruck.renaissance.get
@@ -15,6 +16,7 @@ import net.hungerstruck.renaissance.xml.module.RModuleContext
 import net.hungerstruck.renaissance.xml.toDouble
 import net.hungerstruck.renaissance.xml.toEnum
 import net.hungerstruck.renaissance.xml.toInt
+import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.block.Chest
 import org.bukkit.event.EventHandler
@@ -76,6 +78,13 @@ class ChestModule(match: RMatch, document: Document, modCtx: RModuleContext) : R
         if (!isMatch(event.match)) return
 
         fillChests(initialItems)
+
+        //FIXME: Do not hardcode times
+        val feastTime = 120L // In seconds
+        Bukkit.getScheduler().runTaskTimer(Renaissance.plugin, {
+            match.sendMessage("There has been a feast!")
+            fillChests(feastItems)
+        }, feastTime * 20, feastTime * 20)
     }
 
     private fun fillChests(coll: RandomCollection<ItemStack>) {
