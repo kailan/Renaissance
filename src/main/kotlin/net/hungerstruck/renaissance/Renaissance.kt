@@ -7,6 +7,7 @@ import net.hungerstruck.renaissance.listeners.LobbyListener
 import net.hungerstruck.renaissance.lobby.RLobbyManager
 import net.hungerstruck.renaissance.match.RMatchManager
 import net.hungerstruck.renaissance.modules.*
+import net.hungerstruck.renaissance.modules.oregen.OregenModule
 import net.hungerstruck.renaissance.modules.region.RegionModule
 import net.hungerstruck.renaissance.xml.RMapContext
 import net.hungerstruck.renaissance.xml.module.RModuleRegistry
@@ -44,6 +45,7 @@ object Renaissance {
         RModuleRegistry.register<SanityModule>()
         RModuleRegistry.register<TimeLockModule>()
         RModuleRegistry.register<TimeSetModule>()
+        RModuleRegistry.register<OregenModule>()
 
         mapContext.loadMaps(File(RConfig.Maps.mapDir))
         mapContext.resolveLobbies()

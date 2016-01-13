@@ -12,6 +12,8 @@ class RandomCollection<E> {
     val random: Random = Random()
     var total: Double = 0.0
 
+    public operator fun set(weight: Double, entry: E) = add(weight, entry)
+
     public fun add(weight: Double, entry: E) {
         if (weight <= 0) return
         total += weight
