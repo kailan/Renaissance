@@ -73,6 +73,7 @@ class RPlayer(val bukkit: Player) : Player by bukkit {
         fallDistance = 0.0f
         isFlying = false
         allowFlight = false
+        actionBarMessage = null
 
         for (effect in activePotionEffects)
             removePotionEffect(effect.type)
