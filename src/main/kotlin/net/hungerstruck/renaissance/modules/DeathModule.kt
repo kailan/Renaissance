@@ -9,7 +9,6 @@ import net.hungerstruck.renaissance.xml.module.RModule
 import net.hungerstruck.renaissance.xml.module.RModuleContext
 import org.bukkit.Bukkit
 import org.bukkit.Material
-import org.bukkit.block.Chest
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
@@ -26,6 +25,7 @@ import org.bukkit.event.player.PlayerRespawnEvent
 import org.bukkit.event.vehicle.VehicleDamageEvent
 import org.bukkit.event.vehicle.VehicleDestroyEvent
 import org.bukkit.event.vehicle.VehicleEnterEvent
+import org.bukkit.inventory.InventoryHolder
 import org.bukkit.inventory.ItemStack
 import org.jdom2.Document
 import java.util.*
@@ -186,10 +186,10 @@ class DeathModule(match: RMatch, document: Document, modCtx: RModuleContext) : R
     fun onPlayerInteractEvent(e: PlayerInteractEvent) {
         if (isSpectator(e.player) && e.action == Action.RIGHT_CLICK_BLOCK) {
             val blockState = e.clickedBlock.state
-            if (blockState is Chest) {
+            if (blockState is InventoryHolder) {
                 val player = e.player
                 val initInventory = blockState.inventory
-                val dupeInventory = Bukkit.createInventory(player, initInventory.size, "Spectating")
+                val dupeInventory = Bukkit.createInventory(player, blockState.inventory.type, "Spectating")
                 dupeInventory.contents = initInventory.contents.copyOf()
                 player.openInventory(dupeInventory)
                 e.isCancelled = true
