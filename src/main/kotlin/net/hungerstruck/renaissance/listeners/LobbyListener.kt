@@ -11,6 +11,7 @@ import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.entity.EntityDamageEvent
+import org.bukkit.event.entity.FoodLevelChangeEvent
 import org.bukkit.event.entity.ItemSpawnEvent
 import org.bukkit.event.player.AsyncPlayerChatEvent
 
@@ -67,6 +68,12 @@ class LobbyListener : Listener {
                 event.entity.teleport(event.entity.world.spawnLocation)
             }
         }
+    }
+
+    @EventHandler
+    public fun onHungerDrain(event: FoodLevelChangeEvent) {
+        val lobby = getLobby(event.entity.world) ?: return
+        event.isCancelled = event.isCancelled || !lobby.lobbyMap.mapInfo.lobbyProperties!!.canTakeDamage
     }
 
     private fun getLobby(world: World): RLobby? {
