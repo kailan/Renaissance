@@ -44,10 +44,14 @@ class RLobby {
         player.teleport(lobbyWorld.spawnLocation)
 
         if (members.size >= RConfig.Lobby.minimumPlayerStartCount && members.size <= RConfig.Lobby.maximumPlayerStartCount && RConfig.Lobby.autoStart) {
-            if (!Renaissance.countdownManager.hasCountdown(RLobbyEndCountdown::class.java)) {
-                //FIXME: Config value, not hardcoded to 10s.
-                Renaissance.countdownManager.start(RLobbyEndCountdown(this), 10)
-            }
+            startCountdown()
+        }
+    }
+
+    public fun startCountdown() {
+        if (!Renaissance.countdownManager.hasCountdown(RLobbyEndCountdown::class.java)) {
+            //FIXME: Config value, not hardcoded to 10s.
+            Renaissance.countdownManager.start(RLobbyEndCountdown(this), 10)
         }
     }
 
