@@ -44,7 +44,7 @@ class DeathModule(match: RMatch, document: Document, modCtx: RModuleContext) : R
     }
 
     private fun isSpectator(p: Player): Boolean {
-        return p.getRPlayer().match == match && p.getRPlayer().state == RPlayer.State.SPECTATING
+        return p.getRPlayer().match == match && (p.getRPlayer().state == RPlayer.State.SPECTATING || p.getRPlayer().match!!.state != RMatch.State.PLAYING)
     }
 
     // ===========================================================
