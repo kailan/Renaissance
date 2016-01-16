@@ -2,8 +2,8 @@ package net.hungerstruck.renaissance.modules
 
 import net.hungerstruck.renaissance.RPlayer
 import net.hungerstruck.renaissance.config.RConfig
-import net.hungerstruck.renaissance.getRPlayer
 import net.hungerstruck.renaissance.match.RMatch
+import net.hungerstruck.renaissance.rplayer
 import net.hungerstruck.renaissance.xml.module.Dependencies
 import net.hungerstruck.renaissance.xml.module.RModule
 import net.hungerstruck.renaissance.xml.module.RModuleContext
@@ -26,7 +26,7 @@ class ChatModule(match: RMatch, document: Document, modCtx: RModuleContext) : RM
     public fun onChat(event: AsyncPlayerChatEvent) {
         if (!isMatch(event.player)) return
 
-        val rplayer = event.player.getRPlayer()
+        val rplayer = event.player.rplayer
         event.isCancelled = true
 
         if (match.state == RMatch.State.PLAYING) {

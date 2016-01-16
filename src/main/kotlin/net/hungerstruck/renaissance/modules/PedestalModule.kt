@@ -3,10 +3,10 @@ package net.hungerstruck.renaissance.modules
 import com.google.common.collect.Iterables
 import net.hungerstruck.renaissance.RPlayer
 import net.hungerstruck.renaissance.event.RLobbyEndEvent
-import net.hungerstruck.renaissance.getRPlayer
 import net.hungerstruck.renaissance.match.RMatch
 import net.hungerstruck.renaissance.modules.region.BlockRegion
 import net.hungerstruck.renaissance.modules.region.RegionModule
+import net.hungerstruck.renaissance.rplayer
 import net.hungerstruck.renaissance.xml.flatten
 import net.hungerstruck.renaissance.xml.module.Dependencies
 import net.hungerstruck.renaissance.xml.module.RModule
@@ -55,7 +55,7 @@ class PedestalModule(match: RMatch, document: Document, modCtx: RModuleContext) 
     public fun onPlayerMove(event: PlayerMoveEvent) {
         if (!isMatch(event.player)) return
 
-        if (match.state == RMatch.State.STARTING && event.player.getRPlayer().state == RPlayer.State.PARTICIPATING) {
+        if (match.state == RMatch.State.STARTING && event.player.rplayer.state == RPlayer.State.PARTICIPATING) {
             if (event.to.blockX != event.from.blockX || event.to.blockZ != event.from.blockZ)
                 event.to = event.from
         }

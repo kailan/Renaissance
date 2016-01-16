@@ -26,13 +26,13 @@ class RPlayer(val bukkit: Player) : Player by bukkit {
         fun updateVisibility() {
             for (p1 in Bukkit.getOnlinePlayers()) {
                 for (p2 in Bukkit.getOnlinePlayers()) {
-                    if (p1.getRPlayer().canSee(p2.getRPlayer())) {
+                    if (p1.rplayer.canSee(p2.rplayer)) {
                         p1.showPlayer(p2)
                     } else {
                         p1.hidePlayer(p2)
                     }
 
-                    if (p2.getRPlayer().canSee(p1.getRPlayer())) {
+                    if (p2.rplayer.canSee(p1.rplayer)) {
                         p2.showPlayer(p1)
                     } else {
                         p2.hidePlayer(p1)

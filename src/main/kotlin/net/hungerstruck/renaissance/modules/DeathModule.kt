@@ -3,8 +3,8 @@ package net.hungerstruck.renaissance.modules
 import net.hungerstruck.renaissance.RPlayer
 import net.hungerstruck.renaissance.config.RConfig
 import net.hungerstruck.renaissance.getIgnoreBounds
-import net.hungerstruck.renaissance.getRPlayer
 import net.hungerstruck.renaissance.match.RMatch
+import net.hungerstruck.renaissance.rplayer
 import net.hungerstruck.renaissance.xml.module.Dependencies
 import net.hungerstruck.renaissance.xml.module.RModule
 import net.hungerstruck.renaissance.xml.module.RModuleContext
@@ -45,7 +45,7 @@ class DeathModule(match: RMatch, document: Document, modCtx: RModuleContext) : R
     }
 
     private fun isSpectator(p: Player): Boolean {
-        return p.getRPlayer().match == match && (p.getRPlayer().state == RPlayer.State.SPECTATING || p.getRPlayer().match!!.state != RMatch.State.PLAYING)
+        return p.rplayer.match == match && (p.rplayer.state == RPlayer.State.SPECTATING || p.rplayer.match!!.state != RMatch.State.PLAYING)
     }
 
     // ===========================================================
@@ -57,7 +57,7 @@ class DeathModule(match: RMatch, document: Document, modCtx: RModuleContext) : R
         if (!isMatch(event.entity)) return
         if (match.state != RMatch.State.PLAYING) return
 
-        val victim = event.entity.getRPlayer()
+        val victim = event.entity.rplayer
         victim.state = RPlayer.State.SPECTATING
         victim.spigot().collidesWithEntities = false
         victim.allowFlight = true
@@ -92,19 +92,19 @@ class DeathModule(match: RMatch, document: Document, modCtx: RModuleContext) : R
 
     @EventHandler
     fun onPlayerInteract(e: PlayerInteractEvent) {
-        if (match.state != RMatch.State.PLAYING || !isMatch(e.player) || e.player.getRPlayer().state != RPlayer.State.SPECTATING) return
+        if (match.state != RMatch.State.PLAYING || !isMatch(e.player) || e.player.rplayer.state != RPlayer.State.SPECTATING) return
 
         if (e.player.itemInHand.type == Material.COMPASS) {
             if (e.action == Action.RIGHT_CLICK_BLOCK || e.action == Action.RIGHT_CLICK_AIR) {
-                val prev = (watching[e.player.getRPlayer()] ?: 0) - 1
-                watching[e.player.getRPlayer()] = prev
+                val prev = (watching[e.player.rplayer] ?: 0) - 1
+                watching[e.player.rplayer] = prev
 
                 e.player.teleport(match.alivePlayers.getIgnoreBounds(prev))
             }
 
             if (e.action == Action.LEFT_CLICK_BLOCK || e.action == Action.LEFT_CLICK_AIR) {
-                val next = (watching[e.player.getRPlayer()] ?: 0) + 1
-                watching[e.player.getRPlayer()] = next
+                val next = (watching[e.player.rplayer] ?: 0) + 1
+                watching[e.player.rplayer] = next
 
                 e.player.teleport(match.alivePlayers.getIgnoreBounds(next))
             }
@@ -174,7 +174,7 @@ class DeathModule(match: RMatch, document: Document, modCtx: RModuleContext) : R
     fun onInventoryClick(event: InventoryClickEvent) {
         if (event.whoClicked !is Player) return
 
-        val player = (event.whoClicked as Player).getRPlayer()
+        val player = (event.whoClicked as Player).rplayer
         if (player.match == null || player.match != match) return
 
         if (match.state == RMatch.State.PLAYING || match.state == RMatch.State.STARTING) {

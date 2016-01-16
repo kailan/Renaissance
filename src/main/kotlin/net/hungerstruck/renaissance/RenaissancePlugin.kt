@@ -33,7 +33,7 @@ class RenaissancePlugin : JavaPlugin() {
         }
 
         engine.put("player", sender)
-        if (sender is Player) engine.put("rplayer", sender.getRPlayer())
+        if (sender is Player) engine.put("rplayer", sender.rplayer)
         engine.put("Renaissance", Renaissance)
         engine.put("server", Bukkit.getServer())
         engine.eval("var Bukkit = org.bukkit.Bukkit")

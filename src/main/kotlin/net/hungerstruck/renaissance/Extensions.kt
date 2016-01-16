@@ -7,13 +7,16 @@ import org.jdom2.Element
 /**
  * Created by molenzwiebel on 20-12-15.
  */
-public fun Player.getRPlayer(): RPlayer {
+private fun Player.getRPlayer(): RPlayer {
     if (RPlayer.INSTANCES[this] != null) {
         return RPlayer.INSTANCES[this]!!
     }
     RPlayer.INSTANCES[this] = RPlayer(this)
     return RPlayer.INSTANCES[this]!!
 }
+
+public val Player.rplayer: RPlayer
+    get() = getRPlayer()
 
 infix fun Double.pow(x: Double): Double {
     return Math.pow(this, x)

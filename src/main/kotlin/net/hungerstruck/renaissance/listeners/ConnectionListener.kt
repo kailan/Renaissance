@@ -2,7 +2,7 @@ package net.hungerstruck.renaissance.listeners
 
 import net.hungerstruck.renaissance.Renaissance
 import net.hungerstruck.renaissance.config.RConfig
-import net.hungerstruck.renaissance.getRPlayer
+import net.hungerstruck.renaissance.rplayer
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
@@ -19,7 +19,7 @@ class ConnectionListener : Listener {
         event.joinMessage = null
 
         if (lobby != null) {
-            lobby.join(event.player.getRPlayer())
+            lobby.join(event.player.rplayer)
             return
         }
 

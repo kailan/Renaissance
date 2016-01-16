@@ -2,8 +2,8 @@ package net.hungerstruck.renaissance.listeners
 
 import net.hungerstruck.renaissance.Renaissance
 import net.hungerstruck.renaissance.config.RConfig
-import net.hungerstruck.renaissance.getRPlayer
 import net.hungerstruck.renaissance.lobby.RLobby
+import net.hungerstruck.renaissance.rplayer
 import org.bukkit.World
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
@@ -27,7 +27,7 @@ class LobbyListener : Listener {
     @EventHandler
     public fun onChat(event: AsyncPlayerChatEvent) {
         if (event.message.startsWith("/")) return // Ignore commands.
-        val lobby = event.player.getRPlayer().lobby ?: return
+        val lobby = event.player.rplayer.lobby ?: return
 
         lobby.sendMessage(RConfig.Lobby.chatFormat.format(event.player.name, event.message))
         event.isCancelled = true

@@ -2,8 +2,8 @@ package net.hungerstruck.renaissance.xml.module
 
 import net.hungerstruck.renaissance.RPlayer
 import net.hungerstruck.renaissance.Renaissance
-import net.hungerstruck.renaissance.getRPlayer
 import net.hungerstruck.renaissance.match.RMatch
+import net.hungerstruck.renaissance.rplayer
 import org.bukkit.Bukkit
 import org.bukkit.World
 import org.bukkit.block.Block
@@ -47,7 +47,7 @@ abstract class RModule : Listener {
     protected fun isMatch(block: Block) = isMatch(block.world)
     protected fun isMatch(entity: Entity) = isMatch(entity.world)
     protected fun isMatch(world: World) = world == match.world
-    protected fun isMatch(player: Player) = isMatch(player.getRPlayer())
+    protected fun isMatch(player: Player) = isMatch(player.rplayer)
     protected fun isMatch(player: RPlayer) = player.match == match
     protected fun isMatch(match: RMatch) = match == this.match
 
