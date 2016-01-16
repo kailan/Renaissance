@@ -1,6 +1,7 @@
 package net.hungerstruck.renaissance.modules
 
 import net.hungerstruck.renaissance.RPlayer
+import net.hungerstruck.renaissance.config.RConfig
 import net.hungerstruck.renaissance.getIgnoreBounds
 import net.hungerstruck.renaissance.getRPlayer
 import net.hungerstruck.renaissance.match.RMatch
@@ -62,11 +63,12 @@ class DeathModule(match: RMatch, document: Document, modCtx: RModuleContext) : R
         victim.allowFlight = true
 
         if (match.alivePlayers.size != 1) {
+            val message = if (victim.killer != null) RConfig.Match.playerDeathByPlayerMessage else RConfig.Match.playerDeathByOtherMessage
             // Still players alive.
-            match.sendMessage("${victim.displayName} died. ${match.alivePlayers.size} players remain.")
+            match.sendMessage(Formatter().format(message, victim.displayName, victim.killer?.displayName, match.alivePlayers.size).toString())
         } else {
             // We have a winner.
-            match.sendMessage("${match.alivePlayers[0].displayName} won!")
+            match.sendMessage(RConfig.Match.playerWinMessage.format(match.alivePlayers[0].displayName))
             match.endMatch()
             RPlayer.updateVisibility()
         }
