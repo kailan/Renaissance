@@ -9,6 +9,7 @@ import net.hungerstruck.renaissance.match.RMatchManager
 import net.hungerstruck.renaissance.modules.*
 import net.hungerstruck.renaissance.modules.oregen.OregenModule
 import net.hungerstruck.renaissance.modules.region.RegionModule
+import net.hungerstruck.renaissance.util.ActionBarSender
 import net.hungerstruck.renaissance.xml.RMapContext
 import net.hungerstruck.renaissance.xml.module.RModuleRegistry
 import org.bukkit.Bukkit
@@ -33,6 +34,7 @@ object Renaissance {
         this.plugin = plugin
 
         //ConfvarPlugin.get().register(RenaissanceDebug())
+        Thread(ActionBarSender).start()
 
         RModuleRegistry.register<RegionModule>()
         RModuleRegistry.register<ChestModule>()

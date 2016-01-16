@@ -51,6 +51,8 @@ class RPlayer(val bukkit: Player) : Player by bukkit {
     var lobby: RLobby? = null
     var previousState: RPlayerState? = null
 
+    var actionBarMessage: String? = null
+
     var state = State.NONE
         set(x) {
             assert(x == State.NONE || match != null, { "Cannot set state to $x if not in a match" })
