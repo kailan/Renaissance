@@ -42,8 +42,8 @@ object RConfig {
         var joinStrategy: JoinStrategy by path("match.join-strategy", { JoinStrategy.valueOf(it) }, { it.name })
         var tickMessage: String by path("match.start-countdown.tick-message", "The games will begin in %s seconds")
 
-        var playerDeathByPlayerMessage: String by path("match.death-player-message", "%0\$s was slain by %1\$s. $2\$i players remain.")
-        var playerDeathByOtherMessage: String by path("match.death-other-message", "%0\$s mysteriously died. $2\$i players remain.")
+        var playerDeathByPlayerMessage: String by path("match.death-player-message", "%0\$s was slain by %1\$s. %2\$i players remain.")
+        var playerDeathByOtherMessage: String by path("match.death-other-message", "%0\$s mysteriously died. %2\$i players remain.")
         var playerWinMessage: String by path("match.win-message", "%s won!")
     }
 
