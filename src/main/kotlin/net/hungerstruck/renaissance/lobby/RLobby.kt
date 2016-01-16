@@ -8,6 +8,7 @@ import net.hungerstruck.renaissance.event.RLobbyEndEvent
 import net.hungerstruck.renaissance.match.RMatch
 import net.hungerstruck.renaissance.xml.RMap
 import org.bukkit.Bukkit
+import org.bukkit.ChatColor.*
 import org.bukkit.GameMode
 import org.bukkit.World
 
@@ -43,6 +44,8 @@ class RLobby {
 
         player.teleport(lobbyWorld.spawnLocation)
 
+        updateInformation()
+
         if (members.size >= RConfig.Lobby.minimumPlayerStartCount && members.size <= RConfig.Lobby.maximumPlayerStartCount && RConfig.Lobby.autoStart) {
             startCountdown()
         }
@@ -52,6 +55,12 @@ class RLobby {
         if (!Renaissance.countdownManager.hasCountdown(RLobbyEndCountdown::class.java)) {
             //FIXME: Config value, not hardcoded to 10s.
             Renaissance.countdownManager.start(RLobbyEndCountdown(this), 10)
+        }
+    }
+
+    private fun updateInformation() {
+        for (player in members) {
+            player.actionBarMessage = "${if (lobbyMap.mapInfo.lobbyProperties!!.canTakeDamage) GREEN else RED}PVP $GRAY| ${if (lobbyMap.mapInfo.lobbyProperties.canBreakBlocks) GREEN else RED}Block Breaking $GRAY| $BLACK${members.size}/${RConfig.Lobby.maximumPlayerStartCount} players"
         }
     }
 
