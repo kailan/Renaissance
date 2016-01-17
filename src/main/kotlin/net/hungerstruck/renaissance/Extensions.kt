@@ -79,4 +79,10 @@ fun <T : Comparable<T>> T.between(a: T, b: T, including: Boolean = true): Boolea
     } else return this > a && this < b
 }
 
+fun <T : Comparable<T>> T.clamp(min: T, max: T): T {
+    if (this <= min) return min
+    if (this >= max) return max
+    return this
+}
+
 public fun <T, R> Collection<T>.mapAs(fn: T.() -> R) = map { it.fn() }

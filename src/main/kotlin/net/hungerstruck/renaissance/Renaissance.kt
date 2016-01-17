@@ -48,6 +48,7 @@ object Renaissance {
         RModuleRegistry.register<TimeLockModule>()
         RModuleRegistry.register<TimeSetModule>()
         RModuleRegistry.register<OregenModule>()
+        RModuleRegistry.register<ThirstModule>()
 
         mapContext.loadMaps(File(RConfig.Maps.mapDir))
         mapContext.resolveLobbies()
