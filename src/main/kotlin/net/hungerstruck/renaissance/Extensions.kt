@@ -18,6 +18,11 @@ private fun Player.getRPlayer(): RPlayer {
 public val Player.rplayer: RPlayer
     get() = getRPlayer()
 
+fun <K> MutableMap<K, Int>.incrementBy(key: K, value: Int, defaultValue: Int = 0) {
+    val existing = getOrPut(key, { defaultValue })
+    put(key, existing + value)
+}
+
 infix fun Double.pow(x: Double): Double {
     return Math.pow(this, x)
 }
@@ -68,7 +73,7 @@ fun Vector.maxZ(other: Vector): Double {
     return if (z >= other.z) z else other.z
 }
 
-fun Double.between(a: Double, b: Double, including: Boolean = true): Boolean {
+fun <T : Comparable<T>> T.between(a: T, b: T, including: Boolean = true): Boolean {
     if (including) {
         return this >= a && this <= b
     } else return this > a && this < b
