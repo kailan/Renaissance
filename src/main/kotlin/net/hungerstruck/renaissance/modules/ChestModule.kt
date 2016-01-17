@@ -32,11 +32,11 @@ class ChestModule(match: RMatch, document: Document, modCtx: RModuleContext) : R
     val chests: MutableList<BlockRegion> = arrayListOf()
     val rand: Random = Random()
 
-    val initialItems: RandomCollection<ItemStack> = RandomCollection()
-    val feastItems: RandomCollection<ItemStack> = RandomCollection()
+    var initialItems: RandomCollection<ItemStack> = RandomCollection()
+    var feastItems: RandomCollection<ItemStack> = RandomCollection()
 
     val maxItems: Int
-    val rareMultiplier: Double
+    var rareMultiplier: Double
 
     val mode: Mode
 
@@ -87,6 +87,10 @@ class ChestModule(match: RMatch, document: Document, modCtx: RModuleContext) : R
                 Bukkit.getScheduler().cancelTask(id)
             } else {
                 match.sendMessage("There has been a feast!")
+                
+                rareMultiplier += 0.15
+                setupItems()
+
                 fillChests(feastItems)
             }
         }, feastTime * 20, feastTime * 20).taskId
@@ -104,6 +108,9 @@ class ChestModule(match: RMatch, document: Document, modCtx: RModuleContext) : R
     }
 
     private fun setupItems() {
+        feastItems = RandomCollection()
+        initialItems = RandomCollection()
+
         initialItems.add(0.4, ItemStack(Material.WOOD_SWORD, 1))
         initialItems.add(0.3, ItemStack(Material.WOOD_SPADE, 1))
         initialItems.add(0.15, ItemStack(Material.LOG, 2))
