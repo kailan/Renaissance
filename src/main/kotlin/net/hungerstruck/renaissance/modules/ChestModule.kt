@@ -81,10 +81,15 @@ class ChestModule(match: RMatch, document: Document, modCtx: RModuleContext) : R
 
         //FIXME: Do not hardcode times
         val feastTime = 120L // In seconds
-        Bukkit.getScheduler().runTaskTimer(Renaissance.plugin, {
-            match.sendMessage("There has been a feast!")
-            fillChests(feastItems)
-        }, feastTime * 20, feastTime * 20)
+        var id = 0
+        id = Bukkit.getScheduler().runTaskTimer(Renaissance.plugin, {
+            if (match.state != RMatch.State.PLAYING) {
+                Bukkit.getScheduler().cancelTask(id)
+            } else {
+                match.sendMessage("There has been a feast!")
+                fillChests(feastItems)
+            }
+        }, feastTime * 20, feastTime * 20).taskId
     }
 
     private fun fillChests(coll: RandomCollection<ItemStack>) {
