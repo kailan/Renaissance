@@ -71,6 +71,10 @@ class DeathModule(match: RMatch, document: Document, modCtx: RModuleContext) : R
             // We have a winner.
             match.sendMessage(RConfig.Match.playerWinMessage.format(match.alivePlayers[0].displayName))
             match.endMatch()
+
+            // Allow flight for the winner.
+            match.alivePlayers[0].allowFlight = true
+
             RPlayer.updateVisibility()
         }
 
