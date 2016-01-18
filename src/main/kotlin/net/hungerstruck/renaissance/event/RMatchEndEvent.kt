@@ -1,6 +1,7 @@
 package net.hungerstruck.renaissance.event
 
 import net.hungerstruck.renaissance.match.RMatch
+import org.bukkit.ChatColor
 import org.bukkit.event.Event
 import org.bukkit.event.HandlerList
 

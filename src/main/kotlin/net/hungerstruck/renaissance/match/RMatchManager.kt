@@ -33,6 +33,7 @@ class RMatchManager {
         val worldName = "match-${matchCount++}"
 
         val worldFolder = File(Bukkit.getServer().worldContainer, worldName)
+        if(worldFolder.exists()) worldFolder.deleteRecursively()
         FileUtil.copyWorldFolder(nextMap.location, worldFolder)
 
         val gen = WorldCreator(worldName).generator(object : ChunkGenerator() {}).generateStructures(false).environment(nextMap.mapInfo.dimension)

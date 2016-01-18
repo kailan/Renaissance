@@ -1,5 +1,6 @@
 package net.hungerstruck.renaissance.config
 
+import org.bukkit.ChatColor
 import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.configuration.file.YamlConfiguration
 import java.io.File
@@ -15,7 +16,7 @@ object RConfig {
 
     object General {
         var debugging: Boolean by path("general.debugging")
-        var noMatchesMessage: String by path("general.no-matches", "There are no lobbies or matches available.\n\nRejoin later!")
+        var noMatchesMessage: String by path("general.no-matches", "§cThere are no lobbies or matches available.\n\nRejoin later!")
     }
 
     object Maps {
@@ -35,16 +36,17 @@ object RConfig {
         var minimumPlayerStartCount: Int by path("lobby.minimum-players", 2)
         var maximumPlayerStartCount: Int by path("lobby.maximum-players", 24)
 
-        var tickMessage: String by path("lobby.start-countdown.tick-message", "The lobby will end in %s seconds")
+        var tickMessage: String by path("lobby.start-countdown.tick-message", "§2The lobby will end in ${ChatColor.RED}%s §2seconds")
     }
 
     object Match {
         var joinStrategy: JoinStrategy by path("match.join-strategy", { JoinStrategy.valueOf(it) }, { it.name })
-        var tickMessage: String by path("match.start-countdown.tick-message", "The games will begin in %s seconds")
+        var tickMessage: String by path("match.start-countdown.tick-message", "§2The games will begin in ${ChatColor.RED}%s §2seconds")
 
-        var playerDeathByPlayerMessage: String by path("match.death-player-message", "%0\$s was slain by %1\$s. %2\$d players remain.")
-        var playerDeathByOtherMessage: String by path("match.death-other-message", "%0\$s mysteriously died. %2\$d players remain.")
-        var playerWinMessage: String by path("match.win-message", "%s won!")
+        var playerDeathByPlayerMessage: String by path("match.death-player-message", "${ChatColor.RED}%0\$s ${ChatColor.GRAY}was slain by ${ChatColor.RED}%1\$s${ChatColor.GRAY}. \n${ChatColor.RED}%2\$d ${ChatColor.AQUA}players remain.")
+        var playerDeathByOtherMessage: String by path("match.death-other-message", "${ChatColor.RED}%0\$s ${ChatColor.GRAY}mysteriously died. \n${ChatColor.RED}%2\$d ${ChatColor.AQUA}players remain.")
+        var playerWinMessage: String by path("match.win-message", "${ChatColor.RED}%s ${ChatColor.AQUA}won!")
+        var matchEndList : List<String> by path("math.end-message-list", arrayListOf("${ChatColor.DARK_PURPLE} # # # # # # # # # # # #", "${ChatColor.DARK_PURPLE}# # ${ChatColor.GOLD}   Game Over!   ${ChatColor.DARK_PURPLE}  # #", "${ChatColor.DARK_PURPLE}# # " + "%s" + " wins!" + ChatColor.DARK_PURPLE + " # #", "${ChatColor.DARK_PURPLE} # # # # # # # # # # # #"))
     }
 
     object Thirst {

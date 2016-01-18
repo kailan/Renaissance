@@ -1,6 +1,7 @@
 package net.hungerstruck.renaissance
 
 import jdk.nashorn.api.scripting.NashornScriptEngineFactory
+import net.hungerstruck.renaissance.config.RConfig
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.command.Command

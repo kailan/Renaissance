@@ -69,7 +69,8 @@ class DeathModule(match: RMatch, document: Document, modCtx: RModuleContext) : R
             match.sendMessage(Formatter().format(message, victim.displayName, victim.killer?.displayName, match.alivePlayers.size).toString())
         } else {
             // We have a winner.
-            match.sendMessage(RConfig.Match.playerWinMessage.format(match.alivePlayers[0].displayName))
+            for (str in RConfig.Match.matchEndList)
+                match.sendMessage(str.format(match.alivePlayers[0].displayName))
             match.endMatch()
 
             // Allow flight for the winner.

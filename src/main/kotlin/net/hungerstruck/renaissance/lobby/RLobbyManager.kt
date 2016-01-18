@@ -24,6 +24,7 @@ class RLobbyManager {
 
         val worldName = "lobby-${lobbyCount++}"
         val worldFolder = File(Bukkit.getServer().worldContainer, worldName)
+        if(worldFolder.exists()) worldFolder.deleteRecursively()
         FileUtil.copyWorldFolder(lobbyMap.location, worldFolder)
 
         val gen = WorldCreator(worldName).generator(object : ChunkGenerator() {}).generateStructures(false).environment(lobbyMap.mapInfo.dimension)
