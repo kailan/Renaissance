@@ -42,7 +42,6 @@ object Renaissance {
         RModuleRegistry.register<DeathModule>()
         RModuleRegistry.register<PedestalModule>()
         RModuleRegistry.register<BoundaryModule>()
-        RModuleRegistry.register<EventLocationModule>()
         RModuleRegistry.register<GameRuleModule>()
         RModuleRegistry.register<SanityModule>()
         RModuleRegistry.register<TimeLockModule>()
