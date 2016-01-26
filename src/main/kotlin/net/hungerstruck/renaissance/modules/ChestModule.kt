@@ -1,8 +1,8 @@
 package net.hungerstruck.renaissance.modules
 
 import net.hungerstruck.renaissance.Renaissance
-import net.hungerstruck.renaissance.event.RMatchLoadEvent
-import net.hungerstruck.renaissance.event.RMatchStartEvent
+import net.hungerstruck.renaissance.event.match.RMatchLoadEvent
+import net.hungerstruck.renaissance.event.match.RMatchStartEvent
 import net.hungerstruck.renaissance.get
 import net.hungerstruck.renaissance.match.RMatch
 import net.hungerstruck.renaissance.modules.region.BlockRegion

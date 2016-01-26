@@ -2,7 +2,7 @@ package net.hungerstruck.renaissance.modules
 
 import net.hungerstruck.renaissance.*
 import net.hungerstruck.renaissance.config.RConfig
-import net.hungerstruck.renaissance.event.RMatchStartEvent
+import net.hungerstruck.renaissance.event.match.RMatchStartEvent
 import net.hungerstruck.renaissance.match.RMatch
 import net.hungerstruck.renaissance.xml.module.RModule
 import net.hungerstruck.renaissance.xml.module.RModuleContext

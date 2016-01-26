@@ -4,7 +4,7 @@ import net.hungerstruck.renaissance.RPlayer
 import net.hungerstruck.renaissance.RPlayerState
 import net.hungerstruck.renaissance.Renaissance
 import net.hungerstruck.renaissance.config.RConfig
-import net.hungerstruck.renaissance.event.RLobbyEndEvent
+import net.hungerstruck.renaissance.event.lobby.RLobbyEndEvent
 import net.hungerstruck.renaissance.match.RMatch
 import net.hungerstruck.renaissance.xml.RMap
 import org.bukkit.Bukkit

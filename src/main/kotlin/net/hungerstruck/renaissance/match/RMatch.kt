@@ -2,9 +2,9 @@ package net.hungerstruck.renaissance.match
 
 import net.hungerstruck.renaissance.RPlayer
 import net.hungerstruck.renaissance.Renaissance
-import net.hungerstruck.renaissance.event.RMatchEndEvent
-import net.hungerstruck.renaissance.event.RMatchLoadEvent
-import net.hungerstruck.renaissance.event.RMatchStartEvent
+import net.hungerstruck.renaissance.event.match.RMatchEndEvent
+import net.hungerstruck.renaissance.event.match.RMatchLoadEvent
+import net.hungerstruck.renaissance.event.match.RMatchStartEvent
 import net.hungerstruck.renaissance.xml.RMap
 import net.hungerstruck.renaissance.xml.module.RModuleContext
 import org.bukkit.Bukkit

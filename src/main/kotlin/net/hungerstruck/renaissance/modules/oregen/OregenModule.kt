@@ -1,6 +1,6 @@
 package net.hungerstruck.renaissance.modules.oregen
 
-import net.hungerstruck.renaissance.event.RMatchLoadEvent
+import net.hungerstruck.renaissance.event.match.RMatchLoadEvent
 import net.hungerstruck.renaissance.match.RMatch
 import net.hungerstruck.renaissance.modules.BoundaryModule
 import net.hungerstruck.renaissance.util.RandomCollection

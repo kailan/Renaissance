@@ -2,7 +2,7 @@ package net.hungerstruck.renaissance.modules
 
 import com.google.common.collect.Iterables
 import net.hungerstruck.renaissance.RPlayer
-import net.hungerstruck.renaissance.event.RLobbyEndEvent
+import net.hungerstruck.renaissance.event.lobby.RLobbyEndEvent
 import net.hungerstruck.renaissance.match.RMatch
 import net.hungerstruck.renaissance.modules.region.BlockRegion
 import net.hungerstruck.renaissance.modules.region.RegionModule
