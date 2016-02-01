@@ -1,6 +1,5 @@
 package net.hungerstruck.renaissance.match
 
-import net.hungerstruck.renaissance.RRotationManager
 import net.hungerstruck.renaissance.config.RConfig
 import net.hungerstruck.renaissance.util.FileUtil
 import net.hungerstruck.renaissance.xml.RMap
@@ -20,13 +19,11 @@ import java.util.*
 class RMatchManager {
     private val matches: MutableMap<World, RMatch> = hashMapOf()
     private val mapContext: RMapContext
-    private val rotationManager: RRotationManager
 
     private var matchCount: Int = 0
 
-    constructor(mapCtx: RMapContext, rotMan: RRotationManager) {
+    constructor(mapCtx: RMapContext) {
         this.mapContext = mapCtx
-        this.rotationManager = rotMan
     }
 
     public fun constructMatch(nextMap: RMap): RMatch {

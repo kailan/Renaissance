@@ -25,15 +25,13 @@ object Renaissance {
     var plugin: JavaPlugin? = null
 
     val mapContext: RMapContext = RMapContext()
-    val rotationManager: RRotationManager = RRotationManager(File("rotation.txt"), mapContext)
-    val matchManager: RMatchManager = RMatchManager(mapContext, rotationManager)
+    val matchManager: RMatchManager = RMatchManager(mapContext)
     val lobbyManager: RLobbyManager = RLobbyManager()
     val countdownManager: CountdownManager = CountdownManager()
 
     fun initialize(plugin: JavaPlugin) {
         this.plugin = plugin
 
-        //ConfvarPlugin.get().register(RenaissanceDebug())
         Thread(ActionBarSender).start()
 
         RModuleRegistry.register<RegionModule>()
@@ -52,9 +50,9 @@ object Renaissance {
         mapContext.loadMaps(File(RConfig.Maps.mapDir))
         mapContext.resolveLobbies()
 
-        rotationManager.load()
+        if (mapContext.getMaps().size == 0) throw IllegalStateException("Must have at least one map to start loading Renaissance.")
 
-        lobbyManager.createLobbyFor(rotationManager.getNextAndIncrement())
+        lobbyManager.createLobbyFor(mapContext.getMaps().first())
 
         Bukkit.getPluginManager().registerEvents(RPlayer.Companion, plugin)
         Bukkit.getPluginManager().registerEvents(LobbyListener(), plugin)
