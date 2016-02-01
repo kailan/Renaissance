@@ -3,6 +3,7 @@ package net.hungerstruck.renaissance.modules
 import com.google.common.collect.Iterables
 import net.hungerstruck.renaissance.RPlayer
 import net.hungerstruck.renaissance.event.lobby.RLobbyEndEvent
+import net.hungerstruck.renaissance.event.player.RPlayerJoinMatchEvent
 import net.hungerstruck.renaissance.match.RMatch
 import net.hungerstruck.renaissance.modules.region.BlockRegion
 import net.hungerstruck.renaissance.modules.region.RegionModule
@@ -23,6 +24,7 @@ import org.jdom2.Document
 @Dependencies(RegionModule::class)
 class PedestalModule(match: RMatch, document: Document, modCtx: RModuleContext) : RModule(match, document, modCtx) {
     val pedestals: List<BlockRegion>
+    val pedestalIt: Iterator<BlockRegion>
 
     init {
         pedestals = document.rootElement.flatten("pedestals", "pedestal").map {
@@ -31,23 +33,23 @@ class PedestalModule(match: RMatch, document: Document, modCtx: RModuleContext) 
             parsed as BlockRegion
         }
 
+        pedestalIt = Iterables.cycle(pedestals).iterator()
+
         registerEvents()
     }
 
     @EventHandler
+    public fun onPlayerJoinMatch(event: RPlayerJoinMatchEvent) {
+        if (!isMatch(event.match)) return
+
+        event.player.state = RPlayer.State.PARTICIPATING
+
+        event.player.reset()
+        event.player.teleport(pedestalIt.next().loc.toLocation(match.world))
+    }
+
+    @EventHandler
     public fun onLobbyEnd(event: RLobbyEndEvent) {
-        if (!isMatch(event.lobby.match)) return
-
-        val pedestalIt = Iterables.cycle(pedestals).iterator()
-        for (player in event.lobby.members) {
-            player.lobby = null
-            player.match = match
-            player.state = RPlayer.State.PARTICIPATING
-
-            player.reset()
-            player.teleport(pedestalIt.next().loc.toLocation(match.world))
-        }
-
         match.beginCountdown()
     }
 

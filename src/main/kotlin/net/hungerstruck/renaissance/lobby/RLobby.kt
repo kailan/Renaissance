@@ -5,6 +5,7 @@ import net.hungerstruck.renaissance.RPlayerState
 import net.hungerstruck.renaissance.Renaissance
 import net.hungerstruck.renaissance.config.RConfig
 import net.hungerstruck.renaissance.event.lobby.RLobbyEndEvent
+import net.hungerstruck.renaissance.event.player.RPlayerJoinMatchEvent
 import net.hungerstruck.renaissance.match.RMatch
 import net.hungerstruck.renaissance.xml.RMap
 import org.bukkit.Bukkit
@@ -65,6 +66,13 @@ class RLobby {
 
     public fun end() {
         Bukkit.getPluginManager().callEvent(RLobbyEndEvent(this))
+
+        for (player in members) {
+            player.lobby = null
+            player.match = match
+            Bukkit.getPluginManager().callEvent(RPlayerJoinMatchEvent(player, match))
+        }
+
         assert(members.size == 0, { "Still players left in lobby after end." })
         Renaissance.lobbyManager.unloadLobby(this)
     }
