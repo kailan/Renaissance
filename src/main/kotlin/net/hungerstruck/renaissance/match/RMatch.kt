@@ -2,6 +2,7 @@ package net.hungerstruck.renaissance.match
 
 import net.hungerstruck.renaissance.RPlayer
 import net.hungerstruck.renaissance.Renaissance
+import net.hungerstruck.renaissance.config.RConfig
 import net.hungerstruck.renaissance.event.match.RMatchEndEvent
 import net.hungerstruck.renaissance.event.match.RMatchLoadEvent
 import net.hungerstruck.renaissance.event.match.RMatchStartEvent
@@ -47,8 +48,7 @@ class RMatch {
     public fun beginCountdown() {
         assert(state == State.LOADED, { "Cannot begin countdown from state $state" })
         state = State.STARTING
-        //FIXME: Don't hardcode 10s
-        Renaissance.countdownManager.start(RMatchStartCountdown(this), 10)
+        Renaissance.countdownManager.start(RMatchStartCountdown(this), RConfig.Match.countdownTime)
     }
 
     /**

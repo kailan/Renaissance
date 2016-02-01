@@ -53,8 +53,7 @@ class RLobby {
 
     public fun startCountdown() {
         if (!Renaissance.countdownManager.hasCountdown(RLobbyEndCountdown::class.java)) {
-            //FIXME: Config value, not hardcoded to 10s.
-            Renaissance.countdownManager.start(RLobbyEndCountdown(this), 10)
+            Renaissance.countdownManager.start(RLobbyEndCountdown(this), RConfig.Lobby.countdownTime)
         }
     }
 

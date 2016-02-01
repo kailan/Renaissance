@@ -1,42 +1,43 @@
 general:
-    debugging: true
+    no-matches: "§cThere are no lobbies or matches available.\n\nRejoin later!"
+
 maps:
     map-dir: "maps"
     map-file: "map.xml"
-    rotation-file: "rotation.txt"
     world-prefix: "match-"
+
 lobby:
-    default-lobby: "Lobby"
+    default-lobby-map: "Lobby"
     join-strategy: "SMALLEST"
-    lobby-countdown:
-        seconds: 20
-        minutes: 0
-        hours: 0
+    chat-format: "<%s> %s"
+    auto-start: true
     minimum-players: 2
     maximum-players: 24
+    start-countdown:
+        message: "§2The lobby will end in §c%s §2seconds"
+        time: 20
+
 match:
     join-strategy: "SMALLEST"
     start-countdown:
-        seconds: 20
-        minutes: 0
-        hours: 0
-    cornucopia:
-        time-between-feasts:
-            seconds: 0
-            minutes: 10
-            hours: 0
-    post-game-countdown:
-        seconds: 15
-        minutes: 0
-        hours: 0
+        message: "§2The games will begin in §c%s §2seconds"
+        time: 20
+    feast:
+        time: 300
+        rarity-increase: 0.15
+        message: "§bThere has been a feast!"
+
+    death-player-message: "§c%0$s §7was slain by §c%1$c§7. \n§c%2$d §bplayers remain."
+    death-other-message: "§c%0$s §7mysteriously died. \n§c%2$d §bplayers remain."
+    end-message-list:
+    - "§5 # # # # # # # # # # # #"
+    - "§5# # §6   Game Over!   §5  # #"
+    - "§5# # %s wins! # #"
+    - "§5 # # # # # # # # # # # #"
+
 thirst:
-    refresh-rate: 250
-    thirst-decrement: 1
-    dehydration-level: 10
     health-damage: 1
     hunger-damage: 0
-    container-settings:
-        waterbottle-regened: 100
-        waterbucket-regened: 100
+
 chat:
     radius: 30

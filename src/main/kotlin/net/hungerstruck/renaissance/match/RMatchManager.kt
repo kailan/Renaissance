@@ -27,7 +27,7 @@ class RMatchManager {
     }
 
     public fun constructMatch(nextMap: RMap): RMatch {
-        val worldName = "match-${matchCount++}"
+        val worldName = RConfig.Maps.worldPrefix + matchCount++
 
         val worldFolder = File(Bukkit.getServer().worldContainer, worldName)
         if(worldFolder.exists()) worldFolder.deleteRecursively()

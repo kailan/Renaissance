@@ -34,8 +34,6 @@ class ThirstModule(match: RMatch, document: Document, modCtx: RModuleContext) : 
 
     private fun refreshThirst() {
         for (player in match.alivePlayers) {
-            // FIXME: Maybe make these options configurable?
-
             val oldValue = playerThirst.getOrPut(player, { 100 })
             val difference = -1 * if (player.location.block.biome in arrayOf(Biome.DESERT, Biome.DESERT_HILLS, Biome.DESERT_MOUNTAINS)) 4 else 2
 

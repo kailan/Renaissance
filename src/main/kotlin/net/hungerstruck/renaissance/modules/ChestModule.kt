@@ -1,6 +1,7 @@
 package net.hungerstruck.renaissance.modules
 
 import net.hungerstruck.renaissance.Renaissance
+import net.hungerstruck.renaissance.config.RConfig
 import net.hungerstruck.renaissance.event.match.RMatchLoadEvent
 import net.hungerstruck.renaissance.event.match.RMatchStartEvent
 import net.hungerstruck.renaissance.get
@@ -79,16 +80,15 @@ class ChestModule(match: RMatch, document: Document, modCtx: RModuleContext) : R
 
         fillChests(initialItems)
 
-        //FIXME: Do not hardcode times
-        val feastTime = 120L // In seconds
+        val feastTime = RConfig.Match.feastTime.toLong()
         var id = 0
         id = Bukkit.getScheduler().runTaskTimer(Renaissance.plugin, {
             if (match.state != RMatch.State.PLAYING) {
                 Bukkit.getScheduler().cancelTask(id)
             } else {
-                match.sendMessage("There has been a feast!")
+                match.sendMessage(RConfig.Match.feastMessage)
                 
-                rareMultiplier += 0.15
+                rareMultiplier += RConfig.Match.feastRarityIncrease
                 setupItems()
 
                 fillChests(feastItems)
