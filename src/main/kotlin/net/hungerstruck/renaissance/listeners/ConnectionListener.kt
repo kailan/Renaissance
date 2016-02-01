@@ -2,7 +2,9 @@ package net.hungerstruck.renaissance.listeners
 
 import net.hungerstruck.renaissance.Renaissance
 import net.hungerstruck.renaissance.config.RConfig
+import net.hungerstruck.renaissance.event.player.RPlayerJoinMatchEvent
 import net.hungerstruck.renaissance.rplayer
+import org.bukkit.Bukkit
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
@@ -25,8 +27,8 @@ class ConnectionListener : Listener {
 
         val match = Renaissance.matchManager.findMatch(RConfig.Match.joinStrategy)
         if (match != null) {
-            // FIXME: Add some clean way to notify modules of a new player.
-            assert(false)
+            event.player.rplayer.match = match
+            Bukkit.getPluginManager().callEvent(RPlayerJoinMatchEvent(event.player.rplayer, match))
             return
         }
 

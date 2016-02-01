@@ -2,6 +2,7 @@ package net.hungerstruck.renaissance.modules
 
 import net.hungerstruck.renaissance.RPlayer
 import net.hungerstruck.renaissance.config.RConfig
+import net.hungerstruck.renaissance.event.player.RPlayerJoinMatchEvent
 import net.hungerstruck.renaissance.getIgnoreBounds
 import net.hungerstruck.renaissance.match.RMatch
 import net.hungerstruck.renaissance.rplayer
@@ -51,6 +52,21 @@ class DeathModule(match: RMatch, document: Document, modCtx: RModuleContext) : R
     // ===========================================================
     // ================= Death and Respawning ====================
     // ===========================================================
+
+    @EventHandler
+    fun onPlayerJoin(event: RPlayerJoinMatchEvent) {
+        if (!isMatch(event.match)) return
+        if (match.state != RMatch.State.PLAYING) return
+
+        event.player.state = RPlayer.State.SPECTATING
+        event.player.reset()
+        event.player.spigot().collidesWithEntities = false
+        event.player.allowFlight = true
+        event.player.inventory.setItem(0, ItemStack(Material.COMPASS, 1))
+        event.player.teleport(match.world.spawnLocation)
+
+        RPlayer.updateVisibility()
+    }
 
     @EventHandler
     fun onPlayerDeath(event: PlayerDeathEvent) {

@@ -41,9 +41,9 @@ class PedestalModule(match: RMatch, document: Document, modCtx: RModuleContext) 
     @EventHandler
     public fun onPlayerJoinMatch(event: RPlayerJoinMatchEvent) {
         if (!isMatch(event.match)) return
+        if (match.state != RMatch.State.STARTING) return
 
         event.player.state = RPlayer.State.PARTICIPATING
-
         event.player.reset()
         event.player.teleport(pedestalIt.next().loc.toLocation(match.world))
     }
