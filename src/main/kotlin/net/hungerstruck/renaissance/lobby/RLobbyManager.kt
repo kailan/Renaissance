@@ -22,7 +22,7 @@ class RLobbyManager {
     public fun createLobbyFor(map: RMap): RLobby {
         val lobbyMap = map.mapInfo.lobbyMap
 
-        val worldName = "lobby-${lobbyCount++}"
+        val worldName = "lobby-${++lobbyCount}"
         val worldFolder = File(Bukkit.getServer().worldContainer, worldName)
         if(worldFolder.exists()) worldFolder.deleteRecursively()
         FileUtil.copyWorldFolder(lobbyMap.location, worldFolder)
@@ -32,7 +32,7 @@ class RLobbyManager {
         world.isAutoSave = false
         world.difficulty = lobbyMap.mapInfo.difficulty
 
-        val lobby = RLobby(world, lobbyMap = lobbyMap, nextMap = map)
+        val lobby = RLobby(lobbyCount, world, lobbyMap = lobbyMap, nextMap = map)
         lobbies[world] = lobby
 
         return lobby

@@ -27,7 +27,7 @@ class RMatchManager {
     }
 
     public fun constructMatch(nextMap: RMap): RMatch {
-        val worldName = RConfig.Maps.worldPrefix + matchCount++
+        val worldName = RConfig.Maps.worldPrefix + ++matchCount
 
         val worldFolder = File(Bukkit.getServer().worldContainer, worldName)
         if(worldFolder.exists()) worldFolder.deleteRecursively()
@@ -38,7 +38,7 @@ class RMatchManager {
         world.isAutoSave = false
         world.difficulty = nextMap.mapInfo.difficulty
 
-        val match = RMatch(nextMap, world)
+        val match = RMatch(matchCount, nextMap, world)
         matches[world] = match
 
         println("[+] Loaded ${nextMap.mapInfo.friendlyDescription}")

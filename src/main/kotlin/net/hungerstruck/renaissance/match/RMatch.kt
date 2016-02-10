@@ -17,6 +17,7 @@ import org.bukkit.World
  * Created by molenzwiebel on 20-12-15.
  */
 class RMatch {
+    val id: Int
     val map: RMap
     val world: World
     var state: State = State.LOADED
@@ -29,7 +30,8 @@ class RMatch {
     val alivePlayers: List<RPlayer>
         get() = RPlayer.getPlayers() { it.match == this && it.state == RPlayer.State.PARTICIPATING }
 
-    constructor(map: RMap, world: World) {
+    constructor(id: Int, map: RMap, world: World) {
+        this.id = id
         this.map = map
         this.world = world
 
@@ -39,6 +41,7 @@ class RMatch {
     }
 
     public fun sendMessage(msg: String, f: (RPlayer) -> Boolean = { true }) {
+        Bukkit.getConsoleSender().sendMessage("[match-$id] $msg")
         players.filter(f).forEach { it.sendMessage(msg) }
     }
 

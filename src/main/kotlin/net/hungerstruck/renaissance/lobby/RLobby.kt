@@ -19,12 +19,14 @@ import org.bukkit.World
  * Created by molenzwiebel on 22-12-15.
  */
 class RLobby {
+    val id: Int
     val lobbyWorld: World
     val lobbyMap: RMap
     val nextMap: RMap
     val match: RMatch
 
-    constructor(lobbyWorld: World, lobbyMap: RMap, nextMap: RMap) {
+    constructor(id: Int, lobbyWorld: World, lobbyMap: RMap, nextMap: RMap) {
+        this.id = id
         this.lobbyWorld = lobbyWorld
         this.lobbyMap = lobbyMap
         this.nextMap = nextMap
@@ -78,6 +80,7 @@ class RLobby {
     }
 
     public fun sendMessage(msg: String) {
+        Bukkit.getConsoleSender().sendMessage("[lobby-$id] $msg")
         members.forEach { it.sendMessage(msg) }
     }
 }
