@@ -23,6 +23,25 @@ class SanityModule(match: RMatch, document: Document, modCtx: RModuleContext) : 
 
     val playerSanity: WeakHashMap<Player, Int> = WeakHashMap()
 
+    enum class Cause(val messages: Map<Int, String>) {
+        HEIGHT(mapOf(
+            75 to "The air is thin and hard to breathe!",
+            50 to "The air is thin and hard to breathe!",
+            25 to "The air is thin and hard to breathe!"
+        )),
+        CAVE(mapOf(
+            75 to "The air is stale and hard to breathe!",
+            50 to "The air is stale and hard to breathe!",
+            25 to "The air is stale and hard to breathe!"
+        )),
+        LIGHT(mapOf(
+            75 to "This place is dark and crazy!",
+            50 to "You start to go insane from the darkness!",
+            25 to "Find some light, you're going insane!"
+        )),
+        RADIUS(mapOf());
+    }
+
     init {
         val el = document.rootElement.getChild("sanity")
         if (el == null) {
@@ -57,12 +76,14 @@ class SanityModule(match: RMatch, document: Document, modCtx: RModuleContext) : 
     private fun refreshSanity() {
         for (player in match.alivePlayers) {
             val initial = playerSanity.getOrPut(player, { 100 })
+            var cause: Cause? = null
             var level = initial
 
             // Air height decrement.
             if (player.location.y > airHeight) {
                 // FIXME: Air decrement config
-                level -= 1
+                level -= 5
+                cause = Cause.HEIGHT
             }
 
             // Lighting decrement.
@@ -70,7 +91,8 @@ class SanityModule(match: RMatch, document: Document, modCtx: RModuleContext) : 
                 val block = player.location.block
                 if (block != null && block.lightLevel < overallLightLevel) {
                     // FIXME: Lighting decrement config
-                    level -= 1
+                    level -= 5
+                    cause = Cause.LIGHT
                 }
             }
 
@@ -96,7 +118,8 @@ class SanityModule(match: RMatch, document: Document, modCtx: RModuleContext) : 
                 // If more than 85% of the area is stone.
                 // FIXME: Configurable
                 if (stone.toDouble() / count.toDouble() >= 0.85) {
-                    level -= 1
+                    level -= 5
+                    cause = Cause.CAVE
                 }
             }
 
@@ -104,17 +127,25 @@ class SanityModule(match: RMatch, document: Document, modCtx: RModuleContext) : 
             // Radius decrement.
             if (false) {
                 // Do stuff
+                level -= 5
+                cause = Cause.RADIUS
             }
 
-            if (initial != level) {
+            if (cause != null) {
                 playerSanity[player] = level.clamp(0, 100)
                 player.level = level.clamp(0, 100)
+
+                for ((threshold, message) in cause.messages) {
+                    if (initial > threshold && level <= threshold) player.sendMessage(message)
+                }
+
+                if (level < 10) {
+                    player.damage(1.0)
+                }
             } else {
                 // FIXME: Configurable
-                level += 1
-
-                playerSanity[player] = level.clamp(0, 100)
-                player.level = level.clamp(0, 100)
+                playerSanity[player] = level.clamp(0, 95) + 5
+                player.level = level.clamp(0, 95) + 5
             }
         }
     }
