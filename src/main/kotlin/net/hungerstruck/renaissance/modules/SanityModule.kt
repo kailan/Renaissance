@@ -21,6 +21,10 @@ class SanityModule(match: RMatch, document: Document, modCtx: RModuleContext) : 
     val airHeight: Int
     val overallLightLevel: Int
 
+    val sanityChange = 2
+    val sanityDamage = 1.0
+    val sanityTick = 10L
+
     val playerSanity: WeakHashMap<Player, Int> = WeakHashMap()
 
     enum class Cause(val messages: Map<Int, String>) {
@@ -59,10 +63,6 @@ class SanityModule(match: RMatch, document: Document, modCtx: RModuleContext) : 
     public fun onMatchStart(event: RMatchStartEvent) {
         if (!isMatch(event.match)) return
 
-        // In seconds
-        // FIXME: Maybe make configurable
-        val refreshRate = 2L
-
         var id = 0
         id = Bukkit.getScheduler().runTaskTimer(Renaissance.plugin, {
             if (match.state != RMatch.State.PLAYING) {
@@ -70,7 +70,7 @@ class SanityModule(match: RMatch, document: Document, modCtx: RModuleContext) : 
             } else {
                 refreshSanity()
             }
-        }, 0, refreshRate * 20).taskId
+        }, 0, sanityTick * 20).taskId
     }
 
     private fun refreshSanity() {
@@ -81,8 +81,7 @@ class SanityModule(match: RMatch, document: Document, modCtx: RModuleContext) : 
 
             // Air height decrement.
             if (player.location.y > airHeight) {
-                // FIXME: Air decrement config
-                level -= 5
+                level -= sanityChange
                 cause = Cause.HEIGHT
             }
 
@@ -90,15 +89,13 @@ class SanityModule(match: RMatch, document: Document, modCtx: RModuleContext) : 
             if (player.location.y < player.world.maxHeight) {
                 val block = player.location.block
                 if (block != null && block.lightLevel < overallLightLevel) {
-                    // FIXME: Lighting decrement config
-                    level -= 5
+                    level -= sanityChange
                     cause = Cause.LIGHT
                 }
             }
 
             // Block decrement.
             if (player.location.y < player.world.maxHeight) {
-                // FIXME: Configurable
                 var stone = 0
                 var count = 0
 
@@ -116,18 +113,16 @@ class SanityModule(match: RMatch, document: Document, modCtx: RModuleContext) : 
                 }
 
                 // If more than 85% of the area is stone.
-                // FIXME: Configurable
                 if (stone.toDouble() / count.toDouble() >= 0.85) {
-                    level -= 5
+                    level -= sanityChange
                     cause = Cause.CAVE
                 }
             }
 
-            // FIXME: Radius decrementing. Have to interop with BoundaryModule probably.
             // Radius decrement.
             if (false) {
                 // Do stuff
-                level -= 5
+                level -= sanityChange
                 cause = Cause.RADIUS
             }
 
@@ -140,12 +135,11 @@ class SanityModule(match: RMatch, document: Document, modCtx: RModuleContext) : 
                 }
 
                 if (level < 10) {
-                    player.damage(1.0)
+                    player.damage(sanityDamage)
                 }
             } else {
-                // FIXME: Configurable
-                playerSanity[player] = level.clamp(0, 95) + 5
-                player.level = level.clamp(0, 95) + 5
+                playerSanity[player] = level.clamp(0, 100 - sanityChange) + sanityChange
+                player.level = level.clamp(0, 100 - sanityChange) + sanityChange
             }
         }
     }
