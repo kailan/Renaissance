@@ -4,6 +4,7 @@ import net.hungerstruck.renaissance.Renaissance
 import net.hungerstruck.renaissance.config.RConfig
 import net.hungerstruck.renaissance.lobby.RLobby
 import net.hungerstruck.renaissance.rplayer
+import net.hungerstruck.renaissance.teleportable
 import org.bukkit.World
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
@@ -65,7 +66,7 @@ class LobbyListener : Listener {
             // Always cancel any non-player damage. Teleport them to spawn if it is void damage.
             event.isCancelled = true
             if (event.cause == EntityDamageEvent.DamageCause.VOID) {
-                event.entity.teleport(event.entity.world.spawnLocation)
+                event.entity.teleport(event.entity.world.spawnLocation.teleportable)
             }
         }
     }

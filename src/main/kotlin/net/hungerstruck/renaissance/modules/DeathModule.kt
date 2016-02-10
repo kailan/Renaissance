@@ -6,6 +6,7 @@ import net.hungerstruck.renaissance.event.player.RPlayerJoinMatchEvent
 import net.hungerstruck.renaissance.getIgnoreBounds
 import net.hungerstruck.renaissance.match.RMatch
 import net.hungerstruck.renaissance.rplayer
+import net.hungerstruck.renaissance.teleportable
 import net.hungerstruck.renaissance.xml.module.Dependencies
 import net.hungerstruck.renaissance.xml.module.RModule
 import net.hungerstruck.renaissance.xml.module.RModuleContext
@@ -63,7 +64,7 @@ class DeathModule(match: RMatch, document: Document, modCtx: RModuleContext) : R
         event.player.spigot().collidesWithEntities = false
         event.player.allowFlight = true
         event.player.inventory.setItem(0, ItemStack(Material.COMPASS, 1))
-        event.player.teleport(match.world.spawnLocation)
+        event.player.teleport(match.world.spawnLocation.teleportable)
 
         RPlayer.updateVisibility()
     }
@@ -104,7 +105,7 @@ class DeathModule(match: RMatch, document: Document, modCtx: RModuleContext) : R
     fun onRespawn(event: PlayerRespawnEvent) {
         if (!isSpectator(event.player)) return
 
-        event.respawnLocation = match.world.spawnLocation
+        event.respawnLocation = match.world.spawnLocation.teleportable
         event.player.inventory.setItem(0, ItemStack(Material.COMPASS, 1))
     }
 

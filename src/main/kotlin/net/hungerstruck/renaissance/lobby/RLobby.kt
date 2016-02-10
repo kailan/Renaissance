@@ -7,6 +7,7 @@ import net.hungerstruck.renaissance.config.RConfig
 import net.hungerstruck.renaissance.event.lobby.RLobbyEndEvent
 import net.hungerstruck.renaissance.event.player.RPlayerJoinMatchEvent
 import net.hungerstruck.renaissance.match.RMatch
+import net.hungerstruck.renaissance.teleportable
 import net.hungerstruck.renaissance.xml.RMap
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor.*
@@ -45,7 +46,7 @@ class RLobby {
         player.reset()
         player.gameMode = GameMode.SURVIVAL
 
-        player.teleport(lobbyWorld.spawnLocation)
+        player.teleport(lobbyWorld.spawnLocation.teleportable)
 
         updateInformation()
 

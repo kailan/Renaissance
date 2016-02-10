@@ -8,6 +8,7 @@ import net.hungerstruck.renaissance.match.RMatch
 import net.hungerstruck.renaissance.modules.region.BlockRegion
 import net.hungerstruck.renaissance.modules.region.RegionModule
 import net.hungerstruck.renaissance.rplayer
+import net.hungerstruck.renaissance.teleportable
 import net.hungerstruck.renaissance.xml.flatten
 import net.hungerstruck.renaissance.xml.module.Dependencies
 import net.hungerstruck.renaissance.xml.module.RModule
@@ -45,7 +46,7 @@ class PedestalModule(match: RMatch, document: Document, modCtx: RModuleContext) 
 
         event.player.state = RPlayer.State.PARTICIPATING
         event.player.reset()
-        event.player.teleport(pedestalIt.next().loc.toLocation(match.world))
+        event.player.teleport(pedestalIt.next().loc.toLocation(match.world).teleportable)
     }
 
     @EventHandler

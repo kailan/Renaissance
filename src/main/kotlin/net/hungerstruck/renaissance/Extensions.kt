@@ -1,5 +1,6 @@
 package net.hungerstruck.renaissance
 
+import org.bukkit.Location
 import org.bukkit.entity.Player
 import org.bukkit.util.Vector
 import org.jdom2.Element
@@ -30,6 +31,9 @@ infix fun Double.pow(x: Double): Double {
 operator fun Element.get(attrName: String): String? {
     return getAttributeValue(attrName)
 }
+
+public val Location.teleportable: Location
+    get() = world.getHighestBlockAt(this).location.add(0.5, 0.5, 0.5)
 
 fun <E> List<E>.getIgnoreBounds(i: Int): E {
     var index = i
