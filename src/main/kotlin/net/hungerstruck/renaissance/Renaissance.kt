@@ -52,7 +52,7 @@ object Renaissance {
 
         if (mapContext.getMaps().size == 0) throw IllegalStateException("Must have at least one map to start loading Renaissance.")
 
-        lobbyManager.createLobbyFor(mapContext.getMaps().first())
+        lobbyManager.createLobbyFor(mapContext.getMaps().first { it.mapInfo.lobbyProperties == null })
 
         Bukkit.getPluginManager().registerEvents(RPlayer.Companion, plugin)
         Bukkit.getPluginManager().registerEvents(LobbyListener(), plugin)
