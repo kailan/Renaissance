@@ -32,7 +32,7 @@ object Renaissance {
     fun initialize(plugin: JavaPlugin) {
         this.plugin = plugin
 
-        ActionBarSender.runTaskTimerAsynchronously(plugin, 10, 10)
+        ActionBarSender.runTaskTimerAsynchronously(plugin, 5, 5)
 
         RModuleRegistry.register<RegionModule>()
         RModuleRegistry.register<ChestModule>()
