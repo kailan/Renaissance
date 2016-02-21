@@ -16,9 +16,10 @@ object ActionBarSender : BukkitRunnable() {
             sendActionBar(player.bukkit, player.actionBarMessage ?: continue)
         }
     }
-}
 
-private fun sendActionBar(player: Player, msg: String) {
-    val packet = PacketPlayOutChat(IChatBaseComponent.ChatSerializer.a("{\"text\":\"$msg\",\"color\":\"white\"}"), 2)
-    (player as CraftPlayer).handle.playerConnection.sendPacket(packet)
+    private fun sendActionBar(player: Player, msg: String) {
+        val packet = PacketPlayOutChat(IChatBaseComponent.ChatSerializer.a("{\"text\":\"$msg\",\"color\":\"white\"}"), 2)
+        (player as CraftPlayer).handle.playerConnection.sendPacket(packet)
+    }
+
 }
