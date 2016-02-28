@@ -1,22 +1,29 @@
 package net.hungerstruck.renaissance.modules
 
+import net.hungerstruck.renaissance.RPlayer
 import net.hungerstruck.renaissance.Renaissance
 import net.hungerstruck.renaissance.clamp
 import net.hungerstruck.renaissance.event.match.RMatchStartEvent
 import net.hungerstruck.renaissance.match.RMatch
+import net.hungerstruck.renaissance.xml.module.Dependencies
 import net.hungerstruck.renaissance.xml.module.RModule
 import net.hungerstruck.renaissance.xml.module.RModuleContext
 import net.hungerstruck.renaissance.xml.toInt
+import net.minecraft.server.v1_8_R3.PacketPlayOutWorldBorder
+import net.minecraft.server.v1_8_R3.WorldBorder
 import org.bukkit.Bukkit
 import org.bukkit.Material
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
+import org.bukkit.event.entity.PlayerDeathEvent
 import org.jdom2.Document
 import java.util.*
 
 /**
  * Created by molenzwiebel on 21-12-15.
  */
+@Dependencies(BoundaryModule::class)
 class SanityModule(match: RMatch, document: Document, modCtx: RModuleContext) : RModule(match, document, modCtx) {
     val airHeight: Int
     val overallLightLevel: Int
@@ -26,6 +33,9 @@ class SanityModule(match: RMatch, document: Document, modCtx: RModuleContext) : 
     val sanityTick = 10L
 
     val playerSanity: WeakHashMap<Player, Int> = WeakHashMap()
+
+    var radius = 0
+    var radiusDecrease = 0
 
     enum class Cause(val messages: Map<Int, String>) {
         HEIGHT(mapOf(
@@ -63,6 +73,14 @@ class SanityModule(match: RMatch, document: Document, modCtx: RModuleContext) : 
     public fun onMatchStart(event: RMatchStartEvent) {
         if (!isMatch(event.match)) return
 
+        val boundaryMod = getModule<BoundaryModule>()!!
+        val diffX = (boundaryMod.region.max.blockX - boundaryMod.region.min.blockX) / 2
+        val diffZ = (boundaryMod.region.max.blockZ - boundaryMod.region.min.blockZ) / 2
+
+        radius = Math.max(diffX, diffZ)
+        radiusDecrease = if (match.alivePlayers.size > 1) Math.max(0, (radius - 60) / (match.alivePlayers.size - 1)) else 0
+        match.alivePlayers.forEach { sendWarningRadius(it) }
+
         var id = 0
         id = Bukkit.getScheduler().runTaskTimer(Renaissance.plugin, {
             if (match.state != RMatch.State.PLAYING) {
@@ -71,6 +89,14 @@ class SanityModule(match: RMatch, document: Document, modCtx: RModuleContext) : 
                 refreshSanity()
             }
         }, 0, sanityTick * 20).taskId
+    }
+
+    @EventHandler
+    fun onPlayerDeath(event: PlayerDeathEvent) {
+        if (!isMatch(event.entity)) return
+        if (match.state != RMatch.State.PLAYING) return
+
+        radius -= radiusDecrease
     }
 
     private fun refreshSanity() {
@@ -120,11 +146,14 @@ class SanityModule(match: RMatch, document: Document, modCtx: RModuleContext) : 
             }
 
             // Radius decrement.
-            if (false) {
+            val boundaryMod = getModule<BoundaryModule>()!!
+            val isInside = Math.abs(player.location.blockX - boundaryMod.center.blockX) < radius && Math.abs(player.location.blockZ - boundaryMod.center.blockZ) < radius
+            if (!isInside) {
                 // Do stuff
                 level -= sanityChange
                 cause = Cause.RADIUS
             }
+            sendWarningRadius(player, isInside)
 
             if (cause != null) {
                 playerSanity[player] = level.clamp(0, 100)
@@ -142,5 +171,17 @@ class SanityModule(match: RMatch, document: Document, modCtx: RModuleContext) : 
                 player.level = level.clamp(0, 100 - sanityChange) + sanityChange
             }
         }
+    }
+
+    public fun sendWarningRadius(player: RPlayer, inside: Boolean = true) {
+        val boarder = WorldBorder()
+        boarder.setCenter(0.0, 0.0)
+        boarder.size = if (inside) 10000000.0 else -1.0
+        boarder.warningDistance = 1
+
+        player.bukkit as CraftPlayer
+
+        player.bukkit.handle.playerConnection.sendPacket(PacketPlayOutWorldBorder(boarder, PacketPlayOutWorldBorder.EnumWorldBorderAction.INITIALIZE))
+        player.bukkit.handle.playerConnection.sendPacket(PacketPlayOutWorldBorder(boarder, PacketPlayOutWorldBorder.EnumWorldBorderAction.SET_CENTER))
     }
 }

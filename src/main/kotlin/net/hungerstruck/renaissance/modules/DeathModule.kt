@@ -15,6 +15,7 @@ import org.bukkit.Material
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
+import org.bukkit.event.EventPriority
 import org.bukkit.event.block.Action
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.block.BlockPlaceEvent
@@ -69,7 +70,7 @@ class DeathModule(match: RMatch, document: Document, modCtx: RModuleContext) : R
         RPlayer.updateVisibility()
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR)
     fun onPlayerDeath(event: PlayerDeathEvent) {
         if (!isMatch(event.entity)) return
         if (match.state != RMatch.State.PLAYING) return
