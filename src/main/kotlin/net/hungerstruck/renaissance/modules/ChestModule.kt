@@ -83,6 +83,7 @@ class ChestModule(match: RMatch, document: Document, modCtx: RModuleContext) : R
     @EventHandler
     public fun onChunkLoad(event: ChunkLoadEvent) {
         if (!isMatch(event.world)) return
+        if (mode == Mode.MANUAL) return
         if (processedChunks.contains(event.chunk)) return
         if (event.isNewChunk) return
 
