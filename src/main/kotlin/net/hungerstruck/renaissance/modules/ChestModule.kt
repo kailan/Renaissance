@@ -18,9 +18,11 @@ import net.hungerstruck.renaissance.xml.toDouble
 import net.hungerstruck.renaissance.xml.toEnum
 import net.hungerstruck.renaissance.xml.toInt
 import org.bukkit.Bukkit
+import org.bukkit.Chunk
 import org.bukkit.Material
 import org.bukkit.block.Chest
 import org.bukkit.event.EventHandler
+import org.bukkit.event.world.ChunkLoadEvent
 import org.bukkit.inventory.ItemStack
 import org.jdom2.Document
 import java.util.*
@@ -31,10 +33,14 @@ import java.util.*
 @Dependencies(RegionModule::class)
 class ChestModule(match: RMatch, document: Document, modCtx: RModuleContext) : RModule(match, document, modCtx) {
     val chests: MutableList<BlockRegion> = arrayListOf()
+    val processedChunks: MutableList<Chunk> = arrayListOf()
     val rand: Random = Random()
 
     var initialItems: RandomCollection<ItemStack> = RandomCollection()
     var feastItems: RandomCollection<ItemStack> = RandomCollection()
+
+    var lastItems: RandomCollection<ItemStack>? = null
+    val processedChests: MutableList<BlockRegion> = arrayListOf()
 
     val maxItems: Int
     var rareMultiplier: Double
@@ -66,10 +72,25 @@ class ChestModule(match: RMatch, document: Document, modCtx: RModuleContext) : R
         if (mode == Mode.MANUAL) return
 
         for (chunk in event.match.world.loadedChunks) {
+            processedChunks.add(chunk)
             for (tEntity in chunk.tileEntities) {
                 if (tEntity.type == Material.CHEST || tEntity.type == Material.TRAPPED_CHEST)
                     chests.add(BlockRegion(tEntity.block.location.toVector()))
             }
+        }
+    }
+
+    @EventHandler
+    public fun onChunkLoad(event: ChunkLoadEvent) {
+        if (!isMatch(event.world)) return
+        if (processedChunks.contains(event.chunk)) return
+        if (event.isNewChunk) return
+
+        processedChunks.add(event.chunk)
+        for (tEntity in event.chunk.tileEntities) {
+            val loc = BlockRegion(tEntity.block.location.toVector())
+            if (tEntity.type == Material.CHEST || tEntity.type == Material.TRAPPED_CHEST) chests.add(loc)
+            if (lastItems != null && !processedChests.contains(loc)) fillChest(lastItems!!, loc)
         }
     }
 
@@ -97,14 +118,27 @@ class ChestModule(match: RMatch, document: Document, modCtx: RModuleContext) : R
     }
 
     private fun fillChests(coll: RandomCollection<ItemStack>) {
-        for (chest in chests) {
-            val block = chest.loc.toLocation(match.world).block
-            val inv = (block.state as Chest).inventory
+        processedChests.clear()
+        lastItems = coll
 
-            rand.nextInt(maxItems).times {
-                inv.setItem(rand.nextInt(inv.size), coll.next())
-            }
+        for (chest in chests) {
+            fillChest(coll, chest)
         }
+    }
+
+    private fun fillChest(items: RandomCollection<ItemStack>, loc: BlockRegion) {
+        if (processedChests.contains(loc)) error("Filling chest twice")
+        val block = loc.loc.toLocation(match.world).block
+
+        if (block.type != Material.CHEST && block.type != Material.TRAPPED_CHEST) {
+            chests.remove(loc)
+            return
+        }
+
+        rand.nextInt(maxItems).times {
+            (block.state as Chest).inventory.setItem(rand.nextInt((block.state as Chest).inventory.size), items.next())
+        }
+        processedChests.add(loc)
     }
 
     private fun setupItems() {
