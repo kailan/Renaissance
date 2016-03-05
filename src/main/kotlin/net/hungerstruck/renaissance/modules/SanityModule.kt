@@ -30,7 +30,7 @@ class SanityModule(match: RMatch, document: Document, modCtx: RModuleContext) : 
 
     val sanityChange = 2
     val sanityDamage = 1.0
-    val sanityTick = 10L
+    val sanityTick = 6L
 
     val playerSanity: WeakHashMap<Player, Int> = WeakHashMap()
 
