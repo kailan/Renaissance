@@ -11,6 +11,7 @@ import net.hungerstruck.renaissance.xml.module.Dependencies
 import net.hungerstruck.renaissance.xml.module.RModule
 import net.hungerstruck.renaissance.xml.module.RModuleContext
 import org.bukkit.Bukkit
+import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
@@ -22,10 +23,7 @@ import org.bukkit.event.block.BlockPlaceEvent
 import org.bukkit.event.entity.*
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryType
-import org.bukkit.event.player.PlayerDropItemEvent
-import org.bukkit.event.player.PlayerInteractEvent
-import org.bukkit.event.player.PlayerPickupItemEvent
-import org.bukkit.event.player.PlayerRespawnEvent
+import org.bukkit.event.player.*
 import org.bukkit.event.vehicle.VehicleDamageEvent
 import org.bukkit.event.vehicle.VehicleDestroyEvent
 import org.bukkit.event.vehicle.VehicleEnterEvent
@@ -133,6 +131,51 @@ class DeathModule(match: RMatch, document: Document, modCtx: RModuleContext) : R
                 e.player.teleport(match.alivePlayers.getIgnoreBounds(next))
             }
         }
+    }
+
+    // ===========================================================
+    // ============= Spectator Player Inventories ================
+    // ===========================================================
+
+    @EventHandler
+    fun onPlayerInteractEntity(event: PlayerInteractEntityEvent) {
+        if (!isMatch(event.player)) return
+        if (match.state != RMatch.State.PLAYING || event.player.rplayer.state != RPlayer.State.SPECTATING) return
+        if (event.rightClicked !is Player) return
+
+        val clicked = event.rightClicked as Player
+        val inv = Bukkit.createInventory(null, 9 * 6, "${clicked.displayName}'s Inventory")
+
+        // Main inv
+        for (i in 0..27) {
+            val it = clicked.inventory.getItem(i + 9)
+            inv.setItem(i + 18, if (it == null) null else ItemStack(it))
+        }
+
+        // Hotbar
+        for (i in 0..8) {
+            val it = clicked.inventory.getItem(i)
+            inv.setItem(i + 18 + 27, if (it == null) null else ItemStack(it))
+        }
+
+        val hp = ItemStack(Material.SPECKLED_MELON, clicked.health.toInt())
+        var im = hp.itemMeta
+        im.displayName = "${ChatColor.RED}Health"
+        hp.setItemMeta(im)
+        inv.setItem(0, hp)
+
+        val hunger = ItemStack(Material.GRILLED_PORK, clicked.foodLevel)
+        im = hunger.itemMeta
+        im.displayName = "${ChatColor.GREEN}Hunger"
+        hunger.setItemMeta(im)
+        inv.setItem(1, hunger)
+
+        if (clicked.inventory.helmet != null) inv.setItem(5, ItemStack(clicked.inventory.helmet))
+        if (clicked.inventory.chestplate != null) inv.setItem(6, ItemStack(clicked.inventory.chestplate))
+        if (clicked.inventory.leggings != null) inv.setItem(7, ItemStack(clicked.inventory.leggings))
+        if (clicked.inventory.boots != null) inv.setItem(8, ItemStack(clicked.inventory.boots))
+
+        event.player.openInventory(inv)
     }
 
     // ===========================================================
