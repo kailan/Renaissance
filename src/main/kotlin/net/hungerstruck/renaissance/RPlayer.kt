@@ -59,8 +59,8 @@ class RPlayer(val bukkit: Player) : Player by bukkit {
             field = x
         }
 
-    public fun reset() {
-        health = 20.0
+    public fun reset(resetHealth: Boolean = true) {
+        if (resetHealth) health = 20.0
         saturation = 20.0f
         exhaustion = 20.0f
         fireTicks = 0

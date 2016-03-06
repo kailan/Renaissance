@@ -75,7 +75,7 @@ class DeathModule(match: RMatch, document: Document, modCtx: RModuleContext) : R
 
         val victim = event.entity.rplayer
         victim.state = RPlayer.State.SPECTATING
-        victim.reset()
+        victim.reset(false)
         victim.spigot().collidesWithEntities = false
         victim.allowFlight = true
 
