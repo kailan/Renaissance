@@ -10,6 +10,10 @@ import net.hungerstruck.renaissance.teleportable
 import net.hungerstruck.renaissance.xml.module.Dependencies
 import net.hungerstruck.renaissance.xml.module.RModule
 import net.hungerstruck.renaissance.xml.module.RModuleContext
+import net.minecraft.server.v1_8_R3.IChatBaseComponent
+import net.minecraft.server.v1_8_R3.PacketPlayOutTitle
+
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.Material
@@ -85,8 +89,8 @@ class DeathModule(match: RMatch, document: Document, modCtx: RModuleContext) : R
             match.sendMessage(Formatter().format(message, victim.displayName, victim.killer?.displayName, match.alivePlayers.size).toString())
         } else {
             // We have a winner.
-            for (str in RConfig.Match.matchEndList)
-                match.sendMessage(str.format(match.alivePlayers[0].displayName))
+            match.sendTitle(RConfig.Match.matchEndMessageTitle.format(match.alivePlayers[0].displayName), RConfig.Match.matchEndMessageSubTitle, RConfig.Match.matchEndMessageFadeIn, RConfig.Match.matchEndMessageDuration, RConfig.Match.matchEndMessageFadeOut )
+
             match.endMatch()
 
             // Allow flight for the winner.

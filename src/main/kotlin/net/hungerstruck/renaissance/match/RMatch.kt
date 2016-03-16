@@ -6,6 +6,7 @@ import net.hungerstruck.renaissance.config.RConfig
 import net.hungerstruck.renaissance.event.match.RMatchEndEvent
 import net.hungerstruck.renaissance.event.match.RMatchLoadEvent
 import net.hungerstruck.renaissance.event.match.RMatchStartEvent
+import net.hungerstruck.renaissance.util.TitleUtil
 import net.hungerstruck.renaissance.xml.RMap
 import net.hungerstruck.renaissance.xml.module.RModuleContext
 import org.bukkit.Bukkit
@@ -43,6 +44,11 @@ class RMatch {
     public fun sendMessage(msg: String, f: (RPlayer) -> Boolean = { true }) {
         Bukkit.getConsoleSender().sendMessage("[match-$id] $msg")
         players.filter(f).forEach { it.sendMessage(msg) }
+    }
+
+    public fun sendTitle(title: String, subtitle: String, fadeIn: Int, stay: Int, fadeOut: Int, f: (RPlayer) -> Boolean = { true }) {
+        Bukkit.getConsoleSender().sendMessage("[match-$id] $title $subtitle")
+        players.filter(f).forEach { TitleUtil.sendTitle(it, title, subtitle, fadeIn, stay, fadeOut) }
     }
 
     /**
