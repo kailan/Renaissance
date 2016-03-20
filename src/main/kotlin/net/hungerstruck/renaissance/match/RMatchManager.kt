@@ -17,7 +17,7 @@ import java.util.*
  * Created by molenzwiebel on 22-12-15.
  */
 class RMatchManager {
-    private val matches: MutableMap<World, RMatch> = hashMapOf()
+    val matches: MutableMap<World, RMatch> = hashMapOf()
     private val mapContext: RMapContext
 
     private var matchCount: Int = 0

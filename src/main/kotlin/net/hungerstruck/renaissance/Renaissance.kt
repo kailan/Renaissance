@@ -4,6 +4,7 @@ import net.hungerstruck.renaissance.config.RConfig
 import net.hungerstruck.renaissance.countdown.CountdownManager
 import net.hungerstruck.renaissance.listeners.ConnectionListener
 import net.hungerstruck.renaissance.listeners.LobbyListener
+import net.hungerstruck.renaissance.listeners.SimpleEventsListener
 import net.hungerstruck.renaissance.lobby.RLobbyManager
 import net.hungerstruck.renaissance.match.RMatchManager
 import net.hungerstruck.renaissance.modules.*
@@ -57,5 +58,6 @@ object Renaissance {
         Bukkit.getPluginManager().registerEvents(RPlayer.Companion, plugin)
         Bukkit.getPluginManager().registerEvents(LobbyListener(), plugin)
         Bukkit.getPluginManager().registerEvents(ConnectionListener(), plugin)
+        Bukkit.getPluginManager().registerEvents(SimpleEventsListener(), plugin)
     }
 }
