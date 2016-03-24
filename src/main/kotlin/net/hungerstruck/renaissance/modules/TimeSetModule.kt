@@ -2,6 +2,7 @@ package net.hungerstruck.renaissance.modules
 
 import net.hungerstruck.renaissance.Renaissance
 import net.hungerstruck.renaissance.event.match.RMatchLoadEvent
+import net.hungerstruck.renaissance.event.match.RMatchStartEvent
 import net.hungerstruck.renaissance.match.RMatch
 import net.hungerstruck.renaissance.xml.module.RModule
 import net.hungerstruck.renaissance.xml.module.RModuleContext
@@ -21,21 +22,16 @@ class TimeSetModule(match: RMatch, document: Document, modCtx: RModuleContext) :
 
     init {
         value = document.rootElement?.getChild("timestart")?.textNormalize.toLong()
-    }
-
-    class TimeSetTask(val match: RMatch, val time: Long) : BukkitRunnable() {
-
-        override fun run() {
-            if(match.state == RMatch.State.LOADED)
-                match.world.setTime(time);
-            else
-                this.cancel();
-        }
-
+        registerEvents()
     }
 
     @EventHandler
     public fun onMatchLoad(event: RMatchLoadEvent) {
-         var task : BukkitTask =  TimeSetTask(event.match, value).runTaskTimer(Renaissance.plugin, 0, 20*10);
+         event.match.world.setTime(value)
+    }
+
+    @EventHandler
+    public fun onMatchStart(event: RMatchStartEvent) {
+        event.match.world.setTime(value)
     }
 }

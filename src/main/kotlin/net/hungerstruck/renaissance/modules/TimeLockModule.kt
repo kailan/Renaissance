@@ -17,10 +17,12 @@ class TimeLockModule(match: RMatch, document: Document, modCtx: RModuleContext) 
 
     init {
         locked = document.rootElement?.getChild("timelock")?.textNormalize.toBool(defaultValue = false)
+        registerEvents()
     }
 
     @EventHandler
     public fun onMatchLoad(event: RMatchLoadEvent) {
-        event.match.world.setGameRuleValue("doDaylightCycle", locked.toString());
+        // Set dayLightCycle to the opposite of the value from XML (if mapmaker wants it to be locked, true, then cycling should be off, false)
+        event.match.world.setGameRuleValue("doDaylightCycle", locked.not().toString());
     }
 }
