@@ -4,6 +4,7 @@ import net.hungerstruck.renaissance.Renaissance
 import net.hungerstruck.renaissance.event.match.RMatchLoadEvent
 import net.hungerstruck.renaissance.event.match.RMatchStartEvent
 import net.hungerstruck.renaissance.match.RMatch
+import net.hungerstruck.renaissance.xml.module.Dependencies
 import net.hungerstruck.renaissance.xml.module.RModule
 import net.hungerstruck.renaissance.xml.module.RModuleContext
 import net.hungerstruck.renaissance.xml.toLong
@@ -14,9 +15,7 @@ import org.bukkit.scheduler.BukkitScheduler
 import org.bukkit.scheduler.BukkitTask
 import org.jdom2.Document
 
-/**
- * Created by molenzwiebel on 21-12-15.
- */
+@Dependencies(TimeLockModule::class)
 class TimeSetModule(match: RMatch, document: Document, modCtx: RModuleContext) : RModule(match, document, modCtx) {
     val value: Long
 
@@ -27,11 +26,9 @@ class TimeSetModule(match: RMatch, document: Document, modCtx: RModuleContext) :
 
     @EventHandler
     public fun onMatchLoad(event: RMatchLoadEvent) {
-         event.match.world.setTime(value)
-    }
-
-    @EventHandler
-    public fun onMatchStart(event: RMatchStartEvent) {
+        if (!isMatch(event.match)) return
+        
         event.match.world.setTime(value)
+        event.match.world.setGameRuleValue("doDaylightCycle", "false"); // stop time during load, will be set to true if the lock module determines it should be
     }
 }
