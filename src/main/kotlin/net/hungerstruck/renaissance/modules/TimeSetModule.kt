@@ -27,7 +27,6 @@ class TimeSetModule(match: RMatch, document: Document, modCtx: RModuleContext) :
     @EventHandler
     public fun onMatchLoad(event: RMatchLoadEvent) {
         if (!isMatch(event.match)) return
-        
         event.match.world.setTime(value)
         event.match.world.setGameRuleValue("doDaylightCycle", "false"); // stop time during load, will be set to true if the lock module determines it should be
     }
