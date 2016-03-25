@@ -58,25 +58,27 @@ class RenaissancePlugin : JavaPlugin() {
             sender.sendMessage(ChatColor.RED.toString() + e.getMessage());
         }
 
-        val engine = if (sessions[sender] != null) {
-            sessions[sender]!!
-        } else {
-            sessions[sender] = nashornEngine.getScriptEngine(classLoader)
-            sessions[sender]!!
-        }
+        if(command.name.equals("debug")) {
+            val engine = if (sessions[sender] != null) {
+                sessions[sender]!!
+            } else {
+                sessions[sender] = nashornEngine.getScriptEngine(classLoader)
+                sessions[sender]!!
+            }
 
-        engine.put("player", sender)
-        if (sender is Player) engine.put("rplayer", sender.rplayer)
-        engine.put("Renaissance", Renaissance)
-        engine.put("server", Bukkit.getServer())
-        engine.eval("var Bukkit = org.bukkit.Bukkit")
+            engine.put("player", sender)
+            if (sender is Player) engine.put("rplayer", sender.rplayer)
+            engine.put("Renaissance", Renaissance)
+            engine.put("server", Bukkit.getServer())
+            engine.eval("var Bukkit = org.bukkit.Bukkit")
 
-        try {
-            val res = engine.eval(args.joinToString(" "))
+            try {
+                val res = engine.eval(args.joinToString(" "))
 
-            sender.sendMessage("${ChatColor.GRAY}> ${ChatColor.WHITE}$res")
-        } catch (e: Exception) {
-            sender.sendMessage("${ChatColor.GRAY}> ${ChatColor.RED}${e.message}")
+                sender.sendMessage("${ChatColor.GRAY}> ${ChatColor.WHITE}$res")
+            } catch (e: Exception) {
+                sender.sendMessage("${ChatColor.GRAY}> ${ChatColor.RED}${e.message}")
+            }
         }
 
         return true
