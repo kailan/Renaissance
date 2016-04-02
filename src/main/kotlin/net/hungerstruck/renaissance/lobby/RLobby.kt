@@ -65,7 +65,7 @@ class RLobby {
 
     private fun updateInformation() {
         for (player in members) {
-            player.actionBarMessage = "${if (lobbyMap.mapInfo.lobbyProperties!!.canTakeDamage) GREEN else RED}PVP $GRAY| ${if (lobbyMap.mapInfo.lobbyProperties.canBreakBlocks) GREEN else RED}Block Breaking $GRAY| $BLACK${members.size}/${RConfig.Lobby.maximumPlayerStartCount} players"
+            player.actionBarMessage = "${if (lobbyMap.mapInfo.lobbyProperties!!.canTakeDamage) GREEN else RED}PVP $GRAY| ${if (lobbyMap.mapInfo.lobbyProperties.canBuild) GREEN else RED}Block Breaking $GRAY| $BLACK${members.size}/${RConfig.Lobby.maximumPlayerStartCount} players"
         }
     }
 

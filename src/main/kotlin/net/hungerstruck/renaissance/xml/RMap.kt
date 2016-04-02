@@ -46,10 +46,10 @@ class RMap {
         val lobbyEl = root.getChild("lobby")
         var lobbyProperties: RLobbyProperties? = null
         if (lobbyEl != null) {
-            val blockBreaking = lobbyEl.getChild("blockbreaking") != null
+            val building = lobbyEl.getChild("building") != null
             val damage = lobbyEl.getChild("damage") != null
 
-            lobbyProperties = RLobbyProperties(blockBreaking, damage)
+            lobbyProperties = RLobbyProperties(building, damage)
         }
 
         return RMapInfo(name, version, lobbyName, lobbyProperties, objective, authors, contributors, rules, difficulty, dimension)

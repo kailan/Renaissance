@@ -10,6 +10,7 @@ import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockBreakEvent
+import org.bukkit.event.block.BlockPlaceEvent
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.entity.EntityDamageEvent
 import org.bukkit.event.entity.FoodLevelChangeEvent
@@ -38,13 +39,19 @@ class LobbyListener : Listener {
     @EventHandler
     public fun onItemDrop(event: ItemSpawnEvent) {
         val lobby = getLobby(event.entity.world) ?: return
-        event.isCancelled = !lobby.lobbyMap.mapInfo.lobbyProperties!!.canBreakBlocks
+        event.isCancelled = !lobby.lobbyMap.mapInfo.lobbyProperties!!.canBuild
     }
 
     @EventHandler
     public fun onBlockBreak(event: BlockBreakEvent) {
         val lobby = getLobby(event.block.world) ?: return
-        event.isCancelled = !lobby.lobbyMap.mapInfo.lobbyProperties!!.canBreakBlocks
+        event.isCancelled = !lobby.lobbyMap.mapInfo.lobbyProperties!!.canBuild
+    }
+
+    @EventHandler
+    fun onBlockPlace(event: BlockPlaceEvent) {
+        val lobby = getLobby(event.block.world) ?: return
+        event.isCancelled = !lobby.lobbyMap.mapInfo.lobbyProperties!!.canBuild
     }
 
     @EventHandler
