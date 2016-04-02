@@ -2,12 +2,14 @@ package net.hungerstruck.renaissance.modules.ux
 
 import net.hungerstruck.renaissance.Renaissance
 import net.hungerstruck.renaissance.event.match.RMatchCountdownTickEvent
+import net.hungerstruck.renaissance.event.match.RMatchEndEvent
 import net.hungerstruck.renaissance.event.match.RMatchStartEvent
 import net.hungerstruck.renaissance.match.RMatch
 import net.hungerstruck.renaissance.modules.PedestalModule
 import net.hungerstruck.renaissance.xml.module.RModule
 import net.hungerstruck.renaissance.xml.module.RModuleContext
 import org.bukkit.Bukkit
+import org.bukkit.Location
 import org.bukkit.event.EventHandler
 import org.bukkit.scheduler.BukkitTask
 import org.jdom2.Document
@@ -46,5 +48,19 @@ class ParticleModule(match: RMatch, document: Document, modCtx: RModuleContext) 
             var fwork = RFirework(1, fireworkEffect).play(pedistal.loc.toLocation(match.world))
             Bukkit.getScheduler().runTaskLater(Renaissance.plugin, { fwork.detonate() }, 20)
         }
+    }
+
+    @EventHandler
+    fun onMatchEnd(event: RMatchEndEvent) {
+        for (i in 0..9) {
+            RFirework.playRandom(Location(event.match.world, randomValue(), randomValue(), randomValue()))
+        }
+    }
+
+    private fun randomValue(): Double {
+        var i = random.nextInt(15)
+        if (random.nextBoolean()) i *= -1
+
+        return i.toDouble()
     }
 }
