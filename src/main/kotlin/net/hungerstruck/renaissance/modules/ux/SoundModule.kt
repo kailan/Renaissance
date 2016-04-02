@@ -22,8 +22,8 @@ class SoundModule(match: RMatch, document: Document, modCtx: RModuleContext) : R
     fun onMatchountdownTick(event: RMatchCountdownTickEvent) {
         if (event.timeLeft <= 5) {
             for (player in event.match.alivePlayers) {
-                player.playSound(player.location, Sound.ANVIL_LAND, 1f, 2f)
-                player.playSound(player.location, Sound.ORB_PICKUP, 1f, 0.5f)
+                player.playSound(player.location, Sound.BLOCK_ANVIL_LAND, 1f, 2f)
+                player.playSound(player.location, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1f, 0.5f)
             }
         }
     }
@@ -31,7 +31,7 @@ class SoundModule(match: RMatch, document: Document, modCtx: RModuleContext) : R
     @EventHandler
     fun onMatchStart(event: RMatchStartEvent) {
         for (player in event.match.alivePlayers) {
-            player.playSound(player.location, Sound.ENDERDRAGON_GROWL, 1f, 1f)
+            player.playSound(player.location, Sound.ENTITY_ENDERDRAGON_GROWL, 1f, 1f)
         }
     }
 

@@ -7,11 +7,11 @@ import net.hungerstruck.renaissance.util.RandomCollection
 import net.hungerstruck.renaissance.xml.module.Dependencies
 import net.hungerstruck.renaissance.xml.module.RModule
 import net.hungerstruck.renaissance.xml.module.RModuleContext
-import net.minecraft.server.v1_8_R3.BlockPosition
-import net.minecraft.server.v1_8_R3.Blocks
-import net.minecraft.server.v1_8_R3.IBlockData
-import net.minecraft.server.v1_8_R3.WorldGenMinable
-import org.bukkit.craftbukkit.v1_8_R3.CraftWorld
+import net.minecraft.server.BlockPosition
+import net.minecraft.server.Blocks
+import net.minecraft.server.IBlockData
+import net.minecraft.server.WorldGenMinable
+import org.bukkit.craftbukkit.CraftWorld
 import org.bukkit.event.EventHandler
 import org.jdom2.Document
 import java.util.*

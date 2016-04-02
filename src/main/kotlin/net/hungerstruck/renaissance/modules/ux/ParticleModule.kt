@@ -33,9 +33,9 @@ class ParticleModule(match: RMatch, document: Document, modCtx: RModuleContext) 
     @EventHandler
     fun onMatchCountdownTick(event: RMatchCountdownTickEvent) {
         if (event.timeLeft == 5) {
-            timer = ParticlePedestalRunnable(event.match.moduleContext.getModule<PedestalModule>() as PedestalModule, true).runTaskTimer(Renaissance.plugin, 0, 3)
+            timer = ParticlePedestalRunnable(event.match.moduleContext.getModule<PedestalModule>() as PedestalModule, true).runTaskTimer(Renaissance.plugin, 0, 8)
         } else if (event.timeLeft > 5 && event.timeLeft % 10 == 0) {
-            timer = ParticlePedestalRunnable(event.match.moduleContext.getModule<PedestalModule>() as PedestalModule, false).runTaskTimer(Renaissance.plugin, 0, 3)
+            timer = ParticlePedestalRunnable(event.match.moduleContext.getModule<PedestalModule>() as PedestalModule, false).runTaskTimer(Renaissance.plugin, 0, 8)
         }
     }
 
@@ -52,9 +52,11 @@ class ParticleModule(match: RMatch, document: Document, modCtx: RModuleContext) 
 
     @EventHandler
     fun onMatchEnd(event: RMatchEndEvent) {
-        for (i in 0..9) {
-            RFirework.playRandom(Location(event.match.world, randomValue(), randomValue(), randomValue()))
-        }
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(Renaissance.plugin, {
+            for (i in 0..4) {
+                RFirework.playRandom(Location(event.match.world, randomValue(), 70.0, randomValue()))
+            }
+        }, 0, 40)
     }
 
     private fun randomValue(): Double {

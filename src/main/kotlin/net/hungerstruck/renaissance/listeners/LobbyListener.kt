@@ -31,7 +31,7 @@ class LobbyListener : Listener {
         if (event.message.startsWith("/")) return // Ignore commands.
         val lobby = event.player.rplayer.lobby ?: return
 
-        lobby.sendMessage(RConfig.Lobby.chatFormat.format(event.player.name, event.message))
+        lobby.sendPrefixlessMessage(RConfig.Lobby.chatFormat.format(event.player.name, event.message))
         event.isCancelled = true
     }
 
@@ -68,7 +68,11 @@ class LobbyListener : Listener {
                 return
             }
 
-            event.isCancelled = !lobby.lobbyMap.mapInfo.lobbyProperties!!.canTakeDamage
+            if (lobby.lobbyMap.mapInfo.lobbyProperties!!.canTakeDamage) {
+                event.damage = 0.0
+            } else {
+                event.isCancelled = true
+            }
         } else {
             // Always cancel any non-player damage. Teleport them to spawn if it is void damage.
             event.isCancelled = true
@@ -81,7 +85,7 @@ class LobbyListener : Listener {
     @EventHandler
     public fun onHungerDrain(event: FoodLevelChangeEvent) {
         val lobby = getLobby(event.entity.world) ?: return
-        event.isCancelled = event.isCancelled || !lobby.lobbyMap.mapInfo.lobbyProperties!!.canTakeDamage
+        event.isCancelled = true
     }
 
     private fun getLobby(world: World): RLobby? {

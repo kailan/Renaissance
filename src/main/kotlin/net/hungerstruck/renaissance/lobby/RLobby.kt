@@ -14,6 +14,7 @@ import org.bukkit.ChatColor
 import org.bukkit.ChatColor.*
 import org.bukkit.GameMode
 import org.bukkit.World
+import org.bukkit.scheduler.BukkitScheduler
 
 /**
  * Manages a simple match-specific lobby.
@@ -47,13 +48,11 @@ class RLobby {
         player.reset()
         player.gameMode = GameMode.SURVIVAL
 
-        player.teleport(lobbyWorld.spawnLocation.teleportable)
+        Bukkit.getScheduler().scheduleSyncDelayedTask(Renaissance.plugin, {player.teleport(lobbyWorld.spawnLocation.teleportable)}, 1)
 
         updateInformation()
 
         sendMessage("${ChatColor.GREEN}${player.displayName} ${ChatColor.GRAY}has joined the match!")
-
-        RPlayer.updateVisibility()
 
         if (members.size >= RConfig.Lobby.minimumPlayerStartCount && members.size <= RConfig.Lobby.maximumPlayerStartCount && RConfig.Lobby.autoStart) {
             startCountdown()
@@ -88,5 +87,10 @@ class RLobby {
     public fun sendMessage(msg: String) {
         Bukkit.getConsoleSender().sendMessage("[lobby-$id] $msg")
         members.forEach { it.sendMessage(RConfig.General.mainMessagePrefix + msg) }
+    }
+
+    public fun sendPrefixlessMessage(msg: String) {
+        Bukkit.getConsoleSender().sendMessage("[lobby-$id] $msg")
+        members.forEach { it.sendMessage(msg) }
     }
 }

@@ -9,10 +9,16 @@ import net.hungerstruck.renaissance.event.match.RMatchStartEvent
 import net.hungerstruck.renaissance.util.TitleUtil
 import net.hungerstruck.renaissance.xml.RMap
 import net.hungerstruck.renaissance.xml.module.RModuleContext
+import net.md_5.bungee.api.chat.TextComponent
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.Sound
 import org.bukkit.World
+import org.bukkit.boss.BarColor
+import org.bukkit.boss.BarFlag
+import org.bukkit.boss.BarStyle
+import org.bukkit.boss.BossBar
+import org.bukkit.scheduler.BukkitScheduler
 
 /**
  * Represents a match.
@@ -105,8 +111,12 @@ class RMatch {
     fun endCheck() = alivePlayers.size <= 1
 
     fun announceWinner(player: RPlayer) {
-        sendTitle(RConfig.Match.matchEndMessageTitle.format(player.displayName), RConfig.Match.matchEndMessageSubTitle, RConfig.Match.matchEndMessageFadeIn, RConfig.Match.matchEndMessageDuration, RConfig.Match.matchEndMessageFadeOut)
+        //sendTitle(RConfig.Match.matchEndMessageTitle.format(player.displayName), RConfig.Match.matchEndMessageSubTitle, RConfig.Match.matchEndMessageFadeIn, RConfig.Match.matchEndMessageDuration, RConfig.Match.matchEndMessageFadeOut)
         endMatch()
+
+        val bar = Bukkit.createBossBar(TextComponent("${ChatColor.LIGHT_PURPLE}${player.displayName} ${ChatColor.DARK_PURPLE}has won the game!"), BarColor.PINK, BarStyle.SOLID, BarFlag.DARKEN_SKY, BarFlag.PLAY_BOSS_MUSIC)
+        bar.isVisible = true
+        for (player in players.map{it.bukkit}) bar.addPlayer(player)
 
         if (player.isOnline) player.allowFlight = true
         RPlayer.updateVisibility()

@@ -17,10 +17,6 @@
 
     <repositories>
         <repository>
-            <id>spigot</id>
-            <url>http://hub.spigotmc.org/nexus/content/groups/public</url>
-        </repository>
-        <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
         </repository>
@@ -39,9 +35,9 @@
         </dependency>
 
         <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot</artifactId>
-            <version>1.8.8-R0.1-SNAPSHOT</version>
+            <groupId>co.enviark</groupId>
+            <artifactId>struckbukkit</artifactId>
+            <version>1.9.2-R0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

@@ -10,12 +10,9 @@ import net.hungerstruck.renaissance.teleportable
 import net.hungerstruck.renaissance.xml.module.Dependencies
 import net.hungerstruck.renaissance.xml.module.RModule
 import net.hungerstruck.renaissance.xml.module.RModuleContext
-import net.minecraft.server.v1_8_R3.IChatBaseComponent
-import net.minecraft.server.v1_8_R3.PacketPlayOutTitle
-
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
+import org.bukkit.GameMode
 import org.bukkit.Material
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
@@ -64,7 +61,8 @@ class DeathModule(match: RMatch, document: Document, modCtx: RModuleContext) : R
 
         event.player.state = RPlayer.State.SPECTATING
         event.player.reset()
-        event.player.spigot().collidesWithEntities = false
+        // TODO: use StruckBukkit collision API
+        //event.player.spigot().collidesWithEntities = false
         event.player.allowFlight = true
         event.player.inventory.setItem(0, ItemStack(Material.COMPASS, 1))
         event.player.teleport(match.world.spawnLocation.teleportable)
@@ -80,11 +78,14 @@ class DeathModule(match: RMatch, document: Document, modCtx: RModuleContext) : R
         val victim = event.entity.rplayer
         victim.state = RPlayer.State.SPECTATING
         victim.reset(false)
-        victim.spigot().collidesWithEntities = false
+        // TODO: use StruckBukkit collision API
+        //victim.spigot().collidesWithEntities = false
+        victim.gameMode = GameMode.SPECTATOR //TEMP
+
         victim.allowFlight = true
 
         val message = if (victim.killer != null) RConfig.Match.playerDeathByPlayerMessage else RConfig.Match.playerDeathByOtherMessage
-        match.sendMessage(Formatter().format(message, victim.displayName, victim.killer?.displayName).toString())
+        match.sendMessage(message.replace("%0\$s", victim.displayName).replace("%1\$c", (victim.killer?.displayName).toString()))
 
         if (match.endCheck()) {
             var winner: RPlayer

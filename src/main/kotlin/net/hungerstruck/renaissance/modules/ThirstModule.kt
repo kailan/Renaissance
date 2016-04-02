@@ -36,7 +36,7 @@ class ThirstModule(match: RMatch, document: Document, modCtx: RModuleContext) : 
     private fun refreshThirst() {
         for (player in match.alivePlayers) {
             val oldValue = playerThirst.getOrPut(player, { 100 })
-            val difference = -1 * if (player.location.block.biome in arrayOf(Biome.DESERT, Biome.DESERT_HILLS, Biome.DESERT_MOUNTAINS)) 4 else 2
+            val difference = -1 * if (player.location.block.biome in arrayOf(Biome.DESERT, Biome.DESERT_HILLS)) 4 else 2
 
             // Increment by minus the amount of thirst they have
             playerThirst.incrementBy(player, difference, 100)
