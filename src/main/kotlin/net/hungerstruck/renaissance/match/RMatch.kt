@@ -6,10 +6,12 @@ import net.hungerstruck.renaissance.config.RConfig
 import net.hungerstruck.renaissance.event.match.RMatchEndEvent
 import net.hungerstruck.renaissance.event.match.RMatchLoadEvent
 import net.hungerstruck.renaissance.event.match.RMatchStartEvent
+import net.hungerstruck.renaissance.rplayer
 import net.hungerstruck.renaissance.util.TitleUtil
 import net.hungerstruck.renaissance.xml.RMap
 import net.hungerstruck.renaissance.xml.module.RModuleContext
 import org.bukkit.Bukkit
+import org.bukkit.ChatColor
 import org.bukkit.World
 
 /**
@@ -66,6 +68,15 @@ class RMatch {
     public fun startMatch() {
         state = State.PLAYING
         Bukkit.getPluginManager().callEvent(RMatchStartEvent(this))
+
+        if(endCheck()){
+            if (alivePlayers.size == 1) {
+                announceWinner(alivePlayers[0])
+            } else {
+                endMatch()
+                sendMessage("${ChatColor.RED}No players are playing! Ending the game.")
+            }
+        }
     }
 
     /**
@@ -83,6 +94,16 @@ class RMatch {
         for (module in moduleContext.modules) {
             module.cleanup()
         }
+    }
+
+    fun endCheck() = alivePlayers.size <= 1
+
+    fun announceWinner(player: RPlayer) {
+        sendTitle(RConfig.Match.matchEndMessageTitle.format(player.displayName), RConfig.Match.matchEndMessageSubTitle, RConfig.Match.matchEndMessageFadeIn, RConfig.Match.matchEndMessageDuration, RConfig.Match.matchEndMessageFadeOut)
+        endMatch()
+
+        if (player.isOnline) player.allowFlight = true
+        RPlayer.updateVisibility()
     }
 
     public enum class State {

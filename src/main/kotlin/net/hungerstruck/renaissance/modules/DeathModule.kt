@@ -83,20 +83,22 @@ class DeathModule(match: RMatch, document: Document, modCtx: RModuleContext) : R
         victim.spigot().collidesWithEntities = false
         victim.allowFlight = true
 
-        if (match.alivePlayers.size != 1) {
-            val message = if (victim.killer != null) RConfig.Match.playerDeathByPlayerMessage else RConfig.Match.playerDeathByOtherMessage
-            // Still players alive.
-            match.sendMessage(Formatter().format(message, victim.displayName, victim.killer?.displayName, match.alivePlayers.size).toString())
+        //TODO When merged with UX change the messages, death message goes here
+        //val message = if (victim.killer != null) RConfig.Match.playerDeathByPlayerMessage else RConfig.Match.playerDeathByOtherMessage
+        //match.sendMessage(Formatter().format(message, victim.displayName, victim.killer?.displayName, match.alivePlayers.size).toString())
+
+        if (match.endCheck()) {
+            var winner: RPlayer
+
+            if (match.alivePlayers.size == 1) {
+                winner = match.alivePlayers[0]
+            } else {
+                winner = victim
+            }
+
+            match.announceWinner(winner)
         } else {
-            // We have a winner.
-            match.sendTitle(RConfig.Match.matchEndMessageTitle.format(match.alivePlayers[0].displayName), RConfig.Match.matchEndMessageSubTitle, RConfig.Match.matchEndMessageFadeIn, RConfig.Match.matchEndMessageDuration, RConfig.Match.matchEndMessageFadeOut )
-
-            match.endMatch()
-
-            // Allow flight for the winner.
-            match.alivePlayers[0].allowFlight = true
-
-            RPlayer.updateVisibility()
+            //TODO When merged with UX change the messages, players left goes here
         }
 
         match.world.strikeLightningEffect(victim.location)
