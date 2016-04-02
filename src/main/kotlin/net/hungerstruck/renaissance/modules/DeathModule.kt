@@ -72,7 +72,7 @@ class DeathModule(match: RMatch, document: Document, modCtx: RModuleContext) : R
         RPlayer.updateVisibility()
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler
     fun onPlayerDeath(event: PlayerDeathEvent) {
         if (!isMatch(event.entity)) return
         if (match.state != RMatch.State.PLAYING) return
@@ -83,9 +83,8 @@ class DeathModule(match: RMatch, document: Document, modCtx: RModuleContext) : R
         victim.spigot().collidesWithEntities = false
         victim.allowFlight = true
 
-        //TODO When merged with UX change the messages, death message goes here
-        //val message = if (victim.killer != null) RConfig.Match.playerDeathByPlayerMessage else RConfig.Match.playerDeathByOtherMessage
-        //match.sendMessage(Formatter().format(message, victim.displayName, victim.killer?.displayName, match.alivePlayers.size).toString())
+        val message = if (victim.killer != null) RConfig.Match.playerDeathByPlayerMessage else RConfig.Match.playerDeathByOtherMessage
+        match.sendMessage(Formatter().format(message, victim.displayName, victim.killer?.displayName).toString())
 
         if (match.endCheck()) {
             var winner: RPlayer
@@ -98,7 +97,7 @@ class DeathModule(match: RMatch, document: Document, modCtx: RModuleContext) : R
 
             match.announceWinner(winner)
         } else {
-            //TODO When merged with UX change the messages, players left goes here
+            match.sendMessage(RConfig.Match.playerRemainMessage.replace("%0\$d", match.alivePlayers.size.toString()))
         }
 
         match.world.strikeLightningEffect(victim.location)

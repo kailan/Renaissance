@@ -6,12 +6,12 @@ import net.hungerstruck.renaissance.config.RConfig
 import net.hungerstruck.renaissance.event.match.RMatchEndEvent
 import net.hungerstruck.renaissance.event.match.RMatchLoadEvent
 import net.hungerstruck.renaissance.event.match.RMatchStartEvent
-import net.hungerstruck.renaissance.rplayer
 import net.hungerstruck.renaissance.util.TitleUtil
 import net.hungerstruck.renaissance.xml.RMap
 import net.hungerstruck.renaissance.xml.module.RModuleContext
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
+import org.bukkit.Sound
 import org.bukkit.World
 
 /**
@@ -25,7 +25,7 @@ class RMatch {
     val world: World
     var state: State = State.LOADED
 
-    private val moduleContext: RModuleContext
+    val moduleContext: RModuleContext
 
     val players: List<RPlayer>
         get() = RPlayer.getPlayers() { it.match == this }
@@ -44,6 +44,11 @@ class RMatch {
     }
 
     public fun sendMessage(msg: String, f: (RPlayer) -> Boolean = { true }) {
+        Bukkit.getConsoleSender().sendMessage("[match-$id] $msg")
+        players.filter(f).forEach { it.sendMessage(RConfig.General.mainMessagePrefix + msg) }
+    }
+
+    public fun sendPrefixlessMessage(msg: String, f: (RPlayer) -> Boolean = { true }) {
         Bukkit.getConsoleSender().sendMessage("[match-$id] $msg")
         players.filter(f).forEach { it.sendMessage(msg) }
     }
@@ -67,6 +72,7 @@ class RMatch {
      */
     public fun startMatch() {
         state = State.PLAYING
+
         Bukkit.getPluginManager().callEvent(RMatchStartEvent(this))
 
         if(endCheck()){

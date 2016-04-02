@@ -42,12 +42,12 @@ class ThirstModule(match: RMatch, document: Document, modCtx: RModuleContext) : 
             playerThirst.incrementBy(player, difference, 100)
 
             if (oldValue > 25 && oldValue + difference <= 25) {
-                player.sendMessage("${ChatColor.DARK_RED}My throat is rough and dry...")
+                player.sendMessage("${ChatColor.GRAY}${RConfig.General.mainMessagePrefix}${ChatColor.YELLOW}My throat is rough and dry...")
                 player.addPotionEffect(PotionEffect(PotionEffectType.BLINDNESS, 60, 2))
             }
 
             if (oldValue > 50 && oldValue + difference <= 50) {
-                player.sendMessage("${ChatColor.DARK_RED}My mouth feels dry...")
+                player.sendMessage("${ChatColor.GRAY}${RConfig.General.mainMessagePrefix}${ChatColor.RED}My mouth feels dry...")
             }
 
             if (playerThirst[player]!! <= 0) {
@@ -57,7 +57,7 @@ class ThirstModule(match: RMatch, document: Document, modCtx: RModuleContext) : 
                 player.damage(RConfig.Thirst.healthDamage.toDouble())
                 player.saturation = (player.saturation - RConfig.Thirst.hungerDamage).clamp(0f, 18f)
                 player.addPotionEffect(PotionEffect(PotionEffectType.BLINDNESS, 60, 2))
-                player.sendMessage("You are dehydrated...")
+                player.sendMessage("${ChatColor.GRAY}${RConfig.General.mainMessagePrefix}${ChatColor.DARK_RED}You are dehydrated...")
             }
 
             player.exp = playerThirst[player]!! / 100f
@@ -105,7 +105,7 @@ class ThirstModule(match: RMatch, document: Document, modCtx: RModuleContext) : 
             // Completely refresh water
             playerThirst[event.player.rplayer] = 100
 
-            event.player.sendMessage("You quench your thirst.")
+            event.player.sendMessage("${ChatColor.GRAY}$${ChatColor.BOLD}»${ChatColor.RESET} ${ChatColor.GREEN}You quench your thirst.")
             event.player.exp = 1f
 
             Bukkit.getPluginManager().callEvent(RPlayerThirstUpdateEvent(event.player.rplayer, playerThirst[event.player]!!))

@@ -3,6 +3,7 @@ package net.hungerstruck.renaissance.modules
 import net.hungerstruck.renaissance.RPlayer
 import net.hungerstruck.renaissance.Renaissance
 import net.hungerstruck.renaissance.clamp
+import net.hungerstruck.renaissance.config.RConfig
 import net.hungerstruck.renaissance.event.match.RMatchStartEvent
 import net.hungerstruck.renaissance.event.player.RPlayerSanityUpdateEvent
 import net.hungerstruck.renaissance.match.RMatch
@@ -13,6 +14,7 @@ import net.hungerstruck.renaissance.xml.toInt
 import net.minecraft.server.v1_8_R3.PacketPlayOutWorldBorder
 import net.minecraft.server.v1_8_R3.WorldBorder
 import org.bukkit.Bukkit
+import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer
 import org.bukkit.entity.Player
@@ -40,19 +42,19 @@ class SanityModule(match: RMatch, document: Document, modCtx: RModuleContext) : 
 
     enum class Cause(val messages: Map<Int, String>) {
         HEIGHT(mapOf(
-            75 to "The air is thin and hard to breathe!",
-            50 to "The air is thin and hard to breathe!",
-            25 to "The air is thin and hard to breathe!"
+            75 to "${ChatColor.GRAY}${RConfig.General.mainMessagePrefix}${ChatColor.YELLOW}The air is thin and hard to breathe!",
+            50 to "${ChatColor.GRAY}${RConfig.General.mainMessagePrefix}${ChatColor.RED}The air is thin and hard to breathe!",
+            25 to "${ChatColor.GRAY}${RConfig.General.mainMessagePrefix}${ChatColor.DARK_RED}The air is thin and hard to breathe!"
         )),
         CAVE(mapOf(
-            75 to "The air is stale and hard to breathe!",
-            50 to "The air is stale and hard to breathe!",
-            25 to "The air is stale and hard to breathe!"
+            75 to "${ChatColor.GRAY}${RConfig.General.mainMessagePrefix}${ChatColor.YELLOW}The air is stale and hard to breathe!",
+            50 to "${ChatColor.GRAY}${RConfig.General.mainMessagePrefix}${ChatColor.RED}The air is stale and hard to breathe!",
+            25 to "${ChatColor.GRAY}${RConfig.General.mainMessagePrefix}${ChatColor.DARK_RED}The air is stale and hard to breathe!"
         )),
         LIGHT(mapOf(
-            75 to "This place is dark and crazy!",
-            50 to "You start to go insane from the darkness!",
-            25 to "Find some light, you're going insane!"
+            75 to "${ChatColor.GRAY}${RConfig.General.mainMessagePrefix}${ChatColor.YELLOW}This place is dark and crazy!",
+            50 to "${ChatColor.GRAY}${RConfig.General.mainMessagePrefix}${ChatColor.RED}You start to go insane from the darkness!",
+            25 to "${ChatColor.GRAY}${RConfig.General.mainMessagePrefix}${ChatColor.DARK_RED}Find some light, you're going insane!"
         )),
         RADIUS(mapOf());
     }
