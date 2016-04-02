@@ -50,6 +50,8 @@ class RLobby {
 
         updateInformation()
 
+        RPlayer.updateVisibility()
+
         if (members.size >= RConfig.Lobby.minimumPlayerStartCount && members.size <= RConfig.Lobby.maximumPlayerStartCount && RConfig.Lobby.autoStart) {
             startCountdown()
         }
