@@ -41,3 +41,10 @@ thirst:
 
 chat:
     radius: 30
+
+scoreboard:
+    time-string: "§6§lTime"
+    kills-string: "§4§lKills"
+    alive-string: "§2§lAlive"
+    sanity-string: "§5§lSanity"
+    thirst-string: "§7§lThirst"

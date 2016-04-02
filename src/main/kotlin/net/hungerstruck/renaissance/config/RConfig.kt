@@ -66,6 +66,14 @@ object RConfig {
         var radius: Int by path("chat.radius", 30)
     }
 
+    object Scoreboard {
+        var timeString: String by path("scoreboard.time-string", "${ChatColor.GOLD}${ChatColor.BOLD}Time")
+        var killsString: String by path("scoreboard.kills-string", "${ChatColor.DARK_RED}${ChatColor.BOLD}Kills")
+        var aliveString: String by path("scoreboard.alive-string", "${ChatColor.DARK_GREEN}${ChatColor.BOLD}Alive")
+        var sanityString: String by path("scoreboard.sanity-string", "${ChatColor.DARK_PURPLE}${ChatColor.BOLD}Sanity")
+        var thirstString: String by path("scoreboard.thirst-string", "${ChatColor.GRAY}${ChatColor.BOLD}Thirst")
+    }
+
     /**
      * The strategy for which a player gets assigned a lobby/match when he/she first joins.
      * <b>NOTE:</b> This is only for _joining_, not after a cycle. After a cycle, the player will join the next lobby.

@@ -4,6 +4,7 @@ import net.hungerstruck.renaissance.RPlayer
 import net.hungerstruck.renaissance.Renaissance
 import net.hungerstruck.renaissance.clamp
 import net.hungerstruck.renaissance.event.match.RMatchStartEvent
+import net.hungerstruck.renaissance.event.player.RPlayerSanityUpdateEvent
 import net.hungerstruck.renaissance.match.RMatch
 import net.hungerstruck.renaissance.xml.module.Dependencies
 import net.hungerstruck.renaissance.xml.module.RModule
@@ -169,6 +170,8 @@ class SanityModule(match: RMatch, document: Document, modCtx: RModuleContext) : 
             } else {
                 playerSanity[player] = level.clamp(0, 100 - sanityChange) + sanityChange
                 player.level = level.clamp(0, 100 - sanityChange) + sanityChange
+
+                Bukkit.getPluginManager().callEvent(RPlayerSanityUpdateEvent(player, playerSanity[player]!!))
             }
         }
     }
