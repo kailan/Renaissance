@@ -31,4 +31,8 @@ data class RLobbyProperties(val canBuild: Boolean, val canTakeDamage: Boolean)
 /**
  * Simple contributor data class.
  */
-data class Contributor(val name: String, val contribution: String? = null)
+data class Contributor(val name: String, var contribution: String? = null) {
+    infix fun who(contrib: String) {
+        this.contribution = contrib
+    }
+}
