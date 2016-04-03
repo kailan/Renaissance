@@ -10,6 +10,7 @@ import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockBreakEvent
+import org.bukkit.event.block.BlockPlaceEvent
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.entity.EntityDamageEvent
 import org.bukkit.event.entity.FoodLevelChangeEvent
@@ -30,7 +31,7 @@ class LobbyListener : Listener {
         if (event.message.startsWith("/")) return // Ignore commands.
         val lobby = event.player.rplayer.lobby ?: return
 
-        lobby.sendMessage(RConfig.Lobby.chatFormat.format(event.player.name, event.message))
+        lobby.sendPrefixlessMessage(RConfig.Lobby.chatFormat.format(event.player.name, event.message))
         event.isCancelled = true
     }
 
@@ -38,13 +39,19 @@ class LobbyListener : Listener {
     @EventHandler
     public fun onItemDrop(event: ItemSpawnEvent) {
         val lobby = getLobby(event.entity.world) ?: return
-        event.isCancelled = !lobby.lobbyMap.mapInfo.lobbyProperties!!.canBreakBlocks
+        event.isCancelled = !lobby.lobbyMap.mapInfo.lobbyProperties!!.canBuild
     }
 
     @EventHandler
     public fun onBlockBreak(event: BlockBreakEvent) {
         val lobby = getLobby(event.block.world) ?: return
-        event.isCancelled = !lobby.lobbyMap.mapInfo.lobbyProperties!!.canBreakBlocks
+        event.isCancelled = !lobby.lobbyMap.mapInfo.lobbyProperties!!.canBuild
+    }
+
+    @EventHandler
+    fun onBlockPlace(event: BlockPlaceEvent) {
+        val lobby = getLobby(event.block.world) ?: return
+        event.isCancelled = !lobby.lobbyMap.mapInfo.lobbyProperties!!.canBuild
     }
 
     @EventHandler
@@ -61,7 +68,11 @@ class LobbyListener : Listener {
                 return
             }
 
-            event.isCancelled = !lobby.lobbyMap.mapInfo.lobbyProperties!!.canTakeDamage
+            if (lobby.lobbyMap.mapInfo.lobbyProperties!!.canTakeDamage) {
+                event.damage = 0.0
+            } else {
+                event.isCancelled = true
+            }
         } else {
             // Always cancel any non-player damage. Teleport them to spawn if it is void damage.
             event.isCancelled = true
@@ -74,7 +85,7 @@ class LobbyListener : Listener {
     @EventHandler
     public fun onHungerDrain(event: FoodLevelChangeEvent) {
         val lobby = getLobby(event.entity.world) ?: return
-        event.isCancelled = event.isCancelled || !lobby.lobbyMap.mapInfo.lobbyProperties!!.canTakeDamage
+        event.isCancelled = true
     }
 
     private fun getLobby(world: World): RLobby? {

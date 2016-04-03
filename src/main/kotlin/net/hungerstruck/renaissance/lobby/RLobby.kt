@@ -10,9 +10,11 @@ import net.hungerstruck.renaissance.match.RMatch
 import net.hungerstruck.renaissance.teleportable
 import net.hungerstruck.renaissance.xml.RMap
 import org.bukkit.Bukkit
+import org.bukkit.ChatColor
 import org.bukkit.ChatColor.*
 import org.bukkit.GameMode
 import org.bukkit.World
+import org.bukkit.scheduler.BukkitScheduler
 
 /**
  * Manages a simple match-specific lobby.
@@ -46,9 +48,11 @@ class RLobby {
         player.reset()
         player.gameMode = GameMode.SURVIVAL
 
-        player.teleport(lobbyWorld.spawnLocation.teleportable)
+        Bukkit.getScheduler().scheduleSyncDelayedTask(Renaissance.plugin, {player.teleport(lobbyWorld.spawnLocation.teleportable)}, 1)
 
         updateInformation()
+
+        sendMessage("${ChatColor.GREEN}${player.displayName} ${ChatColor.GRAY}has joined the match!")
 
         if (members.size >= RConfig.Lobby.minimumPlayerStartCount && members.size <= RConfig.Lobby.maximumPlayerStartCount && RConfig.Lobby.autoStart) {
             startCountdown()
@@ -63,7 +67,7 @@ class RLobby {
 
     private fun updateInformation() {
         for (player in members) {
-            player.actionBarMessage = "${if (lobbyMap.mapInfo.lobbyProperties!!.canTakeDamage) GREEN else RED}PVP $GRAY| ${if (lobbyMap.mapInfo.lobbyProperties.canBreakBlocks) GREEN else RED}Block Breaking $GRAY| $BLACK${members.size}/${RConfig.Lobby.maximumPlayerStartCount} players"
+            player.actionBarMessage = "${if (lobbyMap.mapInfo.lobbyProperties!!.canTakeDamage) "${GREEN}PVP $GRAY| " else ""}${if (lobbyMap.mapInfo.lobbyProperties!!.canBuild) "${GREEN}Building $GRAY| " else ""}$YELLOW${members.size}/${RConfig.Lobby.maximumPlayerStartCount} players"
         }
     }
 
@@ -81,6 +85,11 @@ class RLobby {
     }
 
     public fun sendMessage(msg: String) {
+        Bukkit.getConsoleSender().sendMessage("[lobby-$id] $msg")
+        members.forEach { it.sendMessage(RConfig.General.mainMessagePrefix + msg) }
+    }
+
+    public fun sendPrefixlessMessage(msg: String) {
         Bukkit.getConsoleSender().sendMessage("[lobby-$id] $msg")
         members.forEach { it.sendMessage(msg) }
     }

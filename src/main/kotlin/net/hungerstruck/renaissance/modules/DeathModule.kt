@@ -10,12 +10,9 @@ import net.hungerstruck.renaissance.teleportable
 import net.hungerstruck.renaissance.xml.module.Dependencies
 import net.hungerstruck.renaissance.xml.module.RModule
 import net.hungerstruck.renaissance.xml.module.RModuleContext
-import net.minecraft.server.v1_8_R3.IChatBaseComponent
-import net.minecraft.server.v1_8_R3.PacketPlayOutTitle
-
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
+import org.bukkit.GameMode
 import org.bukkit.Material
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
@@ -64,7 +61,7 @@ class DeathModule(match: RMatch, document: Document, modCtx: RModuleContext) : R
 
         event.player.state = RPlayer.State.SPECTATING
         event.player.reset()
-        event.player.spigot().collidesWithEntities = false
+        event.player.collidesWithEntities = false
         event.player.allowFlight = true
         event.player.inventory.setItem(0, ItemStack(Material.COMPASS, 1))
         event.player.teleport(match.world.spawnLocation.teleportable)
@@ -72,7 +69,7 @@ class DeathModule(match: RMatch, document: Document, modCtx: RModuleContext) : R
         RPlayer.updateVisibility()
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler
     fun onPlayerDeath(event: PlayerDeathEvent) {
         if (!isMatch(event.entity)) return
         if (match.state != RMatch.State.PLAYING) return
@@ -80,23 +77,24 @@ class DeathModule(match: RMatch, document: Document, modCtx: RModuleContext) : R
         val victim = event.entity.rplayer
         victim.state = RPlayer.State.SPECTATING
         victim.reset(false)
-        victim.spigot().collidesWithEntities = false
+        victim.collidesWithEntities = false
         victim.allowFlight = true
 
-        if (match.alivePlayers.size != 1) {
-            val message = if (victim.killer != null) RConfig.Match.playerDeathByPlayerMessage else RConfig.Match.playerDeathByOtherMessage
-            // Still players alive.
-            match.sendMessage(Formatter().format(message, victim.displayName, victim.killer?.displayName, match.alivePlayers.size).toString())
+        val message = if (victim.killer != null) RConfig.Match.playerDeathByPlayerMessage else RConfig.Match.playerDeathByOtherMessage
+        match.sendMessage(message.replace("%0\$s", victim.displayName).replace("%1\$c", (victim.killer?.displayName).toString()))
+
+        if (match.endCheck()) {
+            var winner: RPlayer
+
+            if (match.alivePlayers.size == 1) {
+                winner = match.alivePlayers[0]
+            } else {
+                winner = victim
+            }
+
+            match.announceWinner(winner)
         } else {
-            // We have a winner.
-            match.sendTitle(RConfig.Match.matchEndMessageTitle.format(match.alivePlayers[0].displayName), RConfig.Match.matchEndMessageSubTitle, RConfig.Match.matchEndMessageFadeIn, RConfig.Match.matchEndMessageDuration, RConfig.Match.matchEndMessageFadeOut )
-
-            match.endMatch()
-
-            // Allow flight for the winner.
-            match.alivePlayers[0].allowFlight = true
-
-            RPlayer.updateVisibility()
+            match.sendMessage(RConfig.Match.playerRemainMessage.replace("%0\$d", match.alivePlayers.size.toString()))
         }
 
         match.world.strikeLightningEffect(victim.location)

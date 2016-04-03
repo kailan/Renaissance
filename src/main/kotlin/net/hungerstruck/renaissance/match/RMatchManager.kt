@@ -33,7 +33,7 @@ class RMatchManager {
         if(worldFolder.exists()) worldFolder.deleteRecursively()
         FileUtil.copyWorldFolder(nextMap.location, worldFolder)
 
-        val gen = WorldCreator(worldName).generator(object : ChunkGenerator() {}).generateStructures(false).environment(nextMap.mapInfo.dimension)
+        val gen = WorldCreator(worldName).generator(RGenerator()).generateStructures(false).environment(nextMap.mapInfo.dimension)
         val world = Bukkit.createWorld(gen)
         world.isAutoSave = false
         world.difficulty = nextMap.mapInfo.difficulty

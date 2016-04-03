@@ -26,7 +26,7 @@ data class RMapInfo(
         get() = "$name by ${authors.map { it.name }.joinToString(", ")}"
 }
 
-data class RLobbyProperties(val canBreakBlocks: Boolean, val canTakeDamage: Boolean)
+data class RLobbyProperties(val canBuild: Boolean, val canTakeDamage: Boolean)
 
 /**
  * Simple contributor data class.

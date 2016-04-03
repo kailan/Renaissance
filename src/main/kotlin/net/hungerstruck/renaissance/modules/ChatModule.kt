@@ -31,12 +31,12 @@ class ChatModule(match: RMatch, document: Document, modCtx: RModuleContext) : RM
 
         if (match.state == RMatch.State.PLAYING) {
             if (rplayer.state == RPlayer.State.PARTICIPATING) {
-                match.sendMessage("<${rplayer.displayName}> ${event.message}", { it.location.distance(rplayer.location) <= RConfig.Chat.radius })
+                match.sendPrefixlessMessage("${ChatColor.YELLOW}Player${ChatColor.GRAY}${ChatColor.BOLD} | ${ChatColor.RESET}${rplayer.displayName} ${ChatColor.GRAY}${RConfig.General.mainMessagePrefix}${event.message}", { it.location.distance(rplayer.location) <= RConfig.Chat.radius || it.state == RPlayer.State.SPECTATING })
             } else {
-                match.sendMessage("<${ChatColor.AQUA}${rplayer.displayName}${ChatColor.WHITE}> ${event.message}", { it.state == RPlayer.State.SPECTATING })
+                match.sendPrefixlessMessage("${ChatColor.AQUA}Spectator${ChatColor.GRAY}${ChatColor.BOLD} | ${ChatColor.RESET}${rplayer.displayName} ${ChatColor.GRAY}${RConfig.General.mainMessagePrefix}${event.message}", { it.state == RPlayer.State.SPECTATING })
             }
         } else {
-            match.sendMessage("<${ChatColor.AQUA}${rplayer.displayName}${ChatColor.WHITE}> ${event.message}")
+            match.sendPrefixlessMessage("${rplayer.displayName} ${ChatColor.GRAY}${RConfig.General.mainMessagePrefix}${event.message}")
         }
     }
 }

@@ -4,6 +4,7 @@ import org.bukkit.Location
 import org.bukkit.entity.Player
 import org.bukkit.util.Vector
 import org.jdom2.Element
+import java.util.*
 
 /**
  * Created by molenzwiebel on 20-12-15.
@@ -90,3 +91,9 @@ fun <T : Comparable<T>> T.clamp(min: T, max: T): T {
 }
 
 public fun <T, R> Collection<T>.mapAs(fn: T.() -> R) = map { it.fn() }
+
+var random = Random()
+
+fun <T> Array<T>.randomElement(): T{
+    return this[random.nextInt(this.size)]
+}
