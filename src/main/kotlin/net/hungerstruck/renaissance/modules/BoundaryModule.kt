@@ -29,7 +29,7 @@ class BoundaryModule(match: RMatch, document: Document, modCtx: RModuleContext) 
 
     init {
         val boundaryEl = document.rootElement.getChild("boundary") ?: throw IllegalArgumentException("Map ${match.map.mapInfo.name} has no boundary element")
-
+        
         val region = modCtx.regionParser.parse(boundaryEl.children[0])
         if (region !is RectangleRegion)
             throw IllegalArgumentException("Expected boundary of ${match.map.mapInfo.name} to be a rectangle")

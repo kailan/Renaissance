@@ -11,6 +11,7 @@ import net.hungerstruck.renaissance.match.RMatchManager
 import net.hungerstruck.renaissance.modules.*
 import net.hungerstruck.renaissance.modules.oregen.OregenModule
 import net.hungerstruck.renaissance.modules.region.RegionModule
+import net.hungerstruck.renaissance.settings.Settings
 import net.hungerstruck.renaissance.modules.scoreboard.ScoreboardModule
 import net.hungerstruck.renaissance.modules.ux.BloodModule
 import net.hungerstruck.renaissance.modules.ux.ParticleModule
@@ -69,6 +70,8 @@ object Renaissance {
         Bukkit.getPluginManager().registerEvents(LobbyListener(), plugin)
         Bukkit.getPluginManager().registerEvents(ConnectionListener(), plugin)
         Bukkit.getPluginManager().registerEvents(SimpleEventsListener(), plugin)
+
+        Settings.register()
     }
 
 

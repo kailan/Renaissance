@@ -32,6 +32,7 @@
             <artifactId>kotlin-stdlib</artifactId>
             <version>${kotlin.version}</version>
         </dependency>
+
         <dependency>
             <groupId>org.jdom</groupId>
             <artifactId>jdom</artifactId>
@@ -53,6 +54,13 @@
             <groupId>com.sk89q</groupId>
             <artifactId>command-framework-bukkit</artifactId>
             <version>0.6-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>me.anxuiz</groupId>
+            <artifactId>bukkit-settings</artifactId>
+            <version>1.9-SNAPSHOT</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
@@ -139,6 +147,8 @@
                                     <exclude>org.bukkit:bukkit</exclude>
                                     <exclude>org.spigotmc:spigot</exclude>
                                     <exclude>org.bukkit:craftbukkit</exclude>
+                                    <exclude>me.anxuiz:settings</exclude>
+                                    <exclude>me.anxuiz.settings:bukkit-settings</exclude>
                                 </excludes>
                             </artifactSet>
                         </configuration>

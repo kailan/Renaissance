@@ -1,15 +1,16 @@
 package net.hungerstruck.renaissance
 
+import me.anxuiz.settings.Setting
 import net.hungerstruck.renaissance.lobby.RLobby
 import net.hungerstruck.renaissance.match.RMatch
 import org.bukkit.Bukkit
-import org.bukkit.ChatColor
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.inventory.ItemStack
+import me.anxuiz.settings.bukkit.PlayerSettings
 
 /**
  * Player object for our needs.
@@ -59,6 +60,11 @@ class RPlayer(val bukkit: Player) : Player by bukkit {
             assert(x == State.NONE || match != null, { "Cannot set state to $x if not in a match" })
             field = x
         }
+
+    /**
+     * @return Setting value from Settings
+     */
+    inline fun <reified T : Any> getSetting(setting: Setting) = PlayerSettings.getManager(bukkit).getValue(setting, T::class.java)
 
     public fun reset(resetHealth: Boolean = true) {
         if (resetHealth) health = 20.0

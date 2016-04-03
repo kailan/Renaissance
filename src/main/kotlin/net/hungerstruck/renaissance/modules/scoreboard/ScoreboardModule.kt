@@ -11,11 +11,10 @@ import net.hungerstruck.renaissance.event.player.RPlayerSanityUpdateEvent
 import net.hungerstruck.renaissance.event.player.RPlayerThirstUpdateEvent
 import net.hungerstruck.renaissance.match.RMatch
 import net.hungerstruck.renaissance.modules.SanityModule
+import net.hungerstruck.renaissance.modules.ThirstModule
 import net.hungerstruck.renaissance.rplayer
-import net.hungerstruck.renaissance.xml.module.RModule
-import net.hungerstruck.renaissance.xml.module.RModuleContext
-import net.hungerstruck.renaissance.xml.module.RModuleInfo
-import net.hungerstruck.renaissance.xml.module.RModuleRegistry
+import net.hungerstruck.renaissance.settings.Settings
+import net.hungerstruck.renaissance.xml.module.*
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
@@ -29,6 +28,7 @@ import java.util.UUID
 /**
  * Created by teddy on 29/03/2016.
  */
+@Dependencies(ThirstModule::class, SanityModule::class)
 class ScoreboardModule(match: RMatch, document: Document, modCtx: RModuleContext) : RModule(match, document, modCtx) {
 
     val scoreboardMap: MutableMap<UUID, RScoreboard>
@@ -43,12 +43,9 @@ class ScoreboardModule(match: RMatch, document: Document, modCtx: RModuleContext
 
     @EventHandler
     fun onMatchStart(event: RMatchStartEvent) {
-        for (p in event.match.players) {
-            val scoreboard = RScoreboard("§e§lHungerStruck", p.uniqueId)
-            setupScoreboard(scoreboard, p)
-            scoreboard.show()
-            scoreboardMap.put(p.uniqueId, scoreboard)
-        }
+        for (p in event.match.players)
+            if(p.getSetting<Boolean>(Settings.SCOREBOARD_OPTIONS) == true)
+                showScoreboard(p)
 
         timer = Bukkit.getScheduler().scheduleSyncRepeatingTask(Renaissance.plugin, ScoreboardTimer(this), 0, 20)
     }
@@ -56,7 +53,7 @@ class ScoreboardModule(match: RMatch, document: Document, modCtx: RModuleContext
     @EventHandler
     fun onMatchEnd(event: RMatchEndEvent){
         for (p in event.match.players){
-            p.player.scoreboard = Bukkit.getScoreboardManager().mainScoreboard
+            hideScoreboard(p)
         }
 
         scoreboardMap.clear()
@@ -88,12 +85,26 @@ class ScoreboardModule(match: RMatch, document: Document, modCtx: RModuleContext
 
     @EventHandler
     fun onThirstUpdate(event: RPlayerThirstUpdateEvent){
+        if(!isMatch(event.player)) return
         scoreboardMap[event.player.uniqueId]?.setScore(-15, event.thirst.toString() + "%§1 ")?.show()
     }
 
     @EventHandler
     fun onSanityUpdate(event: RPlayerSanityUpdateEvent){
+        if(!isMatch(event.player)) return
         scoreboardMap[event.player.uniqueId]?.setScore(-12, event.sanity.toString() + "%§2 ")?.show()
+    }
+
+    public fun showScoreboard(player: RPlayer) {
+        val scoreboard = RScoreboard("§e§lHungerStruck", player.uniqueId)
+        setupScoreboard(scoreboard, player)
+        scoreboard.show()
+        scoreboardMap.put(player.uniqueId, scoreboard)
+    }
+
+    public fun hideScoreboard(player: RPlayer) {
+        player.scoreboard = Bukkit.getScoreboardManager().mainScoreboard
+        scoreboardMap.remove(player.uniqueId)
     }
 
     private fun setupScoreboard(scoreboard: RScoreboard, player: RPlayer) {
@@ -101,8 +112,8 @@ class ScoreboardModule(match: RMatch, document: Document, modCtx: RModuleContext
         scoreboard.setScore(-4, "§2 ").setScore(-5, RConfig.Scoreboard.killsString).setScore(-6, "0")
         scoreboard.setScore(-7, "§3 ").setScore(-8, RConfig.Scoreboard.aliveString).setScore(-9, this.match.alivePlayers.size.toString())
         if (match.alivePlayers.contains(player)) {
-            scoreboard.setScore(-10, "§4 ").setScore(-11, RConfig.Scoreboard.sanityString).setScore(-12, "100%§1 ")
-            scoreboard.setScore(-13, "§5 ").setScore(-14, RConfig.Scoreboard.thirstString).setScore(-15, "100%§2 ")
+            scoreboard.setScore(-10, "§4 ").setScore(-11, RConfig.Scoreboard.sanityString).setScore(-12, "${match.moduleContext.getModule<SanityModule>()!!.playerSanity[player]}%§1 ")
+            scoreboard.setScore(-13, "§5 ").setScore(-14, RConfig.Scoreboard.thirstString).setScore(-15, "${match.moduleContext.getModule<ThirstModule>()!!.playerThirst[player]}%§2 ")
         }
     }
 }

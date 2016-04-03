@@ -172,9 +172,9 @@ class SanityModule(match: RMatch, document: Document, modCtx: RModuleContext) : 
             } else {
                 playerSanity[player] = level.clamp(0, 100 - sanityChange) + sanityChange
                 player.level = level.clamp(0, 100 - sanityChange) + sanityChange
-
-                Bukkit.getPluginManager().callEvent(RPlayerSanityUpdateEvent(player, playerSanity[player]!!))
             }
+
+            Bukkit.getPluginManager().callEvent(RPlayerSanityUpdateEvent(player, playerSanity[player]!!))
         }
     }
 
