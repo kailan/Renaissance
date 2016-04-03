@@ -12,18 +12,14 @@ import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.event.EventHandler
 import org.bukkit.scheduler.BukkitTask
-import org.jdom2.Document
 import java.util.*
 
 /**
  * Created by teddy on 31/03/2016.
  */
-class ParticleModule(match: RMatch, document: Document, modCtx: RModuleContext) : RModule(match, document, modCtx) {
-
+class ParticleModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCtx) {
     private val random: Random
-
     private var timer: BukkitTask? = null
-
 
     init {
         registerEvents()

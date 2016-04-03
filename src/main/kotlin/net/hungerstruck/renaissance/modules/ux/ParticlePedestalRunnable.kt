@@ -9,7 +9,6 @@ import org.bukkit.scheduler.BukkitRunnable
  * Created by teddy on 31/03/2016.
  */
 class ParticlePedestalRunnable(private val module: PedestalModule, private val continuous: Boolean) : BukkitRunnable() {
-
     private var ped = 0
     private var fireworkEffect = RFirework.randomEffect
 
@@ -18,7 +17,6 @@ class ParticlePedestalRunnable(private val module: PedestalModule, private val c
         Bukkit.getScheduler().scheduleSyncDelayedTask(Renaissance.plugin, { firework.detonate() }, 3)
 
         ped += 2
-
 
         if (ped >= module.pedestals.size && ped % 2 == 0) {
             ped = 1
@@ -29,5 +27,4 @@ class ParticlePedestalRunnable(private val module: PedestalModule, private val c
             if (!continuous) cancel()
         }
     }
-
 }

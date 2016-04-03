@@ -1,20 +1,17 @@
 package net.hungerstruck.renaissance.modules.ux
 
 import co.enviark.struckbukkit.effects.ParticleBuilder
-import me.anxuiz.settings.bukkit.PlayerSettings
 import net.hungerstruck.renaissance.match.RMatch
 import net.hungerstruck.renaissance.settings.Settings
 import net.hungerstruck.renaissance.xml.module.RModule
 import net.hungerstruck.renaissance.xml.module.RModuleContext
 import org.bukkit.Material
 import org.bukkit.Particle
-import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.entity.EntityDamageEvent
-import org.jdom2.Document
 
-class BloodModule(match: RMatch, document: Document, modCtx: RModuleContext) : RModule(match, document, modCtx) {
+class BloodModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCtx) {
     private val particle: ParticleBuilder
 
     init {

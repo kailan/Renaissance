@@ -44,7 +44,7 @@ class RMatch {
         this.map = map
         this.world = world
 
-        this.moduleContext = RModuleContext(this, map.document)
+        this.moduleContext = RModuleContext(this)
 
         Bukkit.getPluginManager().callEvent(RMatchLoadEvent(this))
     }

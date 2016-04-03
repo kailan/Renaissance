@@ -12,12 +12,10 @@ import net.hungerstruck.renaissance.xml.module.RModule
 import net.hungerstruck.renaissance.xml.module.RModuleContext
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
-import org.bukkit.GameMode
 import org.bukkit.Material
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
-import org.bukkit.event.EventPriority
 import org.bukkit.event.block.Action
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.block.BlockPlaceEvent
@@ -30,7 +28,6 @@ import org.bukkit.event.vehicle.VehicleDestroyEvent
 import org.bukkit.event.vehicle.VehicleEnterEvent
 import org.bukkit.inventory.InventoryHolder
 import org.bukkit.inventory.ItemStack
-import org.jdom2.Document
 import java.util.*
 
 /**
@@ -39,7 +36,7 @@ import java.util.*
  * Created by molenzwiebel on 03-01-16.
  */
 @Dependencies
-class DeathModule(match: RMatch, document: Document, modCtx: RModuleContext) : RModule(match, document, modCtx) {
+class DeathModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCtx) {
     private val watching: WeakHashMap<RPlayer, Int> = WeakHashMap()
 
     init {

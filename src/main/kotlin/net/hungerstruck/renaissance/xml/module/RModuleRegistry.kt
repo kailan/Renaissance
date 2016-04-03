@@ -1,7 +1,6 @@
 package net.hungerstruck.renaissance.xml.module
 
 import net.hungerstruck.renaissance.match.RMatch
-import org.jdom2.Document
 import java.lang.reflect.Constructor
 import kotlin.reflect.KClass
 
@@ -30,7 +29,7 @@ data class RModuleInfo(val clazz: KClass<out RModule>, val dependencies: Array<R
             if (INSTANCES[clazz] != null) return INSTANCES[clazz]!!
 
             val dependencies = clazz.java.annotations.filterIsInstance<Dependencies>().firstOrNull()?.value ?: arrayOf()
-            INSTANCES.put(clazz, RModuleInfo(clazz, dependencies.map { RModuleInfo.of(it) }.toTypedArray(), clazz.java.getConstructor(RMatch::class.java, Document::class.java, RModuleContext::class.java)))
+            INSTANCES.put(clazz, RModuleInfo(clazz, dependencies.map { RModuleInfo.of(it) }.toTypedArray(), clazz.java.getConstructor(RMatch::class.java, RModuleContext::class.java)))
             return of(clazz)
         }
     }

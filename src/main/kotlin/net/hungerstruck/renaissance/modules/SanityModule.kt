@@ -10,7 +10,6 @@ import net.hungerstruck.renaissance.match.RMatch
 import net.hungerstruck.renaissance.xml.module.Dependencies
 import net.hungerstruck.renaissance.xml.module.RModule
 import net.hungerstruck.renaissance.xml.module.RModuleContext
-import net.hungerstruck.renaissance.xml.toInt
 import net.minecraft.server.PacketPlayOutWorldBorder
 import net.minecraft.server.WorldBorder
 import org.bukkit.Bukkit
@@ -20,16 +19,15 @@ import org.bukkit.craftbukkit.entity.CraftPlayer
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.entity.PlayerDeathEvent
-import org.jdom2.Document
 import java.util.*
 
 /**
  * Created by molenzwiebel on 21-12-15.
  */
 @Dependencies(BoundaryModule::class)
-class SanityModule(match: RMatch, document: Document, modCtx: RModuleContext) : RModule(match, document, modCtx) {
-    val airHeight: Int
-    val overallLightLevel: Int
+class SanityModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCtx) {
+    val airHeight: Int = 0
+    val overallLightLevel: Int = 0
 
     val sanityChange = 2
     val sanityDamage = 1.0
@@ -60,15 +58,6 @@ class SanityModule(match: RMatch, document: Document, modCtx: RModuleContext) : 
     }
 
     init {
-        val el = document.rootElement.getChild("sanity")
-        if (el == null) {
-            this.airHeight = 150
-            this.overallLightLevel = 11
-        } else {
-            this.airHeight = el.getChild("heightSettings")?.getChildTextNormalize("airHeight").toInt(defaultValue = 150)
-            this.overallLightLevel = el.getChild("lightSettings")?.getChildTextNormalize("overallLightLevel").toInt(defaultValue = 11)
-        }
-
         registerEvents()
     }
 

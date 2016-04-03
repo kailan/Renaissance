@@ -1,9 +1,6 @@
 package net.hungerstruck.renaissance.xml.module
 
 import net.hungerstruck.renaissance.match.RMatch
-import net.hungerstruck.renaissance.modules.region.RegionManager
-import net.hungerstruck.renaissance.modules.region.RegionParser
-import org.jdom2.Document
 import kotlin.reflect.KClass
 
 /**
@@ -11,16 +8,10 @@ import kotlin.reflect.KClass
  */
 class RModuleContext {
     final val modules: MutableSet<RModule> = hashSetOf()
-
     protected final val match: RMatch
-    protected final val document: Document
 
-    final val regionManager: RegionManager = RegionManager()
-    final val regionParser: RegionParser = RegionParser(regionManager)
-
-    constructor(match: RMatch, document: Document) {
+    constructor(match: RMatch) {
         this.match = match
-        this.document = document
 
         for (info in RModuleRegistry.MODULES) {
             loadModule(info)
@@ -46,7 +37,7 @@ class RModuleContext {
             if (!loadModule(dep)) return false
         }
 
-        val instance = info.constructor.newInstance(match, document, this)
+        val instance = info.constructor.newInstance(match, this)
         modules.add(instance)
         return true
     }

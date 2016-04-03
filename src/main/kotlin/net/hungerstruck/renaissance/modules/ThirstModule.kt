@@ -20,13 +20,12 @@ import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerItemConsumeEvent
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
-import org.jdom2.Document
 import java.util.*
 
 /**
  * Created by molenzwiebel on 17-01-16.
  */
-class ThirstModule(match: RMatch, document: Document, modCtx: RModuleContext) : RModule(match, document, modCtx) {
+class ThirstModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCtx) {
     val playerThirst: WeakHashMap<Player, Int> = WeakHashMap()
 
     init {

@@ -10,13 +10,12 @@ import net.hungerstruck.renaissance.xml.module.RModuleContext
 import org.bukkit.ChatColor
 import org.bukkit.event.EventHandler
 import org.bukkit.event.player.AsyncPlayerChatEvent
-import org.jdom2.Document
 
 /**
  * Created by molenzwiebel on 03-01-16.
  */
 @Dependencies
-class ChatModule(match: RMatch, document: Document, modCtx: RModuleContext) : RModule(match, document, modCtx) {
+class ChatModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCtx) {
     init {
         registerEvents()
     }

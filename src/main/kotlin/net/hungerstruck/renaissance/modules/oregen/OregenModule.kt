@@ -13,7 +13,6 @@ import net.minecraft.server.IBlockData
 import net.minecraft.server.WorldGenMinable
 import org.bukkit.craftbukkit.CraftWorld
 import org.bukkit.event.EventHandler
-import org.jdom2.Document
 import java.util.*
 
 /**
@@ -22,7 +21,7 @@ import java.util.*
  * Created by molenzwiebel on 10-01-16.
  */
 @Dependencies(BoundaryModule::class)
-class OregenModule(match: RMatch, document: Document, modCtx: RModuleContext) : RModule(match, document, modCtx) {
+class OregenModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCtx) {
     val ores: RandomCollection<IBlockData> = RandomCollection()
     val random: Random = Random()
 

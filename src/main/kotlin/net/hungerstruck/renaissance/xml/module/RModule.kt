@@ -11,7 +11,6 @@ import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
 import org.bukkit.event.HandlerList
 import org.bukkit.event.Listener
-import org.jdom2.Document
 
 /**
  * Base class for modules.
@@ -20,14 +19,12 @@ import org.jdom2.Document
  */
 abstract class RModule : Listener {
     final val match: RMatch
-    final val document: Document
     final var moduleContext: RModuleContext
 
     private val listeners: MutableList<Listener> = arrayListOf()
 
-    constructor(match: RMatch, document: Document, modCtx: RModuleContext) {
+    constructor(match: RMatch, modCtx: RModuleContext) {
         this.match = match
-        this.document = document
         this.moduleContext = modCtx
     }
 

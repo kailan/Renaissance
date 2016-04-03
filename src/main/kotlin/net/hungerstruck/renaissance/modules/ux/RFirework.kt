@@ -12,7 +12,6 @@ import java.util.*
  * Created by teddy on 31/03/2016.
  */
 class RFirework(private var power: Int, private var effect: FireworkEffect) {
-
     fun getEffect(): FireworkEffect {
         return effect
     }
@@ -42,7 +41,6 @@ class RFirework(private var power: Int, private var effect: FireworkEffect) {
     }
 
     companion object {
-
         private var random: Random? = Random()
 
         fun playRandom(location: Location): Firework {
@@ -52,6 +50,4 @@ class RFirework(private var power: Int, private var effect: FireworkEffect) {
         val randomEffect: FireworkEffect
             get() = FireworkEffect.builder().flicker(random!!.nextBoolean()).with(FireworkEffect.Type.values().randomElement()).withColor(DyeColor.values().randomElement().color).withFade(DyeColor.values().randomElement().color).trail(random!!.nextBoolean()).build()
     }
-
-
 }

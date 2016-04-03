@@ -3,7 +3,6 @@ package net.hungerstruck.renaissance
 import org.bukkit.Location
 import org.bukkit.entity.Player
 import org.bukkit.util.Vector
-import org.jdom2.Element
 import java.util.*
 
 /**
@@ -27,10 +26,6 @@ fun <K> MutableMap<K, Int>.incrementBy(key: K, value: Int, defaultValue: Int = 0
 
 infix fun Double.pow(x: Double): Double {
     return Math.pow(this, x)
-}
-
-operator fun Element.get(attrName: String): String? {
-    return getAttributeValue(attrName)
 }
 
 public val Location.teleportable: Location
