@@ -22,16 +22,16 @@ object MapCommands {
         val map: RMap = if (player.rplayer.match != null) CommandUtils.getPlayer(sender).rplayer.match!!.map else CommandUtils.getPlayer(sender).rplayer.lobby!!.lobbyMap
         val mapInfo: RMapInfo = map.mapInfo;
 
-        sender.sendMessage(ChatColor.DARK_PURPLE.toString() + "Name: " +  ChatColor.GOLD + mapInfo.name);
-        sender.sendMessage(ChatColor.DARK_PURPLE.toString() + "Objective: " + ChatColor.GOLD + mapInfo.objective);
-        sender.sendMessage(ChatColor.DARK_PURPLE.toString() + "Author(s): ${ChatColor.GOLD.toString() + mapInfo.authors.map { it.name }.joinToString(", ")}");
+        sender.sendMessage(CommandUtils.formatHeader(ChatColor.DARK_AQUA.toString() + mapInfo.name + " " + ChatColor.GRAY + mapInfo.version));
+        sender.sendMessage(ChatColor.DARK_PURPLE.toString() + ChatColor.BOLD + "Objective: " + ChatColor.RESET + ChatColor.GOLD + mapInfo.objective);
+        sender.sendMessage(ChatColor.DARK_PURPLE.toString() + ChatColor.BOLD + "Author(s): ${ChatColor.RESET.toString() + ChatColor.GOLD.toString() + mapInfo.authors.map { ChatColor.DARK_AQUA.toString() + it.name }.joinToString(", ")}");
 
         if (mapInfo.contributors.size > 0)
-            sender.sendMessage(ChatColor.DARK_PURPLE.toString() + ChatColor.BOLD + "Contributor(s): ${mapInfo.contributors.map { it.name }.joinToString(", ")}");
+            sender.sendMessage(ChatColor.DARK_PURPLE.toString() + "Contributor(s): ${mapInfo.contributors.map { ChatColor.DARK_AQUA.toString() + it.name }.joinToString(", ")}");
 
         val rules: List<String> = mapInfo.rules;
         if (rules.size > 0) {
-            sender.sendMessage(ChatColor.DARK_PURPLE.toString() + ChatColor.BOLD + "Rules:");
+            sender.sendMessage(ChatColor.DARK_PURPLE.toString() + "Rules:");
             for (i in rules.indices)
                 sender.sendMessage("${(i + 1)}) " + ChatColor.GOLD + rules.get(i));
         }
