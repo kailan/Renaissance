@@ -61,8 +61,7 @@ class DeathModule(match: RMatch, document: Document, modCtx: RModuleContext) : R
 
         event.player.state = RPlayer.State.SPECTATING
         event.player.reset()
-        // TODO: use StruckBukkit collision API
-        //event.player.spigot().collidesWithEntities = false
+        event.player.collidesWithEntities = false
         event.player.allowFlight = true
         event.player.inventory.setItem(0, ItemStack(Material.COMPASS, 1))
         event.player.teleport(match.world.spawnLocation.teleportable)
@@ -78,10 +77,7 @@ class DeathModule(match: RMatch, document: Document, modCtx: RModuleContext) : R
         val victim = event.entity.rplayer
         victim.state = RPlayer.State.SPECTATING
         victim.reset(false)
-        // TODO: use StruckBukkit collision API
-        //victim.spigot().collidesWithEntities = false
-        victim.gameMode = GameMode.SPECTATOR //TEMP
-
+        victim.collidesWithEntities = false
         victim.allowFlight = true
 
         val message = if (victim.killer != null) RConfig.Match.playerDeathByPlayerMessage else RConfig.Match.playerDeathByOtherMessage
