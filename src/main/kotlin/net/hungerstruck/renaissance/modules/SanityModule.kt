@@ -7,6 +7,7 @@ import net.hungerstruck.renaissance.config.RConfig
 import net.hungerstruck.renaissance.event.match.RMatchStartEvent
 import net.hungerstruck.renaissance.event.player.RPlayerSanityUpdateEvent
 import net.hungerstruck.renaissance.match.RMatch
+import net.hungerstruck.renaissance.xml.builder.inject
 import net.hungerstruck.renaissance.xml.module.Dependencies
 import net.hungerstruck.renaissance.xml.module.RModule
 import net.hungerstruck.renaissance.xml.module.RModuleContext
@@ -26,8 +27,8 @@ import java.util.*
  */
 @Dependencies(BoundaryModule::class)
 class SanityModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCtx) {
-    val airHeight: Int = 0
-    val overallLightLevel: Int = 0
+    @inject val airHeight: Int = 0
+    @inject val overallLightLevel: Int = 0
 
     val sanityChange = 2
     val sanityDamage = 1.0
@@ -57,7 +58,7 @@ class SanityModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCt
         RADIUS(mapOf());
     }
 
-    init {
+    override fun init() {
         registerEvents()
     }
 

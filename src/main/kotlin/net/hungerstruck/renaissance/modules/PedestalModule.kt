@@ -1,5 +1,6 @@
 package net.hungerstruck.renaissance.modules
 
+import com.google.common.collect.Iterables
 import net.hungerstruck.renaissance.RPlayer
 import net.hungerstruck.renaissance.event.lobby.RLobbyEndEvent
 import net.hungerstruck.renaissance.event.player.RPlayerJoinMatchEvent
@@ -7,6 +8,7 @@ import net.hungerstruck.renaissance.match.RMatch
 import net.hungerstruck.renaissance.modules.region.BlockRegion
 import net.hungerstruck.renaissance.rplayer
 import net.hungerstruck.renaissance.teleportable
+import net.hungerstruck.renaissance.xml.builder.inject
 import net.hungerstruck.renaissance.xml.module.RModule
 import net.hungerstruck.renaissance.xml.module.RModuleContext
 import org.bukkit.event.EventHandler
@@ -18,12 +20,11 @@ import org.bukkit.event.player.PlayerMoveEvent
  * Created by molenzwiebel on 21-12-15.
  */
 class PedestalModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCtx) {
-    lateinit var pedestals: List<BlockRegion>
+    @inject lateinit var pedestals: List<BlockRegion>
     lateinit var pedestalIt: Iterator<BlockRegion>
 
-    init {
-        // pedestalIt = Iterables.cycle(pedestals).iterator()
-
+    override fun init() {
+        pedestalIt = Iterables.cycle(pedestals).iterator()
         registerEvents()
     }
 

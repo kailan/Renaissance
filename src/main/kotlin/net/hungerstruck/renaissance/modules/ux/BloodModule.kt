@@ -12,9 +12,9 @@ import org.bukkit.event.EventPriority
 import org.bukkit.event.entity.EntityDamageEvent
 
 class BloodModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCtx) {
-    private val particle: ParticleBuilder
+    private lateinit var particle: ParticleBuilder
 
-    init {
+    override fun init() {
         this.particle = Particle.builder().setParticle(Particle.BLOCK_CRACK).setOffset(0.25f).setCount(30).setData(Material.REDSTONE_BLOCK.id)
         registerEvents()
     }

@@ -38,7 +38,15 @@ class RModuleContext {
         }
 
         val instance = info.constructor.newInstance(match, this)
+        
+        injectProperties(/*builder, */instance)
+        instance.init()
+
         modules.add(instance)
         return true
+    }
+
+    private fun injectProperties(/*builder: AbstractMapBuilder<*>, */mod: RModule) {
+
     }
 }

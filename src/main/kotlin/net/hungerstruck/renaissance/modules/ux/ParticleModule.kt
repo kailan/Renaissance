@@ -18,12 +18,11 @@ import java.util.*
  * Created by teddy on 31/03/2016.
  */
 class ParticleModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCtx) {
-    private val random: Random
+    private val random: Random = Random()
     private var timer: BukkitTask? = null
 
-    init {
+    override fun init() {
         registerEvents()
-        this.random = Random()
     }
 
     @EventHandler

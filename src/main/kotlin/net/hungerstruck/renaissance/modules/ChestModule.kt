@@ -8,6 +8,7 @@ import net.hungerstruck.renaissance.match.RMatch
 import net.hungerstruck.renaissance.modules.region.BlockRegion
 import net.hungerstruck.renaissance.times
 import net.hungerstruck.renaissance.util.RandomCollection
+import net.hungerstruck.renaissance.xml.builder.inject
 import net.hungerstruck.renaissance.xml.module.RModule
 import net.hungerstruck.renaissance.xml.module.RModuleContext
 import org.bukkit.Bukkit
@@ -23,7 +24,6 @@ import java.util.*
  * Created by molenzwiebel on 03-01-16.
  */
 class ChestModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCtx) {
-    val chests: MutableList<BlockRegion> = arrayListOf()
     val processedChunks: MutableList<Chunk> = arrayListOf()
     val rand: Random = Random()
 
@@ -33,12 +33,12 @@ class ChestModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCtx
     var lastItems: RandomCollection<ItemStack>? = null
     val processedChests: MutableList<BlockRegion> = arrayListOf()
 
-    val maxItems: Int = 0
-    var rareMultiplier: Double = 0.0
+    @inject lateinit var chests: MutableList<BlockRegion>
+    @inject val maxItems: Int = 7
+    @inject var rareMultiplier: Double = 1.0
+    @inject lateinit var mode: Mode
 
-    lateinit var mode: Mode
-
-    init {
+    override fun init() {
         setupItems()
         registerEvents()
     }

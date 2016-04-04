@@ -2,6 +2,7 @@ package net.hungerstruck.renaissance.modules
 
 import net.hungerstruck.renaissance.event.match.RMatchLoadEvent
 import net.hungerstruck.renaissance.match.RMatch
+import net.hungerstruck.renaissance.xml.builder.inject
 import net.hungerstruck.renaissance.xml.module.Dependencies
 import net.hungerstruck.renaissance.xml.module.RModule
 import net.hungerstruck.renaissance.xml.module.RModuleContext
@@ -9,9 +10,9 @@ import org.bukkit.event.EventHandler
 
 @Dependencies(TimeLockModule::class)
 class TimeSetModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCtx) {
-    val value: Long = 0
+    @inject val value: Long = 0
 
-    init {
+    override fun init() {
         registerEvents()
     }
 

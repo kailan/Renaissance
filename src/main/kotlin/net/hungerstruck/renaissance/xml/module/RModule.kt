@@ -23,6 +23,8 @@ abstract class RModule : Listener {
 
     private val listeners: MutableList<Listener> = arrayListOf()
 
+    abstract fun init()
+
     constructor(match: RMatch, modCtx: RModuleContext) {
         this.match = match
         this.moduleContext = modCtx

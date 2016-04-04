@@ -28,7 +28,7 @@ class OregenModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCt
     val oresPerChunk: Int = 10
     val maxVeinSize: Int = 8
 
-    init {
+    override fun init() {
         ores[0.05] = Blocks.LAPIS_ORE.blockData
         ores[0.001] = Blocks.DIAMOND_ORE.blockData
         ores[0.025] = Blocks.GOLD_ORE.blockData

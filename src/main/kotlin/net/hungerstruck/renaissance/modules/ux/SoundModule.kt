@@ -12,7 +12,7 @@ import org.bukkit.event.EventHandler
  * Created by teddy on 30/03/2016.
  */
 class SoundModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCtx) {
-    init {
+    override fun init() {
         registerEvents()
     }
 

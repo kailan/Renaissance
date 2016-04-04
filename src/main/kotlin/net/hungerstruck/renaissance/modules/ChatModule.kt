@@ -16,7 +16,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent
  */
 @Dependencies
 class ChatModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCtx) {
-    init {
+    override fun init() {
         registerEvents()
     }
 

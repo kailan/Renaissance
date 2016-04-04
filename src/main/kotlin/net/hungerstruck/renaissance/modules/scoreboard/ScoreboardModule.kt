@@ -26,13 +26,11 @@ import java.util.*
  */
 @Dependencies(ThirstModule::class, SanityModule::class)
 class ScoreboardModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCtx) {
-    val scoreboardMap: MutableMap<UUID, RScoreboard>
-    val killMap: MutableMap<UUID, Int>
+    val scoreboardMap: MutableMap<UUID, RScoreboard> = hashMapOf()
+    val killMap: MutableMap<UUID, Int> = hashMapOf()
     var timer = 0
 
-    init {
-        scoreboardMap = HashMap<UUID, RScoreboard>()
-        killMap = HashMap<UUID, Int>()
+    override fun init() {
         registerEvents()
     }
 

@@ -39,7 +39,7 @@ import java.util.*
 class DeathModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCtx) {
     private val watching: WeakHashMap<RPlayer, Int> = WeakHashMap()
 
-    init {
+    override fun init() {
         registerEvents()
     }
 

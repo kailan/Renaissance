@@ -28,7 +28,7 @@ import java.util.*
 class ThirstModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCtx) {
     val playerThirst: WeakHashMap<Player, Int> = WeakHashMap()
 
-    init {
+    override fun init() {
         registerEvents()
     }
 
