@@ -2,18 +2,56 @@ package net.hungerstruck.renaissance.xml.builder
 
 import net.hungerstruck.renaissance.modules.BoundaryModule
 import net.hungerstruck.renaissance.xml.Contributor
+import net.hungerstruck.renaissance.xml.RLobbyProperties
 import org.bukkit.Difficulty
 import org.bukkit.World
 import org.bukkit.util.Vector
 
 /**
  * Class that builds maps.
- *
- * Created by molenzwiebel on 03-04-16.
  */
 class MapBuilder : AbstractMapBuilder<MapBuilder>() {
     class StringListBuilder : SingleTypeListBuilder<StringListBuilder, String, String>()
     class ContributorListBuilder : SingleTypeListBuilder<ContributorListBuilder, String, Contributor>({ Contributor(it) })
+
+    lateinit var name: String
+    lateinit var version: String
+    lateinit var objective: String
+
+    var lobby: String? = null
+    var lobbyProperties: RLobbyProperties? = null
+    fun lobby(f: RLobbyProperties.() -> Unit) {
+        lobbyProperties = RLobbyProperties()
+        lobbyProperties!!.f()
+    }
+
+    lateinit var authors: Collection<Contributor>
+    var contributors: Collection<Contributor> = arrayListOf()
+    var rules: Collection<String> = arrayListOf("Standard rules apply.")
+
+    var difficulty = Difficulty.NORMAL
+    var dimension = World.Environment.NORMAL
+
+    /**
+     * Specifies a list of rules (strings).
+     */
+    fun rules(x: StringListBuilder.() -> Unit) {
+        rules = StringListBuilder().run(x)
+    }
+
+    /**
+     * Specifies a list of authors (strings -> Contributors).
+     */
+    fun authors(x: ContributorListBuilder.() -> Unit) {
+        authors = ContributorListBuilder().run(x)
+    }
+
+    /**
+     * Specifies a list of contributors (strings -> Contributors).
+     */
+    fun contributors(x: ContributorListBuilder.() -> Unit) {
+        contributors = ContributorListBuilder().run(x)
+    }
 
     class BoundarySettings : BuilderPropertySet<BoundarySettings>() {
         lateinit var center: Vector
@@ -21,43 +59,11 @@ class MapBuilder : AbstractMapBuilder<MapBuilder>() {
         lateinit var max: Vector
     }
 
-    class MapInfoSettings : BuilderPropertySet<MapInfoSettings>() {
-        lateinit var name: String
-        lateinit var objective: String
-        lateinit var version: String
-        var difficulty: Difficulty = Difficulty.EASY
-        var dimension: World.Environment = World.Environment.NORMAL
-    }
-
-    /**
-     * Specifies a list of rules (strings).
-     */
-    fun rules(x: StringListBuilder.() -> Unit)
-            = register<BoundaryModule>("rules", StringListBuilder().run(x))
-
-    /**
-     * Specifies a list of authors (strings -> Contributors).
-     */
-    fun authors(x: ContributorListBuilder.() -> Unit)
-            = register<BoundaryModule>("rules", ContributorListBuilder().run(x))
-
-    /**
-     * Specifies a list of contributors (strings -> Contributors).
-     */
-    fun contributors(x: ContributorListBuilder.() -> Unit)
-            = register<BoundaryModule>("rules", ContributorListBuilder().run(x))
-
     /**
      * Specifies boundary settings.
      */
     fun boundary(x: BoundarySettings.() -> Unit)
             = register<BoundaryModule>(BoundarySettings().build(x))
-
-    /**
-     * Specifies general map settings.
-     */
-    fun info(x: MapInfoSettings.() -> Unit)
-            = register<BoundaryModule>(MapInfoSettings().build(x))
 }
 
 fun map(x: MapBuilder.() -> Unit): MapBuilder {

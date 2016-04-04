@@ -1,6 +1,9 @@
 package net.hungerstruck.renaissance.xml.module
 
 import net.hungerstruck.renaissance.match.RMatch
+import net.hungerstruck.renaissance.xml.builder.AbstractMapBuilder
+import net.hungerstruck.renaissance.xml.builder.MapBuilder
+import net.hungerstruck.renaissance.xml.builder.inject
 import kotlin.reflect.KClass
 
 /**
@@ -39,14 +42,24 @@ class RModuleContext {
 
         val instance = info.constructor.newInstance(match, this)
         
-        injectProperties(/*builder, */instance)
+        injectProperties(match.map.mapBuilder, instance)
         instance.init()
 
         modules.add(instance)
         return true
     }
 
-    private fun injectProperties(/*builder: AbstractMapBuilder<*>, */mod: RModule) {
+    private fun injectProperties(builder: AbstractMapBuilder<MapBuilder>, mod: RModule) {
+        for (field in mod.javaClass.declaredFields) {
+            if (!field.isAnnotationPresent(inject::class.java)) continue
 
+            val value = builder.properties.filter { it.module == mod.javaClass && it.name == field.name }.firstOrNull()
+            if (value == null) {
+                throw IllegalStateException("No value passed for field ${field.name} in module ${mod.javaClass.simpleName}")
+            } else {
+                field.isAccessible = true
+                field.set(mod, value.value)
+            }
+        }
     }
 }

@@ -2,18 +2,13 @@ package net.hungerstruck.renaissance.xml.builder
 
 import com.google.common.collect.ImmutableList
 import net.hungerstruck.renaissance.xml.module.RModule
-import kotlin.reflect.KClass
-
-/**
- * Created by molenzwiebel on 03-04-16.
- */
 
 /**
  * Represents a property that is "settable" via the builder.
  */
 data class BuildableProperty<T>(
         val name: String,
-        val module: KClass<out RModule>,
+        val module: Class<out RModule>,
         val value: T
 )
 
@@ -25,7 +20,7 @@ abstract class AbstractMapBuilder<X : AbstractMapBuilder<X>> {
     val properties: MutableList<BuildableProperty<*>> = arrayListOf()
 
     protected inline fun <reified T : RModule> register(prop: String, value: Any): X {
-        properties.add(BuildableProperty(prop, T::class, value))
+        properties.add(BuildableProperty(prop, T::class.java, value))
         return this as X
     }
 
