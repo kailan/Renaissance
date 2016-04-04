@@ -71,11 +71,11 @@ class MapBuilder : AbstractMapBuilder<MapBuilder>() {
         var mode: ChestModule.Mode = ChestModule.Mode.AUTOMATIC
         var chests: MutableList<BlockRegion> = arrayListOf()
 
-        fun Vector.unaryMinus() {
+        operator fun Vector.unaryMinus() {
             chests.add(BlockRegion(this))
         }
 
-        fun BlockRegion.unaryMinus() {
+        operator fun BlockRegion.unaryMinus() {
             chests.add(this)
         }
     }
@@ -89,8 +89,10 @@ class MapBuilder : AbstractMapBuilder<MapBuilder>() {
     class GameRuleSettings : BuilderPropertySet<GameRuleSettings>() {
         var rules: MutableList<Pair<String, Boolean>> = arrayListOf()
 
-        fun String.unaryMinus() = this
-        fun String.timesAssign(other: Boolean) = rules.add(Pair(this, other))
+        operator fun String.unaryMinus() = this
+        operator fun String.timesAssign(other: Boolean) {
+            rules.add(Pair(this, other))
+        }
     }
 
     /**
@@ -150,14 +152,14 @@ class MapBuilder : AbstractMapBuilder<MapBuilder>() {
 
     fun intersect(x: RegionListBuilder.() -> Unit) = IntersectRegion(RegionListBuilder().run(x).toArrayList())
     fun union(x: RegionListBuilder.() -> Unit) = UnionRegion(RegionListBuilder().run(x).toArrayList())
-    fun RRegion.not() = InvertedRegion(this)
+    operator fun RRegion.not() = InvertedRegion(this)
 }
 
 /**
  * Implements a..b..c.
  * a..b is an IntRange, we then override IntRange..c.
  */
-fun IntRange.rangeTo(other: Int): Vector {
+operator fun IntRange.rangeTo(other: Int): Vector {
     return Vector(first, last, other)
 }
 
