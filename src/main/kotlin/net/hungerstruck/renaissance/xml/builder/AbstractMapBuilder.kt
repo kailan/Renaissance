@@ -17,6 +17,7 @@ data class BuildableProperty<T>(
         val value: T
 )
 
+@Suppress("UNCHECKED_CAST")
 abstract class AbstractMapBuilder<X : AbstractMapBuilder<X>> {
     val properties: MutableList<BuildableProperty<*>> = arrayListOf()
 
@@ -36,6 +37,7 @@ abstract class AbstractMapBuilder<X : AbstractMapBuilder<X>> {
     }
 }
 
+@Suppress("UNCHECKED_CAST")
 abstract class SingleTypeListBuilder<T, B, A>(val transform: (B) -> A = { it as A }) {
     private val values: MutableList<A> = arrayListOf()
 
@@ -53,6 +55,7 @@ abstract class SingleTypeListBuilder<T, B, A>(val transform: (B) -> A = { it as 
     fun values(): Collection<A> = ImmutableList.copyOf(values)
 }
 
+@Suppress("UNCHECKED_CAST")
 abstract class BuilderPropertySet<T> {
     fun build(x: T.() -> Unit): T {
         (this as T).x()
