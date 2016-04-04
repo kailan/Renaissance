@@ -1,7 +1,7 @@
 package net.hungerstruck.renaissance.xml.builder
 
-import com.google.common.collect.ImmutableList
 import net.hungerstruck.renaissance.xml.module.RModule
+import java.util.*
 
 /**
  * Represents a property that is "settable" via the builder.
@@ -57,7 +57,7 @@ abstract class SingleTypeListBuilder<T : SingleTypeListBuilder<T, B, A>, B, A>(v
         return values()
     }
 
-    fun values(): Collection<A> = ImmutableList.copyOf(values)
+    fun values(): Collection<A> = ArrayList(values)
 }
 
 /**

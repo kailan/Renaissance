@@ -52,12 +52,12 @@ class RModuleContext {
     private fun injectProperties(builder: AbstractMapBuilder<MapBuilder>, mod: RModule) {
         for (field in mod.javaClass.declaredFields) {
             if (!field.isAnnotationPresent(inject::class.java)) continue
+            field.isAccessible = true
 
             val value = builder.properties.filter { it.module == mod.javaClass && it.name == field.name }.firstOrNull()
-            if (value == null) {
-                throw IllegalStateException("No value passed for field ${field.name} in module ${mod.javaClass.simpleName}")
-            } else {
-                field.isAccessible = true
+            if (value == null && field.get(mod) == null) {
+                throw IllegalStateException("No value passed for required field ${field.name} in module ${mod.javaClass.simpleName}")
+            } else if (value != null) {
                 field.set(mod, value.value)
             }
         }

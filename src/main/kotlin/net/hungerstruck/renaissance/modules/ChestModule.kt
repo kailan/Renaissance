@@ -33,10 +33,10 @@ class ChestModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCtx
     var lastItems: RandomCollection<ItemStack>? = null
     val processedChests: MutableList<BlockRegion> = arrayListOf()
 
-    @inject lateinit var chests: MutableList<BlockRegion>
+    @inject var chests: MutableList<BlockRegion> = arrayListOf()
     @inject val maxItems: Int = 7
     @inject var rareMultiplier: Double = 1.0
-    @inject lateinit var mode: Mode
+    @inject var mode: Mode = Mode.AUTOMATIC
 
     override fun init() {
         setupItems()
