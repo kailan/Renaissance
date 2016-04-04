@@ -17,6 +17,9 @@ data class BuildableProperty<T>(
         val value: T
 )
 
+/**
+ * Type parameter X should be the class itself, as in class Foo : AbstractMapBuilder<Foo>, so we can return ourselves.
+ */
 @Suppress("UNCHECKED_CAST")
 abstract class AbstractMapBuilder<X : AbstractMapBuilder<X>> {
     val properties: MutableList<BuildableProperty<*>> = arrayListOf()
@@ -37,8 +40,15 @@ abstract class AbstractMapBuilder<X : AbstractMapBuilder<X>> {
     }
 }
 
+/**
+ * Type parameter T should be the class itself, for the closure type.
+ * Type parameter B should be the type _B_efore transformation.
+ * Type parameter A should be the type _A_fter transformation.
+ *
+ * The unaryMinus operator is applied to B.
+ */
 @Suppress("UNCHECKED_CAST")
-abstract class SingleTypeListBuilder<T, B, A>(val transform: (B) -> A = { it as A }) {
+abstract class SingleTypeListBuilder<T : SingleTypeListBuilder<T, B, A>, B, A>(val transform: (B) -> A = { it as A }) {
     private val values: MutableList<A> = arrayListOf()
 
     operator fun B.unaryMinus(): A {
@@ -55,8 +65,11 @@ abstract class SingleTypeListBuilder<T, B, A>(val transform: (B) -> A = { it as 
     fun values(): Collection<A> = ImmutableList.copyOf(values)
 }
 
+/**
+ * Type parameter T should be the class itself, for the closure type.
+ */
 @Suppress("UNCHECKED_CAST")
-abstract class BuilderPropertySet<T> {
+abstract class BuilderPropertySet<T : BuilderPropertySet<T>> {
     fun build(x: T.() -> Unit): T {
         (this as T).x()
         return this
