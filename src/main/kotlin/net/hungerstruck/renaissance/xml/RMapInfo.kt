@@ -14,9 +14,9 @@ data class RMapInfo(
         val lobby: String?,
         val lobbyProperties: RLobbyProperties?,
         val objective: String,
-        val authors: List<Contributor>,
-        val contributors: List<Contributor>,
-        val rules: List<String>,
+        val authors: Collection<Contributor>,
+        val contributors: Collection<Contributor>,
+        val rules: Collection<String>,
         val difficulty: Difficulty,
         val dimension: World.Environment) {
 
@@ -26,9 +26,13 @@ data class RMapInfo(
         get() = "$name by ${authors.map { it.name }.joinToString(", ")}"
 }
 
-data class RLobbyProperties(val canBuild: Boolean, val canTakeDamage: Boolean)
+data class RLobbyProperties(var canBuild: Boolean = false, var canTakeDamage: Boolean = false)
 
 /**
  * Simple contributor data class.
  */
-data class Contributor(val name: String, val contribution: String? = null)
+data class Contributor(val name: String, var contribution: String? = null) {
+    infix fun who(contrib: String) {
+        this.contribution = contrib
+    }
+}

@@ -1,9 +1,9 @@
 package net.hungerstruck.renaissance.xml.module
 
 import net.hungerstruck.renaissance.match.RMatch
-import net.hungerstruck.renaissance.modules.region.RegionManager
-import net.hungerstruck.renaissance.modules.region.RegionParser
-import org.jdom2.Document
+import net.hungerstruck.renaissance.xml.builder.AbstractMapBuilder
+import net.hungerstruck.renaissance.xml.builder.MapBuilder
+import net.hungerstruck.renaissance.xml.builder.inject
 import kotlin.reflect.KClass
 
 /**
@@ -11,16 +11,10 @@ import kotlin.reflect.KClass
  */
 class RModuleContext {
     final val modules: MutableSet<RModule> = hashSetOf()
-
     protected final val match: RMatch
-    protected final val document: Document
 
-    final val regionManager: RegionManager = RegionManager()
-    final val regionParser: RegionParser = RegionParser(regionManager)
-
-    constructor(match: RMatch, document: Document) {
+    constructor(match: RMatch) {
         this.match = match
-        this.document = document
 
         for (info in RModuleRegistry.MODULES) {
             loadModule(info)
@@ -46,8 +40,26 @@ class RModuleContext {
             if (!loadModule(dep)) return false
         }
 
-        val instance = info.constructor.newInstance(match, document, this)
+        val instance = info.constructor.newInstance(match, this)
+        
+        injectProperties(match.map.mapBuilder, instance)
+        instance.init()
+
         modules.add(instance)
         return true
+    }
+
+    private fun injectProperties(builder: AbstractMapBuilder<MapBuilder>, mod: RModule) {
+        for (field in mod.javaClass.declaredFields) {
+            if (!field.isAnnotationPresent(inject::class.java)) continue
+            field.isAccessible = true
+
+            val value = builder.properties.filter { it.module == mod.javaClass && it.name == field.name }.firstOrNull()
+            if (value == null && field.get(mod) == null) {
+                throw IllegalStateException("No value passed for required field ${field.name} in module ${mod.javaClass.simpleName}")
+            } else if (value != null) {
+                field.set(mod, value.value)
+            }
+        }
     }
 }

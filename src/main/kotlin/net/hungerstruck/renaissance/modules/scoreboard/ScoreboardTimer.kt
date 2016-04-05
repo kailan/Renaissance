@@ -6,7 +6,6 @@ import net.hungerstruck.renaissance.match.RMatch
  * Created by teddy on 29/03/2016.
  */
 class ScoreboardTimer(private val module: ScoreboardModule) : Runnable {
-
     private var seconds = 0
 
     override fun run() {

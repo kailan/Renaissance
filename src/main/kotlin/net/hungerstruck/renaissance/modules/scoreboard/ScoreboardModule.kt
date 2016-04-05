@@ -2,10 +2,8 @@ package net.hungerstruck.renaissance.modules.scoreboard
 
 import net.hungerstruck.renaissance.RPlayer
 import net.hungerstruck.renaissance.Renaissance
-import net.hungerstruck.renaissance.RenaissancePlugin
 import net.hungerstruck.renaissance.config.RConfig
 import net.hungerstruck.renaissance.event.match.RMatchEndEvent
-import net.hungerstruck.renaissance.event.match.RMatchLoadEvent
 import net.hungerstruck.renaissance.event.match.RMatchStartEvent
 import net.hungerstruck.renaissance.event.player.RPlayerSanityUpdateEvent
 import net.hungerstruck.renaissance.event.player.RPlayerThirstUpdateEvent
@@ -14,30 +12,25 @@ import net.hungerstruck.renaissance.modules.SanityModule
 import net.hungerstruck.renaissance.modules.ThirstModule
 import net.hungerstruck.renaissance.rplayer
 import net.hungerstruck.renaissance.settings.Settings
-import net.hungerstruck.renaissance.xml.module.*
+import net.hungerstruck.renaissance.xml.module.Dependencies
+import net.hungerstruck.renaissance.xml.module.RModule
+import net.hungerstruck.renaissance.xml.module.RModuleContext
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
-import org.bukkit.event.EventPriority
 import org.bukkit.event.entity.PlayerDeathEvent
-import org.jdom2.Document
-
-import java.util.HashMap
-import java.util.UUID
+import java.util.*
 
 /**
  * Created by teddy on 29/03/2016.
  */
 @Dependencies(ThirstModule::class, SanityModule::class)
-class ScoreboardModule(match: RMatch, document: Document, modCtx: RModuleContext) : RModule(match, document, modCtx) {
-
-    val scoreboardMap: MutableMap<UUID, RScoreboard>
-    val killMap: MutableMap<UUID, Int>
+class ScoreboardModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCtx) {
+    val scoreboardMap: MutableMap<UUID, RScoreboard> = hashMapOf()
+    val killMap: MutableMap<UUID, Int> = hashMapOf()
     var timer = 0
 
-    init {
-        scoreboardMap = HashMap<UUID, RScoreboard>()
-        killMap = HashMap<UUID, Int>()
+    override fun init() {
         registerEvents()
     }
 

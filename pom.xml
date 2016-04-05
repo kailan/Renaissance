@@ -34,12 +34,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.jdom</groupId>
-            <artifactId>jdom</artifactId>
-            <version>2.0.0</version>
-        </dependency>
-
-        <dependency>
             <groupId>co.enviark</groupId>
             <artifactId>struckbukkit</artifactId>
             <version>1.9.2-R0.1-SNAPSHOT</version>

@@ -4,19 +4,13 @@ import net.hungerstruck.renaissance.Renaissance
 import net.hungerstruck.renaissance.config.RConfig
 import net.hungerstruck.renaissance.event.match.RMatchLoadEvent
 import net.hungerstruck.renaissance.event.match.RMatchStartEvent
-import net.hungerstruck.renaissance.get
 import net.hungerstruck.renaissance.match.RMatch
 import net.hungerstruck.renaissance.modules.region.BlockRegion
-import net.hungerstruck.renaissance.modules.region.RegionModule
 import net.hungerstruck.renaissance.times
 import net.hungerstruck.renaissance.util.RandomCollection
-import net.hungerstruck.renaissance.xml.flatten
-import net.hungerstruck.renaissance.xml.module.Dependencies
+import net.hungerstruck.renaissance.xml.builder.inject
 import net.hungerstruck.renaissance.xml.module.RModule
 import net.hungerstruck.renaissance.xml.module.RModuleContext
-import net.hungerstruck.renaissance.xml.toDouble
-import net.hungerstruck.renaissance.xml.toEnum
-import net.hungerstruck.renaissance.xml.toInt
 import org.bukkit.Bukkit
 import org.bukkit.Chunk
 import org.bukkit.Material
@@ -24,15 +18,12 @@ import org.bukkit.block.Chest
 import org.bukkit.event.EventHandler
 import org.bukkit.event.world.ChunkLoadEvent
 import org.bukkit.inventory.ItemStack
-import org.jdom2.Document
 import java.util.*
 
 /**
  * Created by molenzwiebel on 03-01-16.
  */
-@Dependencies(RegionModule::class)
-class ChestModule(match: RMatch, document: Document, modCtx: RModuleContext) : RModule(match, document, modCtx) {
-    val chests: MutableList<BlockRegion> = arrayListOf()
+class ChestModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCtx) {
     val processedChunks: MutableList<Chunk> = arrayListOf()
     val rand: Random = Random()
 
@@ -42,24 +33,12 @@ class ChestModule(match: RMatch, document: Document, modCtx: RModuleContext) : R
     var lastItems: RandomCollection<ItemStack>? = null
     val processedChests: MutableList<BlockRegion> = arrayListOf()
 
-    val maxItems: Int
-    var rareMultiplier: Double
+    @inject var chests: MutableList<BlockRegion> = arrayListOf()
+    @inject val maxItems: Int = 7
+    @inject var rareMultiplier: Double = 1.0
+    @inject var mode: Mode = Mode.AUTOMATIC
 
-    val mode: Mode
-
-    init {
-        val chestEl = document.rootElement.getChild("chests")
-
-        this.mode = chestEl.getChildTextNormalize("mode").toEnum(Mode.AUTOMATIC)!!
-        this.maxItems = chestEl["max"].toInt(7)
-        this.rareMultiplier = chestEl["rarity"].toDouble(1.0)
-
-        if (mode == Mode.MANUAL) {
-            chests.addAll(document.rootElement.flatten("chests", "chest").map {
-                modCtx.regionParser.parse(it.children[0]) as BlockRegion
-            })
-        }
-
+    override fun init() {
         setupItems()
         registerEvents()
     }

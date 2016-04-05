@@ -21,7 +21,7 @@ object RConfig {
 
     object Maps {
         var mapDir: String by path("maps.dir", "maps")
-        var mapFileName: String by path("maps.map-file", "map.xml")
+        var mapFileName: String by path("maps.map-file", "Map.class")
         var worldPrefix: String by path("maps.world-prefix", "match-")
     }
 

@@ -27,11 +27,11 @@ object MapCommands {
         if (mapInfo.contributors.size > 0)
             sender.sendMessage(ChatColor.DARK_PURPLE.toString() + "Contributor(s): ${mapInfo.contributors.map { ChatColor.DARK_AQUA.toString() + it.name }.joinToString(", ")}")
 
-        val rules: List<String> = mapInfo.rules
+        val rules: Collection<String> = mapInfo.rules
         if (rules.size > 0) {
             sender.sendMessage(ChatColor.DARK_PURPLE.toString() + "Rules:")
-            for (i in rules.indices)
-                sender.sendMessage("${(i + 1)}) " + ChatColor.GOLD + rules.get(i))
+            for ((idx, rule) in rules.withIndex())
+                sender.sendMessage("${(idx + 1)}) " + ChatColor.GOLD + rule)
         }
     }
 }

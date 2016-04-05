@@ -1,12 +1,7 @@
 package net.hungerstruck.renaissance.xml
 
-import net.hungerstruck.renaissance.config.RConfig
-import net.hungerstruck.renaissance.get
-import net.hungerstruck.renaissance.mapAs
-import org.bukkit.Difficulty
-import org.bukkit.World
-import org.jdom2.Document
-import org.jdom2.input.SAXBuilder
+import net.hungerstruck.renaissance.xml.builder.MapBuilder
+import net.hungerstruck.renaissance.xml.builder.MapBuilderClassLoader
 import java.io.File
 
 /**
@@ -15,43 +10,46 @@ import java.io.File
  * Created by molenzwiebel on 20-12-15.
  */
 class RMap {
-    val mapInfo: RMapInfo
-    val location: File
+    var mapBuilder: MapBuilder
 
-    val document: Document
+    var mapInfo: RMapInfo
+    val location: File
 
     constructor(loc: File) {
         this.location = loc
-        this.document = SAXBuilder().build(File(loc, RConfig.Maps.mapFileName))
+
+        this.mapBuilder = this.loadMapBuilder()
         this.mapInfo = loadMapInfo()
     }
 
-    private fun loadMapInfo(): RMapInfo {
-        val root = document.rootElement
-        val lobbyName = root["lobby"]
+    private fun loadMapBuilder(): MapBuilder {
+        val loader = MapBuilderClassLoader(this.location)
 
-        val name = root.getChildTextNormalize("name") ?: throw RuntimeException("Map must have name")
-        val version = root.getChildTextNormalize("version") ?: throw RuntimeException("Map must have version")
-        val objective = root.getChildTextNormalize("objective") ?: throw RuntimeException("Map must have objective")
+        val mapClass: Class<*> = loader.loadClass("Map")
+        val mapInstance: Any = mapClass.newInstance()
 
-        val authors = root.flatten("authors", "author").mapAs { Contributor(textNormalize, getAttributeValue("contribution")) }
-        if (authors.size < 1) throw RuntimeException("Map $name must have at least one author")
-
-        val contributors = root.flatten("contributors", "contributor").mapAs { Contributor(textNormalize, getAttributeValue("contribution")) }
-        val rules = root.flatten("rules", "rule").mapAs { textNormalize }
-
-        val difficulty = root.getChildTextNormalize("difficulty").toEnum(Difficulty.NORMAL)!!
-        val dimension = root.getChildTextNormalize("dimension").toEnum(World.Environment.NORMAL)!!
-
-        val lobbyEl = root.getChild("lobby")
-        var lobbyProperties: RLobbyProperties? = null
-        if (lobbyEl != null) {
-            val building = lobbyEl.getChild("building") != null
-            val damage = lobbyEl.getChild("damage") != null
-
-            lobbyProperties = RLobbyProperties(building, damage)
+        for (method in mapClass.declaredMethods) {
+            if (method.name == "map") {
+                method.isAccessible = true
+                return method.invoke(mapInstance) as MapBuilder
+            }
         }
 
-        return RMapInfo(name, version, lobbyName, lobbyProperties, objective, authors, contributors, rules, difficulty, dimension)
+        throw RuntimeException("Map builder has no method map()")
+    }
+
+    private fun loadMapInfo(): RMapInfo {
+        val name = mapBuilder.name
+        val version = mapBuilder.version
+        val objective = mapBuilder.objective
+        val authors = mapBuilder.authors
+        val contributors = mapBuilder.contributors
+        val rules = mapBuilder.rules
+        val difficulty = mapBuilder.difficulty
+        val dimension = mapBuilder.dimension
+        val lobby = mapBuilder.lobby
+        val lobbyProperties = mapBuilder.lobbyProperties
+
+        return RMapInfo(name, version, lobby, lobbyProperties, objective, authors, contributors, rules, difficulty, dimension)
     }
 }

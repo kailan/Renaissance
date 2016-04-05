@@ -7,14 +7,12 @@ import net.hungerstruck.renaissance.xml.module.RModule
 import net.hungerstruck.renaissance.xml.module.RModuleContext
 import org.bukkit.Sound
 import org.bukkit.event.EventHandler
-import org.jdom2.Document
 
 /**
  * Created by teddy on 30/03/2016.
  */
-class SoundModule(match: RMatch, document: Document, modCtx: RModuleContext) : RModule(match, document, modCtx) {
-
-    init {
+class SoundModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCtx) {
+    override fun init() {
         registerEvents()
     }
 
@@ -34,5 +32,4 @@ class SoundModule(match: RMatch, document: Document, modCtx: RModuleContext) : R
             player.playSound(player.location, Sound.ENTITY_ENDERDRAGON_GROWL, 1f, 1f)
         }
     }
-
 }

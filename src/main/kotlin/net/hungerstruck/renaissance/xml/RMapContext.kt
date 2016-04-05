@@ -22,6 +22,7 @@ class RMapContext {
         for (f in directory.listFiles()) {
             if (!f.isDirectory) continue
 
+            // FIXME: New format
             if (File(f, RConfig.Maps.mapFileName).exists()) {
                 val map = RMap(f)
                 maps.put(map.mapInfo.name, map)

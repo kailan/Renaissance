@@ -1,6 +1,5 @@
 package net.hungerstruck.renaissance
 
-import net.hungerstruck.renaissance.commands.MapCommands
 import net.hungerstruck.renaissance.config.RConfig
 import net.hungerstruck.renaissance.countdown.CountdownManager
 import net.hungerstruck.renaissance.listeners.ConnectionListener
@@ -10,12 +9,11 @@ import net.hungerstruck.renaissance.lobby.RLobbyManager
 import net.hungerstruck.renaissance.match.RMatchManager
 import net.hungerstruck.renaissance.modules.*
 import net.hungerstruck.renaissance.modules.oregen.OregenModule
-import net.hungerstruck.renaissance.modules.region.RegionModule
-import net.hungerstruck.renaissance.settings.Settings
 import net.hungerstruck.renaissance.modules.scoreboard.ScoreboardModule
 import net.hungerstruck.renaissance.modules.ux.BloodModule
 import net.hungerstruck.renaissance.modules.ux.ParticleModule
 import net.hungerstruck.renaissance.modules.ux.SoundModule
+import net.hungerstruck.renaissance.settings.Settings
 import net.hungerstruck.renaissance.util.ActionBarSender
 import net.hungerstruck.renaissance.xml.RMapContext
 import net.hungerstruck.renaissance.xml.module.RModuleRegistry
@@ -42,7 +40,6 @@ object Renaissance {
 
         ActionBarSender.runTaskTimerAsynchronously(plugin, 5, 5)
 
-        RModuleRegistry.register<RegionModule>()
         RModuleRegistry.register<ChestModule>()
         RModuleRegistry.register<ChatModule>()
         RModuleRegistry.register<DeathModule>()
