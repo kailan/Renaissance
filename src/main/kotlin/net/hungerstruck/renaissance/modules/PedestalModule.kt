@@ -13,6 +13,7 @@ import net.hungerstruck.renaissance.xml.module.RModule
 import net.hungerstruck.renaissance.xml.module.RModuleContext
 import org.bukkit.event.EventHandler
 import org.bukkit.event.player.PlayerMoveEvent
+import java.util.*
 
 /**
  * Parses pedestals.
@@ -24,7 +25,7 @@ class PedestalModule(match: RMatch, modCtx: RModuleContext) : RModule(match, mod
     lateinit var pedestalIt: Iterator<BlockRegion>
 
     override fun init() {
-        pedestalIt = Iterables.cycle(pedestals).iterator()
+        pedestalIt = Iterables.cycle(ArrayList(pedestals)).iterator()
         registerEvents()
     }
 

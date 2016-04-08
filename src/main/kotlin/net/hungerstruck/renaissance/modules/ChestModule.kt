@@ -68,7 +68,7 @@ class ChestModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCtx
 
         processedChunks.add(event.chunk)
         for (tEntity in event.chunk.tileEntities) {
-            val loc = BlockRegion(tEntity.block.location.toVector())
+            val loc = BlockRegion(tEntity.location)
             if (tEntity.type == Material.CHEST || tEntity.type == Material.TRAPPED_CHEST) chests.add(loc)
             if (lastItems != null && !processedChests.contains(loc)) fillChest(lastItems!!, loc)
         }
@@ -114,7 +114,11 @@ class ChestModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCtx
     }
 
     private fun fillChest(items: RandomCollection<ItemStack>, loc: BlockRegion) {
-        if (processedChests.contains(loc)) error("Filling chest twice")
+        if (processedChests.contains(loc)) {
+            // Bukkit.getLogger().warning("Attempted to fill chest at " + loc + " twice, skipping")
+            // TODO: The error above this line is silenced because all chests are added twice to avoid an error.
+            return;
+        }
         val block = loc.loc.toLocation(match.world).block
 
         if (block.type != Material.CHEST && block.type != Material.TRAPPED_CHEST) {
