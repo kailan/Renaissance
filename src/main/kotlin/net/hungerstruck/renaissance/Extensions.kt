@@ -28,8 +28,10 @@ infix fun Double.pow(x: Double): Double {
     return Math.pow(this, x)
 }
 
+@Deprecated("Method is disabled right now, rationale: Cave spawns would break, along with anything above regular spawns")
 public val Location.teleportable: Location
-    get() = world.getHighestBlockAt(this).location.add(0.5, 0.5, 0.5)
+    get() = this
+    // get() = world.getHighestBlockAt(this).location.add(0.5, 0.5, 0.5)
 
 fun <E> List<E>.getIgnoreBounds(i: Int): E {
     var index = i
