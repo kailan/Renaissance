@@ -14,8 +14,8 @@ import org.bukkit.util.Vector
 class MapBuilder : AbstractMapBuilder<MapBuilder>() {
     class StringListBuilder : SingleTypeListBuilder<StringListBuilder, String, String>()
     class RegionListBuilder : SingleTypeListBuilder<RegionListBuilder, RRegion, RRegion>()
-    class VectorListBuilder : SingleTypeListBuilder<VectorListBuilder, Vector, Vector>()
     class ContributorListBuilder : SingleTypeListBuilder<ContributorListBuilder, String, Contributor>({ Contributor(it) })
+    class BlockRegionListBuilder : SingleTypeListBuilder<BlockRegionListBuilder, Vector, BlockRegion>({ BlockRegion(it) })
 
     lateinit var name: String
     lateinit var version: String
@@ -104,8 +104,8 @@ class MapBuilder : AbstractMapBuilder<MapBuilder>() {
     /**
      * Specifies pedestal locations.
      */
-    fun pedestals(x: VectorListBuilder.() -> Unit)
-            = register<PedestalModule>("pedestals", VectorListBuilder().run(x))
+    fun pedestals(x: BlockRegionListBuilder.() -> Unit)
+            = register<PedestalModule>("pedestals", BlockRegionListBuilder().run(x))
 
     class SanitySettings : BuilderPropertySet<SanitySettings>() {
         var airHeight = 0

@@ -4,6 +4,7 @@ import com.google.common.collect.Iterables
 import net.hungerstruck.renaissance.RPlayer
 import net.hungerstruck.renaissance.event.lobby.RLobbyEndEvent
 import net.hungerstruck.renaissance.event.player.RPlayerJoinMatchEvent
+import net.hungerstruck.renaissance.lookAt
 import net.hungerstruck.renaissance.match.RMatch
 import net.hungerstruck.renaissance.modules.region.BlockRegion
 import net.hungerstruck.renaissance.rplayer
@@ -11,20 +12,23 @@ import net.hungerstruck.renaissance.teleportable
 import net.hungerstruck.renaissance.xml.builder.inject
 import net.hungerstruck.renaissance.xml.module.RModule
 import net.hungerstruck.renaissance.xml.module.RModuleContext
+import org.bukkit.Location
 import org.bukkit.event.EventHandler
 import org.bukkit.event.player.PlayerMoveEvent
+import org.bukkit.util.Vector
+import java.util.*
 
 /**
  * Parses pedestals.
  *
  * Created by molenzwiebel on 21-12-15.
  */
-class PedestalModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCtx) {
+class PedestalModule(match: RMatch, val modCtx: RModuleContext) : RModule(match, modCtx) {
     @inject lateinit var pedestals: List<BlockRegion>
     lateinit var pedestalIt: Iterator<BlockRegion>
 
     override fun init() {
-        pedestalIt = Iterables.cycle(pedestals).iterator()
+        pedestalIt = Iterables.cycle(ArrayList(pedestals)).iterator()
         registerEvents()
     }
 
@@ -35,7 +39,13 @@ class PedestalModule(match: RMatch, modCtx: RModuleContext) : RModule(match, mod
 
         event.player.state = RPlayer.State.PARTICIPATING
         event.player.reset()
-        event.player.teleport(pedestalIt.next().loc.toLocation(match.world).teleportable)
+        event.player.teleport(pedestalIt.next().loc.add(0.0, 0.5, 0.0).toLocation(match.world).teleportable)
+
+        val boundaryCenter = modCtx.getModule<BoundaryModule>()?.center
+        if(boundaryCenter != null)
+            event.player.teleport(event.player.location.lookAt(boundaryCenter.toLocation(match.world)))
+        else
+            event.player.teleport(Vector(0,0,0).toLocation(match.world))
     }
 
     @EventHandler
