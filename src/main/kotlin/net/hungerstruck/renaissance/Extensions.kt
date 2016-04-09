@@ -94,3 +94,38 @@ var random = Random()
 fun <T> Array<T>.randomElement(): T{
     return this[random.nextInt(this.size)]
 }
+
+fun Location.lookAt(other: Location) : Location {
+    //Clone the loc to prevent applied changes to the input loc
+    val loc : Location = this.clone();
+
+    // Values of change in distance (make it relative)
+    val dx : Double= other.getX() - this.getX();
+    val dy : Double = other.getY() - this.getY();
+    val dz : Double = other.getZ() - this.getZ();
+
+    // Set yaw
+    if (dx != 0.0) {
+        // Set yaw start value based on dx
+        if (dx < 0) {
+            loc.setYaw((1.5 * Math.PI).toFloat());
+        } else {
+            loc.setYaw((0.5 * Math.PI).toFloat());
+        }
+        loc.setYaw((loc.getYaw() - Math.atan(dz / dx)).toFloat());
+    } else if (dz < 0) {
+        loc.setYaw((Math.PI).toFloat());
+    }
+
+    // Get the distance from dx/dz
+    val dxz = Math.sqrt(Math.pow(dx, 2.0) + Math.pow(dz, 2.0));
+
+    // Set pitch
+    loc.setPitch((-Math.atan(dy / dxz).toFloat()));
+
+    // Set values, convert to degrees (invert the yaw since Bukkit uses a different yaw dimension format)
+    loc.setYaw(-loc.getYaw() * 180f / Math.PI.toFloat());
+    loc.setPitch(loc.getPitch() * 180f / Math.PI.toFloat());
+
+    return loc;
+}
