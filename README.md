@@ -4,9 +4,8 @@
 
 ## Compiling
 
-To compile, you need StruckBukkit in your local repository.
+To compile, you need Strukkit 1.8 in your local repository.
 ```
-$ git clone git@github.com:kblanks/StruckBukkit
-$ cd StruckBukkit
+$ git clone git@github.com:kblanks/Strukkit && cd Strukkit
 $ ./build.sh
 ```

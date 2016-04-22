@@ -35,8 +35,8 @@
 
         <dependency>
             <groupId>co.enviark</groupId>
-            <artifactId>struckbukkit</artifactId>
-            <version>1.9.2-R0.1-SNAPSHOT</version>
+            <artifactId>strukkit</artifactId>
+            <version>1.8.7-R0.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
