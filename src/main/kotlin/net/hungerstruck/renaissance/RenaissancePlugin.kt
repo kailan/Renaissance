@@ -38,27 +38,7 @@ class RenaissancePlugin : JavaPlugin() {
     }
 
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
-        try {
-            commands.execute(command.getName(), args, sender, sender);
-        } catch (e: CommandPermissionsException) {
-            sender.sendMessage(ChatColor.RED.toString() + "You do not have permission to execute this command.");
-        } catch (e: MissingNestedCommandException) {
-            sender.sendMessage(ChatColor.RED.toString() + e.getUsage());
-        } catch (e: CommandUsageException) {
-            sender.sendMessage(ChatColor.RED.toString() + e.getMessage());
-            sender.sendMessage(ChatColor.RED.toString() + e.getUsage());
-        } catch (e: WrappedCommandException) {
-            if (e.cause is NumberFormatException) {
-                sender.sendMessage(ChatColor.RED.toString() + "Expected input to be an Integer, like 0 or 1, instead received a String, like \"abc\" or \"xyz\"");
-            } else {
-                sender.sendMessage(ChatColor.RED.toString() + "We're sorry, but some unexpected error occurred. Please contact Enviark support at our website, hungerstruck.net, if the error persists.");
-                e.printStackTrace();
-            }
-        } catch (e: CommandException) {
-            sender.sendMessage(ChatColor.RED.toString() + e.getMessage());
-        }
-
-        if(command.name.equals("debug")) {
+        if (command.name.equals("debug")) {
             val engine = if (sessions[sender] != null) {
                 sessions[sender]!!
             } else {
@@ -79,6 +59,32 @@ class RenaissancePlugin : JavaPlugin() {
             } catch (e: Exception) {
                 sender.sendMessage("${ChatColor.GRAY}> ${ChatColor.RED}${e.message}")
             }
+
+            return true
+        }
+
+        try {
+            commands.execute(command.name, args, sender, sender);
+        } catch (e: CommandPermissionsException) {
+            sender.sendMessage(ChatColor.RED.toString() + "You do not have permission to execute this command.");
+        } catch (e: MissingNestedCommandException) {
+            sender.sendMessage(ChatColor.RED.toString() + e.usage);
+        } catch (e: CommandUsageException) {
+            sender.sendMessage(ChatColor.RED.toString() + e.message);
+            sender.sendMessage(ChatColor.RED.toString() + e.usage);
+        } catch (e: WrappedCommandException) {
+            val cause = e.cause
+            if (cause is NumberFormatException) {
+                val extra = if (cause.message?.contains("For input string:") ?: false) {
+                    ", not " + cause.message?.replace("For input string: ", "")
+                } else "."
+                sender.sendMessage(ChatColor.RED.toString() + "Whoops. We expected a number" + extra);
+            } else {
+                sender.sendMessage(ChatColor.RED.toString() + "We're sorry, but some unexpected error occurred. Please contact Enviark support at our website, hungerstruck.net, if the error persists.");
+                e.printStackTrace();
+            }
+        } catch (e: CommandException) {
+            sender.sendMessage(ChatColor.RED.toString() + e.message);
         }
 
         return true

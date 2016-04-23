@@ -9,16 +9,9 @@ import net.hungerstruck.renaissance.event.match.RMatchStartEvent
 import net.hungerstruck.renaissance.util.TitleUtil
 import net.hungerstruck.renaissance.xml.RMap
 import net.hungerstruck.renaissance.xml.module.RModuleContext
-import net.md_5.bungee.api.chat.TextComponent
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
-import org.bukkit.Sound
 import org.bukkit.World
-import org.bukkit.boss.BarColor
-import org.bukkit.boss.BarFlag
-import org.bukkit.boss.BarStyle
-import org.bukkit.boss.BossBar
-import org.bukkit.scheduler.BukkitScheduler
 
 /**
  * Represents a match.
@@ -38,6 +31,9 @@ class RMatch {
 
     val alivePlayers: List<RPlayer>
         get() = RPlayer.getPlayers() { it.match == this && it.state == RPlayer.State.PARTICIPATING }
+
+    val shouldEnd: Boolean
+        get() = alivePlayers.size <= 1
 
     constructor(id: Int, map: RMap, world: World) {
         this.id = id
@@ -81,7 +77,7 @@ class RMatch {
 
         Bukkit.getPluginManager().callEvent(RMatchStartEvent(this))
 
-        if(endCheck()){
+        if (shouldEnd) {
             if (alivePlayers.size == 1) {
                 announceWinner(alivePlayers[0])
             } else {
@@ -108,10 +104,8 @@ class RMatch {
         }
     }
 
-    fun endCheck() = alivePlayers.size <= 1
-
     fun announceWinner(player: RPlayer) {
-        //sendTitle(RConfig.Match.matchEndMessageTitle.format(player.displayName), RConfig.Match.matchEndMessageSubTitle, RConfig.Match.matchEndMessageFadeIn, RConfig.Match.matchEndMessageDuration, RConfig.Match.matchEndMessageFadeOut)
+        sendTitle(RConfig.Match.matchEndMessageTitle.format(player.displayName), RConfig.Match.matchEndMessageSubTitle, RConfig.Match.matchEndMessageFadeIn, RConfig.Match.matchEndMessageDuration, RConfig.Match.matchEndMessageFadeOut)
         endMatch()
 
         // TODO: 1.8

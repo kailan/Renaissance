@@ -80,7 +80,7 @@ class DeathModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCtx
         val message = if (victim.killer != null) RConfig.Match.playerDeathByPlayerMessage else RConfig.Match.playerDeathByOtherMessage
         match.sendMessage(message.replace("%0\$s", victim.displayName).replace("%1\$c", (victim.killer?.displayName).toString()))
 
-        if (match.endCheck()) {
+        if (match.shouldEnd) {
             var winner: RPlayer
 
             if (match.alivePlayers.size == 1) {

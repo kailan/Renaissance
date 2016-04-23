@@ -4,7 +4,7 @@ general:
 
 maps:
     map-dir: "maps"
-    map-file: "map.xml"
+    map-file: "Map.class"
     world-prefix: "match-"
 
 lobby:
