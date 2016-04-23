@@ -14,7 +14,6 @@ import org.bukkit.ChatColor
 import org.bukkit.ChatColor.*
 import org.bukkit.GameMode
 import org.bukkit.World
-import org.bukkit.scheduler.BukkitScheduler
 
 /**
  * Manages a simple match-specific lobby.
@@ -40,6 +39,9 @@ class RLobby {
     val members: Collection<RPlayer>
         get() = RPlayer.getPlayers() { it.lobby == this }
 
+    val playingMembers: Collection<RPlayer>
+        get() = members.filter { !it.isForcedSpectator }
+
     public fun join(player: RPlayer) {
         if (player.match != null || player.lobby != null) throw IllegalArgumentException("Player is already in match or lobby")
 
@@ -54,7 +56,7 @@ class RLobby {
 
         sendMessage("${ChatColor.GREEN}${player.displayName} ${ChatColor.GRAY}has joined the match!")
 
-        if (members.size >= RConfig.Lobby.minimumPlayerStartCount && members.size <= RConfig.Lobby.maximumPlayerStartCount && RConfig.Lobby.autoStart) {
+        if (playingMembers.size >= RConfig.Lobby.minimumPlayerStartCount && playingMembers.size <= RConfig.Lobby.maximumPlayerStartCount && RConfig.Lobby.autoStart) {
             startCountdown()
         }
     }
@@ -67,7 +69,7 @@ class RLobby {
 
     private fun updateInformation() {
         for (player in members) {
-            player.actionBarMessage = "${if (lobbyMap.mapInfo.lobbyProperties!!.canTakeDamage) "${GREEN}PVP $GRAY| " else ""}${if (lobbyMap.mapInfo.lobbyProperties!!.canBuild) "${GREEN}Building $GRAY| " else ""}$YELLOW${members.size}/${RConfig.Lobby.maximumPlayerStartCount} players"
+            player.actionBarMessage = "${if (lobbyMap.mapInfo.lobbyProperties!!.canTakeDamage) "${GREEN}PVP $GRAY| " else ""}${if (lobbyMap.mapInfo.lobbyProperties!!.canBuild) "${GREEN}Building $GRAY| " else ""}$YELLOW${playingMembers.size}/${RConfig.Lobby.maximumPlayerStartCount} players"
         }
     }
 

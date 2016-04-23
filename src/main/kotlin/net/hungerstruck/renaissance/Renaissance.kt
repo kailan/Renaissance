@@ -33,7 +33,7 @@ object Renaissance {
     val matchManager: RMatchManager = RMatchManager(mapContext)
     val lobbyManager: RLobbyManager = RLobbyManager()
     val countdownManager: CountdownManager = CountdownManager()
-
+    val eventManager: REventManager = REventManager()
 
     fun initialize(plugin: JavaPlugin) {
         this.plugin = plugin

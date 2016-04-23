@@ -54,7 +54,7 @@ class DeathModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCtx
     @EventHandler
     fun onPlayerJoin(event: RPlayerJoinMatchEvent) {
         if (!isMatch(event.match)) return
-        if (match.state != RMatch.State.PLAYING) return
+        if (match.state != RMatch.State.PLAYING && !event.player.isForcedSpectator) return
 
         event.player.state = RPlayer.State.SPECTATING
         event.player.reset()

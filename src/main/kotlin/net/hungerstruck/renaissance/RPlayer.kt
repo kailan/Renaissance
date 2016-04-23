@@ -1,6 +1,7 @@
 package net.hungerstruck.renaissance
 
 import me.anxuiz.settings.Setting
+import me.anxuiz.settings.bukkit.PlayerSettings
 import net.hungerstruck.renaissance.lobby.RLobby
 import net.hungerstruck.renaissance.match.RMatch
 import org.bukkit.Bukkit
@@ -10,7 +11,6 @@ import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.inventory.ItemStack
-import me.anxuiz.settings.bukkit.PlayerSettings
 
 /**
  * Player object for our needs.
@@ -60,6 +60,9 @@ class RPlayer(val bukkit: Player) : Player by bukkit {
             assert(x == State.NONE || match != null, { "Cannot set state to $x if not in a match" })
             field = x
         }
+
+    val isForcedSpectator: Boolean
+        get() = Renaissance.eventManager.isForcedSpectator(this)
 
     /**
      * @return Setting value from Settings
