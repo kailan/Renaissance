@@ -12,7 +12,6 @@ import net.hungerstruck.renaissance.teleportable
 import net.hungerstruck.renaissance.xml.builder.inject
 import net.hungerstruck.renaissance.xml.module.RModule
 import net.hungerstruck.renaissance.xml.module.RModuleContext
-import org.bukkit.Location
 import org.bukkit.event.EventHandler
 import org.bukkit.event.player.PlayerMoveEvent
 import org.bukkit.util.Vector
@@ -35,7 +34,7 @@ class PedestalModule(match: RMatch, val modCtx: RModuleContext) : RModule(match,
     @EventHandler
     public fun onPlayerJoinMatch(event: RPlayerJoinMatchEvent) {
         if (!isMatch(event.match)) return
-        if (match.state != RMatch.State.STARTING) return
+        if (match.state != RMatch.State.STARTING || event.player.isForcedSpectator) return
 
         event.player.state = RPlayer.State.PARTICIPATING
         event.player.reset()
