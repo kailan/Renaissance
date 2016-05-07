@@ -139,8 +139,9 @@
                             <artifactSet>
                                 <excludes>
                                     <exclude>org.bukkit:bukkit</exclude>
-                                    <exclude>org.spigotmc:spigot</exclude>
                                     <exclude>org.bukkit:craftbukkit</exclude>
+                                    <exclude>co.enviark:strukkit</exclude>
+                                    <exclude>co.enviark:strukkit-api</exclude>
                                     <exclude>me.anxuiz:settings</exclude>
                                     <exclude>me.anxuiz.settings:bukkit-settings</exclude>
                                 </excludes>

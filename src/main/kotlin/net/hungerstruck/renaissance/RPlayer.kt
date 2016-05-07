@@ -4,6 +4,7 @@ import me.anxuiz.settings.Setting
 import me.anxuiz.settings.bukkit.PlayerSettings
 import net.hungerstruck.renaissance.lobby.RLobby
 import net.hungerstruck.renaissance.match.RMatch
+import net.hungerstruck.renaissance.settings.Settings
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
@@ -98,7 +99,7 @@ class RPlayer(val bukkit: Player) : Player by bukkit {
      * @return if this player can see the provided player.
      */
     public fun canSee(other: RPlayer): Boolean {
-        return other.match == match && (other.state == state || (other.state == State.PARTICIPATING && state == State.SPECTATING) || match?.state != RMatch.State.PLAYING)
+        return other.match == match && ((getSetting<Boolean>(Settings.SPECTATOR_OPTIONS)!! && state == State.SPECTATING) || (other.state == State.PARTICIPATING && state == State.SPECTATING) || match?.state != RMatch.State.PLAYING)
     }
 
     enum class State {

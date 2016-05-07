@@ -67,7 +67,7 @@ class RMatchManager {
 
         return when (strategy) {
             RConfig.JoinStrategy.FIRST -> matches.values.first()
-            RConfig.JoinStrategy.RANDOM -> matches.values.toArrayList()[Random().nextInt(matches.size)]
+            RConfig.JoinStrategy.RANDOM -> matches.values.toList()[Random().nextInt(matches.size)]
             RConfig.JoinStrategy.SMALLEST -> matches.values.minBy { it.players.size }
         }
     }

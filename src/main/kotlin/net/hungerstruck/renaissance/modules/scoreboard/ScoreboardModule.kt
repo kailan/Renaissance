@@ -21,9 +21,6 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.entity.PlayerDeathEvent
 import java.util.*
 
-/**
- * Created by teddy on 29/03/2016.
- */
 @Dependencies(ThirstModule::class, SanityModule::class)
 class ScoreboardModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCtx) {
     val scoreboardMap: MutableMap<UUID, RScoreboard> = hashMapOf()
@@ -56,10 +53,6 @@ class ScoreboardModule(match: RMatch, modCtx: RModuleContext) : RModule(match, m
     @EventHandler
     fun onPlayerDeath(event: PlayerDeathEvent){
         if (match.players.contains(event.entity.rplayer)){
-            for (scoreboard in scoreboardMap.values){
-                scoreboard.setScore(-9, (match.alivePlayers.size-1).toString()).show()
-            }
-
             if (event.entity.killer is Player){
                 val killer: Player = event.entity.killer
 
@@ -69,23 +62,27 @@ class ScoreboardModule(match: RMatch, modCtx: RModuleContext) : RModule(match, m
                     killMap.put(killer.uniqueId, 1)
                 }
 
-                scoreboardMap[killer.uniqueId]?.setScore(-6, killMap[killer.uniqueId].toString())?.show()
+                scoreboardMap[killer.uniqueId]?.setScore(-6, killMap[killer.uniqueId].toString() + "§1 ")
             }
 
-            scoreboardMap[event.entity.uniqueId]?.removeScore(-10)?.removeScore(-11)?.removeScore(-12)?.removeScore(-13)?.removeScore(-14)?.removeScore(-15)?.show()
+            scoreboardMap[event.entity.uniqueId]?.removeScore(-10)?.removeScore(-11)?.removeScore(-12)?.removeScore(-13)?.removeScore(-14)?.removeScore(-15)
+
+            for (scoreboard in scoreboardMap.values){
+                scoreboard.setScore(-9, (match.alivePlayers.size-1).toString()).show()
+            }
         }
     }
 
     @EventHandler
     fun onThirstUpdate(event: RPlayerThirstUpdateEvent){
         if(!isMatch(event.player)) return
-        scoreboardMap[event.player.uniqueId]?.setScore(-15, event.thirst.toString() + "%§1 ")?.show()
+        scoreboardMap[event.player.uniqueId]?.setScore(-15, event.thirst.toString() + "%§2 ")?.show()
     }
 
     @EventHandler
     fun onSanityUpdate(event: RPlayerSanityUpdateEvent){
         if(!isMatch(event.player)) return
-        scoreboardMap[event.player.uniqueId]?.setScore(-12, event.sanity.toString() + "%§2 ")?.show()
+        scoreboardMap[event.player.uniqueId]?.setScore(-12, event.sanity.toString() + "%§3 ")?.show()
     }
 
     public fun showScoreboard(player: RPlayer) {
@@ -102,11 +99,11 @@ class ScoreboardModule(match: RMatch, modCtx: RModuleContext) : RModule(match, m
 
     private fun setupScoreboard(scoreboard: RScoreboard, player: RPlayer) {
         scoreboard.setScore(-1, "§1 ").setScore(-2, RConfig.Scoreboard.timeString).setScore(-3, "00:00")
-        scoreboard.setScore(-4, "§2 ").setScore(-5, RConfig.Scoreboard.killsString).setScore(-6, "0")
+        scoreboard.setScore(-4, "§2 ").setScore(-5, RConfig.Scoreboard.killsString).setScore(-6, "0 §1")
         scoreboard.setScore(-7, "§3 ").setScore(-8, RConfig.Scoreboard.aliveString).setScore(-9, this.match.alivePlayers.size.toString())
         if (match.alivePlayers.contains(player)) {
-            scoreboard.setScore(-10, "§4 ").setScore(-11, RConfig.Scoreboard.sanityString).setScore(-12, "${match.moduleContext.getModule<SanityModule>()!!.playerSanity[player]}%§1 ")
-            scoreboard.setScore(-13, "§5 ").setScore(-14, RConfig.Scoreboard.thirstString).setScore(-15, "${match.moduleContext.getModule<ThirstModule>()!!.playerThirst[player]}%§2 ")
+            scoreboard.setScore(-10, "§4 ").setScore(-11, RConfig.Scoreboard.sanityString).setScore(-12, "${match.moduleContext.getModule<SanityModule>()!!.playerSanity[player]}%§2 ")
+            scoreboard.setScore(-13, "§5 ").setScore(-14, RConfig.Scoreboard.thirstString).setScore(-15, "${match.moduleContext.getModule<ThirstModule>()!!.playerThirst[player]}%§3 ")
         }
     }
 }

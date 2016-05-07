@@ -169,14 +169,14 @@ class SanityModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCt
     }
 
     public fun sendWarningRadius(player: RPlayer, inside: Boolean = true) {
-        val boarder = WorldBorder()
-        boarder.setCenter(0.0, 0.0)
-        boarder.size = if (inside) 10000000.0 else -1.0
-        boarder.warningDistance = 1
+        //val boarder = WorldBorder()
+        //boarder.setCenter(0.0, 0.0)
+        //boarder.size = if (inside) 10000000.0 else -1.0
+        //boarder.warningDistance = 1
 
-        player.bukkit as CraftPlayer
+        //player.bukkit as CraftPlayer
 
-        player.bukkit.handle.playerConnection.sendPacket(PacketPlayOutWorldBorder(boarder, PacketPlayOutWorldBorder.EnumWorldBorderAction.INITIALIZE))
-        player.bukkit.handle.playerConnection.sendPacket(PacketPlayOutWorldBorder(boarder, PacketPlayOutWorldBorder.EnumWorldBorderAction.SET_CENTER))
+        //player.bukkit.handle.playerConnection.sendPacket(PacketPlayOutWorldBorder(boarder, PacketPlayOutWorldBorder.EnumWorldBorderAction.INITIALIZE))
+        //player.bukkit.handle.playerConnection.sendPacket(PacketPlayOutWorldBorder(boarder, PacketPlayOutWorldBorder.EnumWorldBorderAction.SET_CENTER))
     }
 }

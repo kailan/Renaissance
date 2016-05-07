@@ -52,11 +52,11 @@ object RConfig {
         var playerDeathByPlayerMessage: String by path("match.death-player-message", "${ChatColor.RED}%0\$s ${ChatColor.GRAY}was slain by ${ChatColor.RED}%1\$s${ChatColor.GRAY}.")
         var playerDeathByOtherMessage: String by path("match.death-other-message", "${ChatColor.RED}%0\$s ${ChatColor.GRAY}mysteriously died.")
         var playerRemainMessage: String by path("match.player-remain-message", "${ChatColor.GOLD}%0\$d ${ChatColor.GRAY}players remain.")
-        var matchEndMessageTitle : String by path("math.end-message-title", "${ChatColor.GOLD}" + "%s")
-        var matchEndMessageSubTitle : String by path("math.end-message-subtitle", "${ChatColor.DARK_PURPLE}" + " wins!")
-        var matchEndMessageFadeIn : Int by path("math.end-message-fade-in", 2);
-        var matchEndMessageDuration : Int by path("math.end-message-duration", 5);
-        var matchEndMessageFadeOut : Int by path("math.end-message-fade-out", 2);
+        var matchEndMessageTitle : String by path("match.end-message-title", "${ChatColor.GOLD}" + "%s")
+        var matchEndMessageSubTitle : String by path("match.end-message-subtitle", "${ChatColor.DARK_PURPLE}" + " wins!")
+        var matchEndMessageFadeIn : Int by path("match.end-message-fade-in", 2);
+        var matchEndMessageDuration : Int by path("match.end-message-duration", 5);
+        var matchEndMessageFadeOut : Int by path("match.end-message-fade-out", 2);
     }
 
     object Thirst {

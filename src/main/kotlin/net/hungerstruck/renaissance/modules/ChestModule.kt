@@ -43,8 +43,7 @@ class ChestModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCtx
         registerEvents()
     }
 
-    @EventHandler
-    public fun onMatchLoad(event: RMatchLoadEvent) {
+    @EventHandler fun onMatchLoad(event: RMatchLoadEvent) {
         if (!isMatch(event.match)) return
 
         // Nothing to do here if we are manual :D
@@ -59,8 +58,7 @@ class ChestModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCtx
         }
     }
 
-    @EventHandler
-    public fun onChunkLoad(event: ChunkLoadEvent) {
+    @EventHandler fun onChunkLoad(event: ChunkLoadEvent) {
         if (!isMatch(event.world)) return
         if (mode == Mode.MANUAL) return
         if (processedChunks.contains(event.chunk)) return
@@ -75,8 +73,7 @@ class ChestModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCtx
     }
 
     // FIXME: Maybe move this over to match load?
-    @EventHandler
-    public fun onMatchStart(event: RMatchStartEvent) {
+    @EventHandler fun onMatchStart(event: RMatchStartEvent) {
         if (!isMatch(event.match)) return
 
         fillChests(initialItems)
@@ -105,8 +102,8 @@ class ChestModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCtx
         // | Caused by fillChest() removing chests if
         // | they do not exist.
         // It is crude, so update if a better option is found
-        var chests: MutableList<BlockRegion> = arrayListOf()
-        chests.addAll(this.chests)
+        //var chests: MutableList<BlockRegion> = arrayListOf()
+        //chests.addAll(this.chests)
 
         for (chest in chests) {
             fillChest(coll, chest)
@@ -122,9 +119,12 @@ class ChestModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCtx
         val block = loc.loc.toLocation(match.world).block
 
         if (block.type != Material.CHEST && block.type != Material.TRAPPED_CHEST) {
-            chests.remove(loc)
-            return
+            block.type = Material.CHEST
+            //chests.remove(loc)
+            //return
         }
+
+        (block.state as Chest).inventory.clear()
 
         rand.nextInt(maxItems).times {
             (block.state as Chest).inventory.setItem(rand.nextInt((block.state as Chest).inventory.size), items.next())

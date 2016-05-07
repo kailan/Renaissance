@@ -14,9 +14,6 @@ import org.bukkit.event.EventHandler
 import org.bukkit.scheduler.BukkitTask
 import java.util.*
 
-/**
- * Created by teddy on 31/03/2016.
- */
 class ParticleModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCtx) {
     private val random: Random = Random()
     private var timer: BukkitTask? = null
@@ -47,9 +44,11 @@ class ParticleModule(match: RMatch, modCtx: RModuleContext) : RModule(match, mod
 
     @EventHandler
     fun onMatchEnd(event: RMatchEndEvent) {
+        if(event.winner == null) return
+
         Bukkit.getScheduler().scheduleSyncRepeatingTask(Renaissance.plugin, {
             for (i in 0..4) {
-                RFirework.playRandom(Location(event.match.world, randomValue(), 70.0, randomValue()))
+                RFirework.playRandom(event.winner.world.getHighestBlockAt(event.winner.location.add(randomValue(), 0.0, randomValue())).location.add(0.0, 1.0, 0.0))
             }
         }, 0, 40)
     }

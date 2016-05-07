@@ -92,7 +92,12 @@ class RMatch {
      */
     public fun endMatch() {
         state = State.ENDED
-        Bukkit.getPluginManager().callEvent(RMatchEndEvent(this))
+        Bukkit.getPluginManager().callEvent(RMatchEndEvent(this, null))
+    }
+
+    public fun endMatch(winner: RPlayer) {
+        state = State.ENDED
+        Bukkit.getPluginManager().callEvent(RMatchEndEvent(this, winner))
     }
 
     /**
@@ -106,12 +111,12 @@ class RMatch {
 
     fun announceWinner(player: RPlayer) {
         sendTitle(RConfig.Match.matchEndMessageTitle.format(player.displayName), RConfig.Match.matchEndMessageSubTitle, RConfig.Match.matchEndMessageFadeIn, RConfig.Match.matchEndMessageDuration, RConfig.Match.matchEndMessageFadeOut)
-        endMatch()
 
-        // TODO: 1.8
-        //val bar = Bukkit.createBossBar(TextComponent("${ChatColor.LIGHT_PURPLE}${player.displayName} ${ChatColor.DARK_PURPLE}has won the game!"), BarColor.PINK, BarStyle.SOLID, BarFlag.DARKEN_SKY, BarFlag.PLAY_BOSS_MUSIC)
-        //bar.isVisible = true
-        //for (player in players.map{it.bukkit}) bar.addPlayer(player)
+        sendMessage("\n")
+        sendMessage("${ChatColor.DARK_PURPLE}${player.displayName}${ChatColor.WHITE} has won the game!")
+        sendMessage("\n")
+
+        endMatch(player)
 
         if (player.isOnline) player.allowFlight = true
         RPlayer.updateVisibility()
