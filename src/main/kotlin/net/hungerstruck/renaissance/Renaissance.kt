@@ -1,5 +1,7 @@
 package net.hungerstruck.renaissance
 
+import co.enviark.speak.Speak
+import co.enviark.speak.Translation
 import net.hungerstruck.renaissance.config.RConfig
 import net.hungerstruck.renaissance.countdown.CountdownManager
 import net.hungerstruck.renaissance.listeners.ConnectionListener
@@ -20,6 +22,7 @@ import net.hungerstruck.renaissance.xml.module.RModuleRegistry
 import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
+import java.util.*
 
 /**
  * Main class.
@@ -37,6 +40,8 @@ object Renaissance {
 
     fun initialize(plugin: JavaPlugin) {
         this.plugin = plugin
+
+        Speak.strings.loadStrings(plugin.getResource("en.yml"), Locale.ENGLISH)
 
         ActionBarSender.runTaskTimerAsynchronously(plugin, 5, 5)
 
@@ -59,9 +64,9 @@ object Renaissance {
         mapContext.loadMaps(File(RConfig.Maps.mapDir))
         mapContext.resolveLobbies()
 
-        if (mapContext.getMaps().size == 0) throw IllegalStateException("Must have at least one map to start loading Renaissance.")
-        if (mapContext.getMaps().filter { it.mapInfo.lobbyProperties != null }.size == 0) throw IllegalStateException("Must have at least one lobby to start loading Renaissance.")
-        if (mapContext.getMaps().filter { it.mapInfo.lobbyProperties == null }.size == 0) throw IllegalStateException("Must have at least one game map to start loading Renaissance.")
+        if (mapContext.getMaps().size == 0) throw IllegalStateException(Translation.of("renaissance.no-maps").get())
+        if (mapContext.getMaps().filter { it.mapInfo.lobbyProperties != null }.size == 0) throw IllegalStateException(Translation.of("renaissance.no-lobbies").get())
+        if (mapContext.getMaps().filter { it.mapInfo.lobbyProperties == null }.size == 0) throw IllegalStateException(Translation.of("renaissance.no-maps").get())
         lobbyManager.createLobbyFor(mapContext.getMaps().first { it.mapInfo.lobbyProperties == null })
 
         Bukkit.getPluginManager().registerEvents(RPlayer.Companion, plugin)

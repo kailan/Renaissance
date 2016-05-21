@@ -1,0 +1,8 @@
+#
+#  Renaissance language file
+#  english best language amirite
+#
+
+renaissance:
+  no-maps: "Must have at least one map to start loading Renaissance."
+  no-lobbies: "Must have at least one lobby to start loading Renaissance."
