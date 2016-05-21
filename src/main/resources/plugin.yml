@@ -3,7 +3,7 @@ version: ${version}
 description: ${description}
 authors: [molenzwiebel, Komp, skreem, TeddyTheTeddy]
 main: net.hungerstruck.renaissance.RenaissancePlugin
-
+depend: [Speak]
 commands:
    debug:
        description: This should be removed.
