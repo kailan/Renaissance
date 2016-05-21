@@ -1,5 +1,6 @@
 package net.hungerstruck.renaissance
 
+import co.enviark.speak.Translation
 import me.anxuiz.settings.Setting
 import me.anxuiz.settings.bukkit.PlayerSettings
 import net.hungerstruck.renaissance.lobby.RLobby
@@ -69,6 +70,8 @@ class RPlayer(val bukkit: Player) : Player by bukkit {
      * @return Setting value from Settings
      */
     inline fun <reified T : Any> getSetting(setting: Setting) = PlayerSettings.getManager(bukkit).getValue(setting, T::class.java)
+
+    fun sendMessage(message: Translation) = bukkit.sendMessage(message.to(bukkit).get())
 
     public fun reset(resetHealth: Boolean = true) {
         if (resetHealth) health = 20.0
