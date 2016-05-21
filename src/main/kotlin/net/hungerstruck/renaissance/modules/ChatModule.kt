@@ -1,5 +1,6 @@
 package net.hungerstruck.renaissance.modules
 
+import co.enviark.speak.Translation
 import net.hungerstruck.renaissance.RPlayer
 import net.hungerstruck.renaissance.config.RConfig
 import net.hungerstruck.renaissance.match.RMatch
@@ -21,6 +22,7 @@ class ChatModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCtx)
     }
 
     //FIXME: Currently, if a player is not in a match or lobby, everyone (including people in a match) hears their message. Maybe change this behaviour?
+    //TODO: localise all of this
     @EventHandler
     public fun onChat(event: AsyncPlayerChatEvent) {
         if (!isMatch(event.player)) return
@@ -30,12 +32,12 @@ class ChatModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCtx)
 
         if (match.state == RMatch.State.PLAYING) {
             if (rplayer.state == RPlayer.State.PARTICIPATING) {
-                match.sendPrefixlessMessage("${ChatColor.YELLOW}Player${ChatColor.GRAY}${ChatColor.BOLD} | ${ChatColor.RESET}${rplayer.displayName} ${ChatColor.GRAY}${RConfig.General.mainMessagePrefix}${event.message}", { it.location.distance(rplayer.location) <= RConfig.Chat.radius || it.state == RPlayer.State.SPECTATING })
+                match.sendPrefixlessMessage(Translation("${ChatColor.YELLOW}Player${ChatColor.GRAY}${ChatColor.BOLD} | ${ChatColor.RESET}${rplayer.displayName} ${ChatColor.GRAY}${RConfig.General.mainMessagePrefix}${event.message}"), { it.location.distance(rplayer.location) <= RConfig.Chat.radius || it.state == RPlayer.State.SPECTATING })
             } else {
-                match.sendPrefixlessMessage("${ChatColor.AQUA}Spectator${ChatColor.GRAY}${ChatColor.BOLD} | ${ChatColor.RESET}${rplayer.displayName} ${ChatColor.GRAY}${RConfig.General.mainMessagePrefix}${event.message}", { it.state == RPlayer.State.SPECTATING })
+                match.sendPrefixlessMessage(Translation("${ChatColor.AQUA}Spectator${ChatColor.GRAY}${ChatColor.BOLD} | ${ChatColor.RESET}${rplayer.displayName} ${ChatColor.GRAY}${RConfig.General.mainMessagePrefix}${event.message}"), { it.state == RPlayer.State.SPECTATING })
             }
         } else {
-            match.sendPrefixlessMessage("${rplayer.displayName} ${ChatColor.GRAY}${RConfig.General.mainMessagePrefix}${event.message}")
+            match.sendPrefixlessMessage(Translation("${rplayer.displayName} ${ChatColor.GRAY}${RConfig.General.mainMessagePrefix}${event.message}"))
         }
     }
 }

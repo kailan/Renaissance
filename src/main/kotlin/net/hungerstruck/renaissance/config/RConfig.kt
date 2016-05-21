@@ -35,7 +35,7 @@ object RConfig {
         var minimumPlayerStartCount: Int by path("lobby.minimum-players", 2)
         var maximumPlayerStartCount: Int by path("lobby.maximum-players", 24)
 
-        var tickMessage: String by path("lobby.start-countdown.message", "${ChatColor.YELLOW}The lobby will end in ${ChatColor.GOLD}%s ${ChatColor.YELLOW}second(s).")
+        //var tickMessage: String by path("lobby.start-countdown.message", "${ChatColor.YELLOW}The lobby will end in ${ChatColor.GOLD}%s ${ChatColor.YELLOW}second(s).")
         var countdownTime: Int by path("lobby.start-countdown.time", 20)
     }
 
@@ -47,7 +47,7 @@ object RConfig {
 
         var feastTime: Int by path("match.feast.time", 300)
         var feastRarityIncrease: Double by path("match.feast.rarity-increase", 0.15)
-        var feastMessage: String by path("match.feast.message", "${ChatColor.DARK_AQUA}There has been a feast!")
+        //var feastMessage: String by path("match.feast.message", "${ChatColor.DARK_AQUA}There has been a feast!")
 
         var playerDeathByPlayerMessage: String by path("match.death-player-message", "${ChatColor.RED}%0\$s ${ChatColor.GRAY}was slain by ${ChatColor.RED}%1\$s${ChatColor.GRAY}.")
         var playerDeathByOtherMessage: String by path("match.death-other-message", "${ChatColor.RED}%0\$s ${ChatColor.GRAY}mysteriously died.")

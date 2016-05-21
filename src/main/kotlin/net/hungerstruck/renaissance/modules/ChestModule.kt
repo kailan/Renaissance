@@ -1,5 +1,6 @@
 package net.hungerstruck.renaissance.modules
 
+import co.enviark.speak.Translation
 import net.hungerstruck.renaissance.Renaissance
 import net.hungerstruck.renaissance.config.RConfig
 import net.hungerstruck.renaissance.event.match.RMatchLoadEvent
@@ -84,7 +85,7 @@ class ChestModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCtx
             if (match.state != RMatch.State.PLAYING) {
                 Bukkit.getScheduler().cancelTask(id)
             } else {
-                match.sendMessage(RConfig.Match.feastMessage)
+                match.sendMessage(Translation("match.feast"))
                 
                 rareMultiplier += RConfig.Match.feastRarityIncrease
                 setupItems()

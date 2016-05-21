@@ -1,5 +1,7 @@
 package net.hungerstruck.renaissance.match
 
+import co.enviark.speak.Speak
+import co.enviark.speak.Translation
 import net.hungerstruck.renaissance.RPlayer
 import net.hungerstruck.renaissance.Renaissance
 import net.hungerstruck.renaissance.config.RConfig
@@ -45,13 +47,13 @@ class RMatch {
         Bukkit.getPluginManager().callEvent(RMatchLoadEvent(this))
     }
 
-    public fun sendMessage(msg: String, f: (RPlayer) -> Boolean = { true }) {
-        Bukkit.getConsoleSender().sendMessage("[match-$id] $msg")
-        players.filter(f).forEach { it.sendMessage(RConfig.General.mainMessagePrefix + msg) }
+    public fun sendMessage(msg: Translation, f: (RPlayer) -> Boolean = { true }) {
+        Bukkit.getConsoleSender().sendMessage("[match-$id] " + msg.to(Speak.defaultLocale).get())
+        players.filter(f).forEach { it.sendMessage(RConfig.General.mainMessagePrefix + msg.to(it).get()) }
     }
 
-    public fun sendPrefixlessMessage(msg: String, f: (RPlayer) -> Boolean = { true }) {
-        Bukkit.getConsoleSender().sendMessage("[match-$id] $msg")
+    public fun sendPrefixlessMessage(msg: Translation, f: (RPlayer) -> Boolean = { true }) {
+        Bukkit.getConsoleSender().sendMessage("[match-$id] " + msg.to(Speak.defaultLocale).get())
         players.filter(f).forEach { it.sendMessage(msg) }
     }
 
@@ -82,7 +84,7 @@ class RMatch {
                 announceWinner(alivePlayers[0])
             } else {
                 endMatch()
-                sendMessage("${ChatColor.RED}No players are playing! Ending the game.")
+                sendMessage(Translation("match.no-players"))
             }
         }
     }
@@ -112,9 +114,9 @@ class RMatch {
     fun announceWinner(player: RPlayer) {
         sendTitle(RConfig.Match.matchEndMessageTitle.format(player.displayName), RConfig.Match.matchEndMessageSubTitle, RConfig.Match.matchEndMessageFadeIn, RConfig.Match.matchEndMessageDuration, RConfig.Match.matchEndMessageFadeOut)
 
-        sendMessage("\n")
-        sendMessage("${ChatColor.DARK_PURPLE}${player.displayName}${ChatColor.WHITE} has won the game!")
-        sendMessage("\n")
+        sendMessage(Translation("")) //empty line
+        sendMessage(Translation("match.win"))
+        sendMessage(Translation(""))
 
         endMatch(player)
 

@@ -1,5 +1,7 @@
 package net.hungerstruck.renaissance.lobby
 
+import co.enviark.speak.Speak
+import co.enviark.speak.Translation
 import net.hungerstruck.renaissance.RPlayer
 import net.hungerstruck.renaissance.RPlayerState
 import net.hungerstruck.renaissance.Renaissance
@@ -54,7 +56,7 @@ class RLobby {
 
         updateInformation()
 
-        sendMessage("${ChatColor.GREEN}${player.displayName} ${ChatColor.GRAY}has joined the match!")
+        sendMessage(Translation("match.join").put("player", player))
 
         if (playingMembers.size >= RConfig.Lobby.minimumPlayerStartCount && playingMembers.size <= RConfig.Lobby.maximumPlayerStartCount && RConfig.Lobby.autoStart) {
             startCountdown()
@@ -86,9 +88,9 @@ class RLobby {
         Renaissance.lobbyManager.unloadLobby(this)
     }
 
-    public fun sendMessage(msg: String) {
-        Bukkit.getConsoleSender().sendMessage("[lobby-$id] $msg")
-        members.forEach { it.sendMessage(RConfig.General.mainMessagePrefix + msg) }
+    public fun sendMessage(msg: Translation) {
+        Bukkit.getConsoleSender().sendMessage("[lobby-$id] " + msg.to(Speak.defaultLocale).get())
+        members.forEach { it.sendMessage(RConfig.General.mainMessagePrefix + msg.to(it).get()) }
     }
 
     public fun sendPrefixlessMessage(msg: String) {

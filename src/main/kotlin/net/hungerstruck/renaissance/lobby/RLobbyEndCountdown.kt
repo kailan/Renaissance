@@ -1,6 +1,6 @@
 package net.hungerstruck.renaissance.lobby
 
-import net.hungerstruck.renaissance.config.RConfig
+import co.enviark.speak.Translation
 import net.hungerstruck.renaissance.countdown.Countdown
 
 /**
@@ -10,7 +10,7 @@ import net.hungerstruck.renaissance.countdown.Countdown
  */
 class RLobbyEndCountdown(val lobby: RLobby) : Countdown() {
     override fun onTick(timeLeft: Int) {
-        val status = RConfig.Lobby.tickMessage.format(timeLeft)
+        val status = Translation("lobby.countdown").put("time", timeLeft)
 
         if (timeLeft % 10 == 0 || timeLeft <= 5)
             lobby.sendMessage(status)

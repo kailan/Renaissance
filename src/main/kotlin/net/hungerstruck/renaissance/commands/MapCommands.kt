@@ -1,5 +1,6 @@
 package net.hungerstruck.renaissance.commands
 
+import co.enviark.speak.Translation
 import com.sk89q.minecraft.util.commands.Command
 import com.sk89q.minecraft.util.commands.CommandContext
 import com.sk89q.minecraft.util.commands.CommandException
@@ -16,7 +17,7 @@ object MapCommands {
     public fun map(args: CommandContext, sender: CommandSender) {
         val player: Player = CommandUtils.getPlayer(sender)
         if (player.rplayer.match == null && player.rplayer.lobby == null)
-            throw CommandException("You must be in a match or lobby to execute this command")
+            throw CommandException(Translation("command.bad-state").to(player).get())
         val map: RMap = if (player.rplayer.match != null) CommandUtils.getPlayer(sender).rplayer.match!!.map else CommandUtils.getPlayer(sender).rplayer.lobby!!.lobbyMap
         val mapInfo: RMapInfo = map.mapInfo
 

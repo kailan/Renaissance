@@ -64,9 +64,9 @@ object Renaissance {
         mapContext.loadMaps(File(RConfig.Maps.mapDir))
         mapContext.resolveLobbies()
 
-        if (mapContext.getMaps().size == 0) throw IllegalStateException(Translation("renaissance.no-maps").get())
-        if (mapContext.getMaps().filter { it.mapInfo.lobbyProperties != null }.size == 0) throw IllegalStateException(Translation("renaissance.no-lobbies").get())
-        if (mapContext.getMaps().filter { it.mapInfo.lobbyProperties == null }.size == 0) throw IllegalStateException(Translation("renaissance.no-maps").get())
+        if (mapContext.getMaps().size == 0) throw IllegalStateException("Must have at least one map to start loading Renaissance.")
+        if (mapContext.getMaps().filter { it.mapInfo.lobbyProperties != null }.size == 0) throw IllegalStateException("Must have at least one lobby to start loading Renaissance.")
+        if (mapContext.getMaps().filter { it.mapInfo.lobbyProperties == null }.size == 0) throw IllegalStateException("Must have at least one map to start loading Renaissance.")
         lobbyManager.createLobbyFor(mapContext.getMaps().first { it.mapInfo.lobbyProperties == null })
 
         Bukkit.getPluginManager().registerEvents(RPlayer.Companion, plugin)

@@ -1,5 +1,6 @@
 package net.hungerstruck.renaissance.match
 
+import co.enviark.speak.Translation
 import net.hungerstruck.renaissance.RPlayer
 import net.hungerstruck.renaissance.config.RConfig
 import net.hungerstruck.renaissance.countdown.Countdown
@@ -12,7 +13,7 @@ import org.bukkit.Sound
  */
 class RMatchStartCountdown(val match: RMatch) : Countdown() {
     override fun onTick(timeLeft: Int) {
-        val status = RConfig.Match.tickMessage.format(timeLeft)
+        val status = Translation("match.countdown").put("time", timeLeft)
 
         if (timeLeft % 10 == 0 || timeLeft <= 5) {
             match.sendMessage(status)
