@@ -51,7 +51,7 @@ class RLobbyManager {
 
         return when (strategy) {
             RConfig.JoinStrategy.FIRST -> lobbies.values.first()
-            RConfig.JoinStrategy.RANDOM -> lobbies.values.toArrayList()[Random().nextInt(lobbies.size)]
+            RConfig.JoinStrategy.RANDOM -> lobbies.values.toList()[Random().nextInt(lobbies.size)]
             RConfig.JoinStrategy.SMALLEST -> lobbies.values.minBy { it.members.size }
         }
     }
