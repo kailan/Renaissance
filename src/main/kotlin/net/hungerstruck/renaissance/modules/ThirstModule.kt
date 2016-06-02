@@ -107,7 +107,7 @@ class ThirstModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCt
             event.player.sendMessage("${ChatColor.GRAY}${ChatColor.BOLD}»${ChatColor.RESET} ${ChatColor.GREEN}You quench your thirst.")
             event.player.exp = 1f
 
-            Bukkit.getPluginManager().callEvent(RPlayerThirstUpdateEvent(event.player.rplayer, playerThirst[event.player]!!))
+            Bukkit.getPluginManager().callEvent(RPlayerThirstUpdateEvent(event.player.rplayer, playerThirst[event.player.rplayer]!!))
         }
     }
 
