@@ -24,7 +24,7 @@ class BoundaryModule(match: RMatch, modCtx: RModuleContext) : RModule(match, mod
     }
 
     @EventHandler
-    public fun onMove(event: PlayerMoveEvent) {
+    fun onMove(event: PlayerMoveEvent) {
         if (!isMatch(event.player)) return
 
         if (match.state == RMatch.State.PLAYING) {

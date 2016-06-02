@@ -92,6 +92,8 @@ class DeathModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCtx
             match.announceWinner(winner)
         } else {
             match.sendMessage(RConfig.Match.playerRemainMessage.replace("%0\$d", match.alivePlayers.size.toString()))
+
+            if(getModule<SanityModule>() != null && getModule<SanityModule>()!!.radiusDecrease > 0) match.sendMessage(RConfig.Match.radiusShrinkMessage)
         }
 
         match.world.strikeLightningEffect(victim.location)
