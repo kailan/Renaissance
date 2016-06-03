@@ -36,7 +36,7 @@ class ScoreboardModule(match: RMatch, modCtx: RModuleContext) : RModule(match, m
     @EventHandler
     fun onMatchStart(event: RMatchStartEvent) {
         for (p in event.match.players)
-            if(p.getSetting<Boolean>(Settings.SCOREBOARD_OPTIONS) == true)
+            if(p.getSetting<Boolean>(Settings.SCOREBOARD_OPTIONS)!!)
                 showScoreboard(p)
 
         timer = Bukkit.getScheduler().scheduleSyncRepeatingTask(Renaissance.plugin, ScoreboardTimer(this), 0, 20)
@@ -78,7 +78,7 @@ class ScoreboardModule(match: RMatch, modCtx: RModuleContext) : RModule(match, m
     @EventHandler(priority = EventPriority.HIGHEST)
     fun onJoin(event: PlayerJoinEvent){
         if(event.player.rplayer.match == match) {
-            if(event.player.rplayer.getSetting<Boolean>(Settings.SCOREBOARD_OPTIONS) == true && !scoreboardMap.containsKey(event.player.uniqueId))
+            if(event.player.rplayer.getSetting<Boolean>(Settings.SCOREBOARD_OPTIONS)!! && !scoreboardMap.containsKey(event.player.uniqueId))
                 showScoreboard(event.player.rplayer)
         }
     }
