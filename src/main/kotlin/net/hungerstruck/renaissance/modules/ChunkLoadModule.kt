@@ -13,7 +13,7 @@ class ChunkLoadModule(match: RMatch, modCtx: RModuleContext) : RModule(match, mo
 
     @EventHandler
     fun onChunkUnload(event: ChunkUnloadEvent) {
-        if(isMatch(event.chunk.world))
+        if(isMatch(event.chunk.world) && match.state != RMatch.State.PLAYING)
             event.isCancelled = true
     }
 }
