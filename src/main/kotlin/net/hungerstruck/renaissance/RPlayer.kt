@@ -97,9 +97,16 @@ class RPlayer(val bukkit: Player) : Player by bukkit {
 
     /**
      * @return if this player can see the provided player.
+     *
+     * If in same match and
+     *  - The other is participating
+     *  or
+     *  - They are both spectators and spectators are visible
+     *  or
+     *  - The game has not started
      */
     public fun canSee(other: RPlayer): Boolean {
-        return other.match == match && ((getSetting<Boolean>(Settings.SPECTATOR_OPTIONS)!! && state == State.SPECTATING) || (other.state == State.PARTICIPATING && state == State.SPECTATING) || match?.state != RMatch.State.PLAYING)
+        return other.match == match && (other.state == State.PARTICIPATING || (other.state == State.SPECTATING && state == State.SPECTATING && getSetting<Boolean>(Settings.SPECTATOR_OPTIONS)!!) || match?.state != RMatch.State.PLAYING)
     }
 
     enum class State {
