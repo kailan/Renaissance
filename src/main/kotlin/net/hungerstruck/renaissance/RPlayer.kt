@@ -4,6 +4,7 @@ import me.anxuiz.settings.Setting
 import me.anxuiz.settings.bukkit.PlayerSettings
 import net.hungerstruck.renaissance.lobby.RLobby
 import net.hungerstruck.renaissance.match.RMatch
+import net.hungerstruck.renaissance.modules.SanityModule
 import net.hungerstruck.renaissance.settings.Settings
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
@@ -27,6 +28,7 @@ class RPlayer(val bukkit: Player) : Player by bukkit {
         }
 
         fun updateVisibility() {
+
             for (p1 in Bukkit.getOnlinePlayers()) {
                 for (p2 in Bukkit.getOnlinePlayers()) {
                     if (p1.rplayer.canSee(p2.rplayer)) {
@@ -71,6 +73,7 @@ class RPlayer(val bukkit: Player) : Player by bukkit {
     inline fun <reified T : Any> getSetting(setting: Setting) = PlayerSettings.getManager(bukkit).getValue(setting, T::class.java)
 
     public fun reset(resetHealth: Boolean = true) {
+        match?.moduleContext?.getModule<SanityModule>()?.radius=15
         if (resetHealth) health = 20.0
         saturation = 20.0f
         exhaustion = 20.0f

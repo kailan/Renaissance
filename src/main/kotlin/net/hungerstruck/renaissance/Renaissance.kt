@@ -19,7 +19,9 @@ import net.hungerstruck.renaissance.xml.RMapContext
 import net.hungerstruck.renaissance.xml.module.RModuleRegistry
 import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
+import java.io.BufferedReader
 import java.io.File
+import java.io.FileReader
 
 /**
  * Main class.
@@ -60,10 +62,24 @@ object Renaissance {
         mapContext.loadMaps(File(RConfig.Maps.mapDir))
         mapContext.resolveLobbies()
 
+        var f : File = File("someonefixthislater.txt");
+        if(f.isDirectory) {
+            f.deleteRecursively()
+        }
+        if(!f.exists()) {
+            f.createNewFile()
+            f.appendText("0")
+        }
+
+        var reader : BufferedReader = BufferedReader(FileReader(f));
+        var mapIndex : Int = reader.readLine().toInt();
+
+
+
         if (mapContext.getMaps().size == 0) throw IllegalStateException("Must have at least one map to start loading Renaissance.")
         if (mapContext.getMaps().filter { it.mapInfo.lobbyProperties != null }.size == 0) throw IllegalStateException("Must have at least one lobby to start loading Renaissance.")
         if (mapContext.getMaps().filter { it.mapInfo.lobbyProperties == null }.size == 0) throw IllegalStateException("Must have at least one game map to start loading Renaissance.")
-        lobbyManager.createLobbyFor(mapContext.getMaps().first { it.mapInfo.lobbyProperties == null })
+        lobbyManager.createLobbyFor(mapContext.getMaps()[mapIndex])
 
         Bukkit.getPluginManager().registerEvents(RPlayer.Companion, plugin)
         Bukkit.getPluginManager().registerEvents(LobbyListener(), plugin)

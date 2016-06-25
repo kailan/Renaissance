@@ -19,6 +19,7 @@ class RModuleContext {
         for (info in RModuleRegistry.MODULES) {
             loadModule(info)
         }
+
     }
 
     public inline fun <reified T : RModule> getModule(): T? {
