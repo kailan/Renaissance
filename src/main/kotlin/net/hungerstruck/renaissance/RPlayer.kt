@@ -73,7 +73,6 @@ class RPlayer(val bukkit: Player) : Player by bukkit {
     inline fun <reified T : Any> getSetting(setting: Setting) = PlayerSettings.getManager(bukkit).getValue(setting, T::class.java)
 
     public fun reset(resetHealth: Boolean = true) {
-        match?.moduleContext?.getModule<SanityModule>()?.radius=15
         if (resetHealth) health = 20.0
         saturation = 20.0f
         exhaustion = 20.0f
