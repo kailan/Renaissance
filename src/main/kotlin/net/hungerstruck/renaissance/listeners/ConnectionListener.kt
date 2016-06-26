@@ -7,12 +7,16 @@ import net.hungerstruck.renaissance.event.player.RPlayerJoinMatchEvent
 import net.hungerstruck.renaissance.match.RMatch
 import net.hungerstruck.renaissance.rplayer
 import org.bukkit.Bukkit
+import org.bukkit.ChatColor
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
+import org.bukkit.event.player.PlayerCommandPreprocessEvent
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerKickEvent
 import org.bukkit.event.player.PlayerQuitEvent
+import org.bukkit.permissions.PermissionAttachment
+import java.util.*
 
 /**
  * Handles connections. Basically just assigns a player to a lobby or match.
@@ -20,6 +24,22 @@ import org.bukkit.event.player.PlayerQuitEvent
  * Created by molenzwiebel on 01-01-16.
  */
 class ConnectionListener : Listener {
+
+    @EventHandler
+    public fun onPlayerCommandPreprocess(event: PlayerCommandPreprocessEvent)  {
+        if(     (
+                event.getMessage().startsWith("/tell")
+                || event.getMessage().startsWith("/say")
+                || event.getMessage().startsWith("/me")
+                || event.getMessage().startsWith("/minecraft:tell")
+                || event.getMessage().startsWith("/minecraft:say")
+                || event.getMessage().startsWith("/minecraft:me")
+                ) && !event.player.isOp) {
+            event.player.sendMessage("${ChatColor.RED} This command has been disabled to preserve competitive integrity")
+            event.isCancelled = true
+        }
+    }
+
     @EventHandler
     public fun onPlayerConnect(event: PlayerJoinEvent) {
         val lobby = Renaissance.lobbyManager.findLobby(RConfig.Lobby.joinStrategy)
