@@ -57,7 +57,7 @@ class ScoreboardModule(match: RMatch, modCtx: RModuleContext) : RModule(match, m
                 val killer: Player = event.entity.killer
 
                 if (killMap.containsKey(killer.uniqueId)){
-                    killMap.put(killer.uniqueId, killMap[killer.uniqueId]?.and(1)!!)
+                    killMap.put(killer.uniqueId, killMap[killer.uniqueId]!!.toInt()+1)
                 } else {
                     killMap.put(killer.uniqueId, 1)
                 }
