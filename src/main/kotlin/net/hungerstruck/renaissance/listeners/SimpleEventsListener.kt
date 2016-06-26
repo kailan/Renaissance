@@ -3,6 +3,7 @@ package net.hungerstruck.renaissance.listeners
 import net.hungerstruck.renaissance.Renaissance
 import net.hungerstruck.renaissance.event.match.RMatchEndEvent
 import net.hungerstruck.renaissance.match.RMatch
+import org.bukkit.Bukkit
 import org.bukkit.World
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
@@ -14,6 +15,7 @@ import org.bukkit.event.weather.WeatherChangeEvent
 import java.io.BufferedReader
 import java.io.File
 import java.io.FileReader
+import java.io.RandomAccessFile
 
 /**
  * Cancels world events in matches that have not started
@@ -21,20 +23,37 @@ import java.io.FileReader
 class SimpleEventsListener : Listener {
     @EventHandler
     public fun onMatchEnd(event: RMatchEndEvent) {
-        var f : File = File("someonefixthislater.txt");
-        if(f.isDirectory) {
+        var f : File = File("someonefixthislater.txt")
+
+        if(f.isDirectory)
             f.deleteRecursively()
-        }
+
         if(!f.exists()) {
+            f.delete()
+
             f.createNewFile()
-            f.appendText("0")
+            RandomAccessFile(f, "rw").setLength(0)
+            f.writeText("0")
+
         } else {
             var reader : BufferedReader = BufferedReader(FileReader(f));
             var mapIndex : Int = reader.readLine().toInt();
 
+            //f.delete()
+            RandomAccessFile(f, "rw").setLength(0)
             f.delete()
-            f.appendText(mapIndex++.toString())
+            f.createNewFile()
+
+            if(Renaissance.mapContext.getMaps().filter { it.mapInfo.lobbyProperties == null }.size > mapIndex+1) {
+                mapIndex += 1
+                f.writeText(mapIndex.toString())
+            } else
+                f.writeText(0.toString())
+
         }
+
+        Bukkit.getScheduler().scheduleSyncDelayedTask(Renaissance.plugin, { Bukkit.shutdown(); }, 20L * 30)
+
     }
 
     /**
