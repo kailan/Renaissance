@@ -43,6 +43,7 @@ class RMatch {
         this.moduleContext = RModuleContext(this)
 
         Bukkit.getPluginManager().callEvent(RMatchLoadEvent(this))
+        RPlayer.updateVisibility()
     }
 
     public fun sendMessage(msg: String, f: (RPlayer) -> Boolean = { true }) {
@@ -76,6 +77,7 @@ class RMatch {
         state = State.PLAYING
 
         Bukkit.getPluginManager().callEvent(RMatchStartEvent(this))
+        RPlayer.updateVisibility()
 
         if (shouldEnd) {
             if (alivePlayers.size == 1) {
