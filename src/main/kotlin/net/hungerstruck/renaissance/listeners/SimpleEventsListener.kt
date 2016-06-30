@@ -4,6 +4,7 @@ import net.hungerstruck.renaissance.Renaissance
 import net.hungerstruck.renaissance.event.match.RMatchEndEvent
 import net.hungerstruck.renaissance.match.RMatch
 import org.bukkit.Bukkit
+import org.bukkit.ChatColor
 import org.bukkit.World
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
@@ -52,7 +53,12 @@ class SimpleEventsListener : Listener {
 
         }
 
-        Bukkit.getScheduler().scheduleSyncDelayedTask(Renaissance.plugin, { Bukkit.shutdown(); }, 20L * 30)
+        Bukkit.getScheduler().scheduleSyncDelayedTask(Renaissance.plugin, {
+            Bukkit.getOnlinePlayers().forEach { it.kickPlayer(ChatColor.RED.toString() + "Server restarting!" + ChatColor.GRAY + " » " + ChatColor.WHITE + "Rejoin in a minute.") }
+            Bukkit.getScheduler().scheduleSyncDelayedTask(Renaissance.plugin, {
+                Bukkit.shutdown()
+            }, 20L)
+        }, 20L * 30)
 
     }
 
