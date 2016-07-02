@@ -15,6 +15,7 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerKickEvent
 import org.bukkit.event.player.PlayerQuitEvent
+import org.bukkit.event.server.ServerListPingEvent
 import org.bukkit.permissions.PermissionAttachment
 import java.util.*
 
@@ -38,6 +39,22 @@ class ConnectionListener : Listener {
             event.player.sendMessage("${ChatColor.RED} This command has been disabled to preserve competitive integrity")
             event.isCancelled = true
         }
+    }
+
+    @EventHandler
+    public fun onServerListPing(event: ServerListPingEvent) {
+        val sb = StringBuilder()
+        val match = Renaissance.matchManager.findMatch(RConfig.Match.joinStrategy)
+        sb.append(ChatColor.RED.toString())
+          .append("@Hunger")
+          .append(ChatColor.WHITE.toString())
+          .append("StruckHQ")
+          .append(ChatColor.GRAY.toString())
+          .append(" [1.8]\n")
+          .append(ChatColor.RED.toString())
+          .append("Now ${match!!.state.toString().toLowerCase()}: ")
+          .append(ChatColor.WHITE.toString())
+          .append("${match.map.mapInfo.name}")
     }
 
     @EventHandler
