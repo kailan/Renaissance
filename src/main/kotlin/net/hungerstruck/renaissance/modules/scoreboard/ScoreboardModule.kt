@@ -78,7 +78,7 @@ class ScoreboardModule(match: RMatch, modCtx: RModuleContext) : RModule(match, m
     @EventHandler(priority = EventPriority.HIGHEST)
     fun onJoin(event: PlayerJoinEvent){
         if(event.player.rplayer.match == match) {
-            if(event.player.rplayer.getSetting<Boolean>(Settings.SCOREBOARD_OPTIONS)!! && !scoreboardMap.containsKey(event.player.uniqueId))
+            if(event.player.rplayer.getSetting<Boolean>(Settings.SCOREBOARD_OPTIONS)!!)
                 showScoreboard(event.player.rplayer)
         }
     }
