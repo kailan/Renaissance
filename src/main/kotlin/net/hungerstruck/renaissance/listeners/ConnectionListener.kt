@@ -55,6 +55,7 @@ class ConnectionListener : Listener {
           .append("Now ${match!!.state.toString().toLowerCase()}: ")
           .append(ChatColor.WHITE.toString())
           .append("${match.map.mapInfo.name}")
+        event.motd = sb.toString()
     }
 
     @EventHandler
