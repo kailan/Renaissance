@@ -18,7 +18,9 @@ import net.hungerstruck.renaissance.xml.module.RModuleContext
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
+import org.bukkit.event.EventPriority
 import org.bukkit.event.entity.PlayerDeathEvent
+import org.bukkit.event.player.PlayerJoinEvent
 import java.util.*
 
 @Dependencies(ThirstModule::class, SanityModule::class)
@@ -34,7 +36,7 @@ class ScoreboardModule(match: RMatch, modCtx: RModuleContext) : RModule(match, m
     @EventHandler
     fun onMatchStart(event: RMatchStartEvent) {
         for (p in event.match.players)
-            if(p.getSetting<Boolean>(Settings.SCOREBOARD_OPTIONS) == true)
+            if(p.getSetting<Boolean>(Settings.SCOREBOARD_OPTIONS)!!)
                 showScoreboard(p)
 
         timer = Bukkit.getScheduler().scheduleSyncRepeatingTask(Renaissance.plugin, ScoreboardTimer(this), 0, 20)
@@ -73,6 +75,14 @@ class ScoreboardModule(match: RMatch, modCtx: RModuleContext) : RModule(match, m
         }
     }
 
+    @EventHandler(priority = EventPriority.HIGHEST)
+    fun onJoin(event: PlayerJoinEvent){
+        if(event.player.rplayer.match == match) {
+            if(event.player.rplayer.getSetting<Boolean>(Settings.SCOREBOARD_OPTIONS)!!)
+                showScoreboard(event.player.rplayer)
+        }
+    }
+
     @EventHandler
     fun onThirstUpdate(event: RPlayerThirstUpdateEvent){
         if(!isMatch(event.player)) return
@@ -85,14 +95,14 @@ class ScoreboardModule(match: RMatch, modCtx: RModuleContext) : RModule(match, m
         scoreboardMap[event.player.uniqueId]?.setScore(-12, event.sanity.toString() + "%§3 ")?.show()
     }
 
-    public fun showScoreboard(player: RPlayer) {
+    fun showScoreboard(player: RPlayer) {
         val scoreboard = RScoreboard("§e§lHungerStruck", player.uniqueId)
         setupScoreboard(scoreboard, player)
         scoreboard.show()
         scoreboardMap.put(player.uniqueId, scoreboard)
     }
 
-    public fun hideScoreboard(player: RPlayer) {
+    fun hideScoreboard(player: RPlayer) {
         player.scoreboard = Bukkit.getScoreboardManager().mainScoreboard
         scoreboardMap.remove(player.uniqueId)
     }
