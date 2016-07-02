@@ -77,8 +77,9 @@ class DeathModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCtx
         victim.collidesWithEntities = false
         victim.allowFlight = true
 
-        val message = if (victim.killer != null) RConfig.Match.playerDeathByPlayerMessage else RConfig.Match.playerDeathByOtherMessage
-        match.sendMessage(message.replace("%0\$s", victim.displayName).replace("%1\$c", (victim.killer?.displayName).toString()))
+        //val message = if (victim.killer != null) RConfig.Match.playerDeathByPlayerMessage else RConfig.Match.playerDeathByOtherMessage
+        //match.sendMessage(message.replace("%0\$s", victim.displayName).replace("%1\$c", (victim.killer?.displayName).toString()))
+        match.sendMessage(event.deathMessage)
 
         if (match.shouldEnd) {
             var winner: RPlayer
@@ -92,6 +93,8 @@ class DeathModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCtx
             match.announceWinner(winner)
         } else {
             match.sendMessage(RConfig.Match.playerRemainMessage.replace("%0\$d", match.alivePlayers.size.toString()))
+
+            if(getModule<SanityModule>() != null && getModule<SanityModule>()!!.radiusDecrease > 0) match.sendMessage(RConfig.Match.radiusShrinkMessage)
         }
 
         match.world.strikeLightningEffect(victim.location)

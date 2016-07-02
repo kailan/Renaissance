@@ -38,7 +38,7 @@ class PedestalModule(match: RMatch, val modCtx: RModuleContext) : RModule(match,
 
         event.player.state = RPlayer.State.PARTICIPATING
         event.player.reset()
-        event.player.teleport(pedestalIt.next().loc.add(0.0, 0.5, 0.0).toLocation(match.world).teleportable)
+        event.player.teleport(pedestalIt.next().loc.add(0.5, 0.5, 0.5).toLocation(match.world).teleportable)
 
         val boundaryCenter = modCtx.getModule<BoundaryModule>()?.center
         if(boundaryCenter != null)

@@ -57,6 +57,8 @@ object RConfig {
         var matchEndMessageFadeIn : Int by path("match.end-message-fade-in", 2);
         var matchEndMessageDuration : Int by path("match.end-message-duration", 5);
         var matchEndMessageFadeOut : Int by path("match.end-message-fade-out", 2);
+
+        var radiusShrinkMessage : String by path("match.radius-shrink-message", "${ChatColor.RED}The sanity radius has decreased!");
     }
 
     object Thirst {
