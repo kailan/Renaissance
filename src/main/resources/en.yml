@@ -6,10 +6,10 @@
 command:
   bad-state: "You must be in a match or lobby to use this command."
 lobby:
-  countdown: "&eThe lobby will end in &6{time} &esecond(s)."
+  countdown: "&eThe lobby will end in &6{time} &esecond{time == 1 ? '' : 's'}."
 match:
   join: "&a{player.displayName} &7has joined the match."
-  countdown: "&eThe match will start in &6#{time} &esecond(s)."
+  countdown: "&eThe match will start in &6#{time} &esecond{time == 1 ? '' : 's'}."
   no-players: "&cNo players are playing! Ending the game."
   win: "&5{player.displayName} &fhas won the game!"
   feast: "&3There has been a feast!"
