@@ -1,9 +1,11 @@
 package net.hungerstruck.renaissance.commands
 
+import co.enviark.speak.Translation
 import com.sk89q.minecraft.util.commands.Command
 import com.sk89q.minecraft.util.commands.CommandContext
 import com.sk89q.minecraft.util.commands.NestedCommand
 import net.hungerstruck.renaissance.Renaissance
+import net.hungerstruck.renaissance.util.ColorUtil
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.command.CommandException
@@ -27,7 +29,7 @@ object EventCommands {
         @JvmStatic
         @Command(aliases = arrayOf("add"), desc = "Adds a player to the forced spectator list.", usage = "[player/id]", min = 1, max = 1, flags = "u")
         fun add(args: CommandContext, sender: CommandSender) {
-            val id = findUUID(args.getString(0), args.hasFlag('u'))
+            val id = findUUID(args.getString(0), args.hasFlag('u'), sender)
             Renaissance.eventManager.addForcedSpectator(id)
             sender.sendMessage("${ChatColor.GREEN}Added '${ChatColor.AQUA}'$id'${ChatColor.BLUE} to the forced spectator list.")
         }
@@ -35,7 +37,7 @@ object EventCommands {
         @JvmStatic
         @Command(aliases = arrayOf("remove"), desc = "Removes a player from the forced spectator list.", usage = "[player/id]", min = 1, max = 1, flags = "u")
         fun remove(args: CommandContext, sender: CommandSender) {
-            val id = findUUID(args.getString(0), args.hasFlag('u'))
+            val id = findUUID(args.getString(0), args.hasFlag('u'), sender)
             Renaissance.eventManager.removeForcedSpectator(id)
             sender.sendMessage("${ChatColor.RED}Removed '${ChatColor.AQUA}'$id'${ChatColor.BLUE} from the forced spectator list.")
         }
@@ -50,12 +52,12 @@ object EventCommands {
             }
         }
 
-        private fun findUUID(nameOrUUID: String, flag: Boolean): UUID {
+        private fun findUUID(nameOrUUID: String, flag: Boolean, sender: CommandSender): UUID {
             if (flag) {
                 return UUID.fromString(nameOrUUID)
             }
             if (Bukkit.getPlayer(nameOrUUID) != null) return Bukkit.getPlayer(nameOrUUID).uniqueId
-            throw CommandException("Unknown player '$nameOrUUID'. Use -u to add/remove UUIDs.");
+            throw CommandException(Translation("command.unknown-player").to(CommandUtils.getLocale(sender)).put("p", ColorUtil.errorColors[0]).put("s", ColorUtil.errorColors[1]).put("player", nameOrUUID).get())
         }
     }
 }

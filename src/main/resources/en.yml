@@ -1,10 +1,20 @@
 #
 #  Renaissance language file
-#  english best language amirite
+#  JavaScript can be wrapped within {} tags
+#
+#  Each message has one or two colours, to get these use either
+#  {p} or {s}
 #
 
 command:
-  bad-state: "You must be in a match or lobby to use this command."
+  no-permission: "{p}You do not have permission to run this command."
+  invalid-usage: "{p}Invalid command usage. Try this:"
+  expected-number: "{p}Whoops. We were expecting a number{extra ? ', not' + {s} + extra + {p} : ''}."
+  not-player: "{p}You must be a player to run this command."
+  unknown-player: "{p}Unknown player, {s}{player}{p}. Use the -u flag if you're using UUIDs."
+  unknown-uuid: "{p}Unknown UUID, {s}{uuid}{p}. Remove the -u flag if you're using player names."
+  bad-state: "{p}You must be in a match or lobby to use this command."
+  unexpected-error: "{p}We're sorry, but an unexpected error occurred. Please contact us on our website, http://hungerstruck.net, if the error persists."
 lobby:
   countdown: "&eThe lobby will end in &6{time} &esecond{time == 1 ? '' : 's'}."
 match:

@@ -1,7 +1,6 @@
 package net.hungerstruck.renaissance
 
 import co.enviark.speak.Speak
-import co.enviark.speak.Translation
 import net.hungerstruck.renaissance.config.RConfig
 import net.hungerstruck.renaissance.countdown.CountdownManager
 import net.hungerstruck.renaissance.listeners.ConnectionListener
