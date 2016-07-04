@@ -42,31 +42,6 @@ class RenaissancePlugin : JavaPlugin() {
     }
 
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
-        if (command.name.equals("debug")) {
-            val engine = if (sessions[sender] != null) {
-                sessions[sender]!!
-            } else {
-                sessions[sender] = nashornEngine.getScriptEngine(classLoader)
-                sessions[sender]!!
-            }
-
-            engine.put("player", sender)
-            if (sender is Player) engine.put("rplayer", sender.rplayer)
-            engine.put("Renaissance", Renaissance)
-            engine.put("server", Bukkit.getServer())
-            engine.eval("var Bukkit = org.bukkit.Bukkit")
-
-            try {
-                val res = engine.eval(args.joinToString(" "))
-
-                sender.sendMessage("${ChatColor.GRAY}> ${ChatColor.WHITE}$res")
-            } catch (e: Exception) {
-                sender.sendMessage("${ChatColor.GRAY}> ${ChatColor.RED}${e.message}")
-            }
-
-            return true
-        }
-
         try {
             commands.execute(command.name, args, sender, sender);
         } catch (e: CommandPermissionsException) {
