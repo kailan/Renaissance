@@ -26,6 +26,7 @@ class RLobby {
     val lobbyMap: RMap
     val nextMap: RMap
     val match: RMatch
+    var counting: Boolean = false
 
     constructor(id: Int, lobbyWorld: World, lobbyMap: RMap, nextMap: RMap) {
         this.id = id
