@@ -57,7 +57,7 @@ class RLobby {
 
         sendMessage("${ChatColor.GREEN}${player.displayName} ${ChatColor.GRAY}has joined the match!")
 
-        if (playingMembers.size >= RConfig.Lobby.minimumPlayerStartCount && playingMembers.size <= RConfig.Lobby.maximumPlayerStartCount && RConfig.Lobby.autoStart) {
+        if (playingMembers.size >= RConfig.Lobby.minimumPlayerStartCount && playingMembers.size <= RConfig.Lobby.maximumPlayerStartCount && RConfig.Lobby.autoStart && !counting) {
             startCountdown()
         }
     }
@@ -65,6 +65,7 @@ class RLobby {
     public fun startCountdown() {
         if (!Renaissance.countdownManager.hasCountdown(RLobbyEndCountdown::class.java)) {
             Renaissance.countdownManager.start(RLobbyEndCountdown(this), RConfig.Lobby.countdownTime)
+            counting = true
         }
     }
 
