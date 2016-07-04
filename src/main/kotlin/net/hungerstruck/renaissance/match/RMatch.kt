@@ -100,8 +100,8 @@ class RMatch {
         sendPrefixlessMessage(CommandUtils.formatHeader(ChatColor.GOLD.toString() + map.mapInfo.name + " " + ChatColor.GRAY.toString() + map.mapInfo.version, ChatColor.YELLOW))
         sendPrefixlessMessage(ChatColor.YELLOW.toString() + map.mapInfo.objective)
         sendPrefixlessMessage(ChatColor.YELLOW.toString() + "Author" + (if (map.mapInfo.authors.count() > 1) "s" else "") + ": " + map.mapInfo.authors.map { ChatColor.GOLD.toString() + it.name }.joinToString(", "))
-        if(map.mapInfo.contributors.count() > 0) sendMessage(ChatColor.YELLOW.toString() + "Contributor" + (if (map.mapInfo.contributors.count() > 1) "s" else "") + ": " + map.mapInfo.contributors.map { ChatColor.GOLD.toString() + it.name }.joinToString(", "))
-        sendPrefixlessMessage(ChatColor.YELLOW.toString() + ChatColor.STRIKETHROUGH + Strings.repeat("-", ChatPaginator.GUARANTEED_NO_WRAP_CHAT_PAGE_WIDTH))
+        if(map.mapInfo.contributors.count() > 0) sendPrefixlessMessage(ChatColor.YELLOW.toString() + "Contributor" + (if (map.mapInfo.contributors.count() > 1) "s" else "") + ": " + map.mapInfo.contributors.map { ChatColor.GOLD.toString() + it.name }.joinToString(", "))
+        sendPrefixlessMessage(CommandUtils.formatHeader(ChatColor.GOLD.toString() + "HungerStruck", ChatColor.YELLOW))
     }
 
     /**
