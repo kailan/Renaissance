@@ -1,5 +1,6 @@
 package net.hungerstruck.renaissance.match
 
+import com.google.common.base.Strings
 import net.hungerstruck.renaissance.RPlayer
 import net.hungerstruck.renaissance.Renaissance
 import net.hungerstruck.renaissance.commands.CommandUtils
@@ -13,6 +14,7 @@ import net.hungerstruck.renaissance.xml.module.RModuleContext
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.World
+import org.bukkit.util.ChatPaginator
 
 /**
  * Represents a match.
@@ -96,9 +98,10 @@ class RMatch {
      */
     private fun sendMapInfo() {
         sendPrefixlessMessage(CommandUtils.formatHeader(ChatColor.GOLD.toString() + map.mapInfo.name + " " + ChatColor.GRAY.toString() + map.mapInfo.version, ChatColor.YELLOW))
-        sendMessage(ChatColor.YELLOW.toString() + map.mapInfo.objective)
-        sendMessage(ChatColor.YELLOW.toString() + "Author" + (if (map.mapInfo.authors.count() > 1) "s" else "") + ": " + map.mapInfo.authors.map { ChatColor.GOLD.toString() + it.name }.joinToString(", "))
+        sendPrefixlessMessage(ChatColor.YELLOW.toString() + map.mapInfo.objective)
+        sendPrefixlessMessage(ChatColor.YELLOW.toString() + "Author" + (if (map.mapInfo.authors.count() > 1) "s" else "") + ": " + map.mapInfo.authors.map { ChatColor.GOLD.toString() + it.name }.joinToString(", "))
         if(map.mapInfo.contributors.count() > 0) sendMessage(ChatColor.YELLOW.toString() + "Contributor" + (if (map.mapInfo.contributors.count() > 1) "s" else "") + ": " + map.mapInfo.contributors.map { ChatColor.GOLD.toString() + it.name }.joinToString(", "))
+        sendPrefixlessMessage(ChatColor.YELLOW.toString() + ChatColor.STRIKETHROUGH + Strings.repeat("-", ChatPaginator.GUARANTEED_NO_WRAP_CHAT_PAGE_WIDTH))
     }
 
     /**
