@@ -4,6 +4,12 @@ description: ${description}
 authors: [molenzwiebel, Komp, skreem, TeddyTheTeddy]
 main: net.hungerstruck.renaissance.RenaissancePlugin
 
+commands:
+   debug:
+       description: This should be removed.
+       permission: renaissance.admin
+       usage: Enter a script idiot.
+
 permissions:
   renaissance.admin:
     default: op
