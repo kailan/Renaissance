@@ -28,7 +28,7 @@ object CommandUtils {
     }
 
     public fun formatHeader(title: String, paddingColor: ChatColor): String {
-        val titleLen: Int = ChatColor.stripColor(title).length()
+        val titleLen: Int = ChatColor.stripColor(title).length
         val padLen: Int = (ChatPaginator.GUARANTEED_NO_WRAP_CHAT_PAGE_WIDTH - titleLen) / 2 - 2
         val padding: String = paddingColor.toString() + ChatColor.STRIKETHROUGH + Strings.repeat("-", padLen)
         return padding + ChatColor.RESET + " " + title + " " + padding
