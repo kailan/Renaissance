@@ -2,6 +2,7 @@ package net.hungerstruck.renaissance.match
 
 import net.hungerstruck.renaissance.RPlayer
 import net.hungerstruck.renaissance.Renaissance
+import net.hungerstruck.renaissance.commands.CommandUtils
 import net.hungerstruck.renaissance.config.RConfig
 import net.hungerstruck.renaissance.event.match.RMatchEndEvent
 import net.hungerstruck.renaissance.event.match.RMatchLoadEvent
@@ -78,6 +79,7 @@ class RMatch {
 
         Bukkit.getPluginManager().callEvent(RMatchStartEvent(this))
         RPlayer.updateVisibility()
+        sendMapInfo()
 
         if (shouldEnd) {
             if (alivePlayers.size == 1) {
@@ -87,6 +89,16 @@ class RMatch {
                 sendMessage("${ChatColor.RED}No players are playing! Ending the game.")
             }
         }
+    }
+
+    /**
+     * Sends map info to players
+     */
+    private fun sendMapInfo() {
+        sendPrefixlessMessage(CommandUtils.formatHeader(ChatColor.GOLD.toString() + map.mapInfo.name + " " + ChatColor.GRAY.toString() + map.mapInfo.version, ChatColor.YELLOW))
+        sendMessage(ChatColor.YELLOW.toString() + map.mapInfo.objective)
+        sendMessage(ChatColor.YELLOW.toString() + "Author" + (if (map.mapInfo.authors.count() > 1) "s" else "") + ": " + map.mapInfo.authors.map { ChatColor.GOLD.toString() + it.name }.joinToString(", "))
+        if(map.mapInfo.contributors.count() > 0) sendMessage(ChatColor.YELLOW.toString() + "Contributor" + (if (map.mapInfo.contributors.count() > 1) "s" else "") + ": " + map.mapInfo.contributors.map { ChatColor.GOLD.toString() + it.name }.joinToString(", "))
     }
 
     /**
@@ -114,9 +126,9 @@ class RMatch {
     fun announceWinner(player: RPlayer) {
         sendTitle(RConfig.Match.matchEndMessageTitle.format(player.displayName), RConfig.Match.matchEndMessageSubTitle, RConfig.Match.matchEndMessageFadeIn, RConfig.Match.matchEndMessageDuration, RConfig.Match.matchEndMessageFadeOut)
 
-        sendMessage("\n")
+        sendPrefixlessMessage("\n")
         sendMessage("${ChatColor.DARK_PURPLE}${player.displayName}${ChatColor.WHITE} has won the game!")
-        sendMessage("\n")
+        sendPrefixlessMessage("\n")
 
         endMatch(player)
 
