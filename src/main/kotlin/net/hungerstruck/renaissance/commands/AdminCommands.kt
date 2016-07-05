@@ -45,7 +45,7 @@ object AdminCommands {
 
         if(player.rplayer.lobby == null) throw CommandException("You must be in a lobby to run this command.")
 
-        if(!(player.rplayer.lobby as RLobby).counting) (player.rplayer.lobby as RLobby).counting = true
+        if(!player.rplayer.lobby!!.counting) player.rplayer.lobby!!.counting = true
         Renaissance.countdownManager.cancelAll()
         player.sendPrefixMessage("Lobby countdown paused. To resume run '/start'", ChatColor.RED)
     }
