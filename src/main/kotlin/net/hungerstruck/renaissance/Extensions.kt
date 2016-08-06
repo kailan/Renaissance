@@ -1,5 +1,7 @@
 package net.hungerstruck.renaissance
 
+import net.hungerstruck.renaissance.config.RConfig
+import org.bukkit.ChatColor
 import org.bukkit.Location
 import org.bukkit.entity.Player
 import org.bukkit.util.Vector
@@ -93,6 +95,14 @@ var random = Random()
 
 fun <T> Array<T>.randomElement(): T{
     return this[random.nextInt(this.size)]
+}
+
+fun Player.sendPrefixMessage(message: String) {
+    this.sendMessage(ChatColor.GRAY.toString() + RConfig.General.mainMessagePrefix + ChatColor.WHITE.toString() + message)
+}
+
+fun Player.sendPrefixMessage(message: String, color: ChatColor) {
+    this.sendMessage(color.toString() + RConfig.General.mainMessagePrefix + ChatColor.WHITE.toString() + message)
 }
 
 fun Location.lookAt(other: Location) : Location {

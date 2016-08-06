@@ -3,6 +3,7 @@ package net.hungerstruck.renaissance
 import com.sk89q.bukkit.util.CommandsManagerRegistration
 import com.sk89q.minecraft.util.commands.*
 import jdk.nashorn.api.scripting.NashornScriptEngineFactory
+import net.hungerstruck.renaissance.commands.AdminCommands
 import net.hungerstruck.renaissance.commands.EventCommands
 import net.hungerstruck.renaissance.commands.MapCommands
 import org.bukkit.Bukkit
@@ -36,6 +37,7 @@ class RenaissancePlugin : JavaPlugin() {
 
         val cmdRegister: CommandsManagerRegistration = CommandsManagerRegistration(this, this.commands);
         cmdRegister.register(MapCommands::class.java)
+        cmdRegister.register(AdminCommands::class.java)
         cmdRegister.register(EventCommands::class.java)
     }
 

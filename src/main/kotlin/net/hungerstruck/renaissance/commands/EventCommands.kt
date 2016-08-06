@@ -2,6 +2,7 @@ package net.hungerstruck.renaissance.commands
 
 import com.sk89q.minecraft.util.commands.Command
 import com.sk89q.minecraft.util.commands.CommandContext
+import com.sk89q.minecraft.util.commands.CommandPermissions
 import com.sk89q.minecraft.util.commands.NestedCommand
 import net.hungerstruck.renaissance.Renaissance
 import org.bukkit.Bukkit
@@ -18,6 +19,7 @@ import java.util.*
 object EventCommands {
     @JvmStatic
     @NestedCommand(ForcedSpectatorCommands::class)
+    @CommandPermissions("renaissance.admin")
     @Command(aliases = arrayOf("fspec"), desc = "Forced spectator commands.", usage = "[list/add/remove]", min = 0, max = -1)
     fun fspec(args: CommandContext, sender: CommandSender) {
         // Nuthin
