@@ -150,8 +150,8 @@ class MapBuilder : AbstractMapBuilder<MapBuilder>() {
     fun rectangle(min: IntRange, max: IntRange) = RectangleRegion(Vector(min.first, 0, min.last), Vector(max.first, 0, max.last))
     fun sphere(center: Vector, radius: Int) = SphereRegion(center, radius)
 
-    fun intersect(x: RegionListBuilder.() -> Unit) = IntersectRegion(RegionListBuilder().run(x).toArrayList())
-    fun union(x: RegionListBuilder.() -> Unit) = UnionRegion(RegionListBuilder().run(x).toArrayList())
+    fun intersect(x: RegionListBuilder.() -> Unit) = IntersectRegion(RegionListBuilder().run(x).toList())
+    fun union(x: RegionListBuilder.() -> Unit) = UnionRegion(RegionListBuilder().run(x).toList())
     operator fun RRegion.not() = InvertedRegion(this)
 }
 
