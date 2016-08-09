@@ -52,7 +52,8 @@ class ChestModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCtx
         for (chunk in event.match.world.loadedChunks) {
             processedChunks.add(chunk)
             for (tEntity in chunk.tileEntities) {
-                if (tEntity.type == Material.CHEST || tEntity.type == Material.TRAPPED_CHEST)
+                // Trapped chests are MaterialData, not Chest. Only fill chests if they are empty.
+                if (tEntity is Chest && tEntity.inventory.all { it == null || it.type == Material.AIR })
                     chests.add(BlockRegion(tEntity.block.location.toVector()))
             }
         }
