@@ -27,8 +27,8 @@ import java.util.*
  */
 @Dependencies(BoundaryModule::class)
 class SanityModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCtx) {
-    @inject val airHeight: Int = 0
-    @inject val overallLightLevel: Int = 0
+    @inject val airHeight: Int = 120
+    @inject val overallLightLevel: Int = 6
 
     val sanityChange = 2
     val sanityDamage = 1.0
