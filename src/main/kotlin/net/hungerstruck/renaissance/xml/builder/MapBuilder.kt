@@ -2,10 +2,12 @@ package net.hungerstruck.renaissance.xml.builder
 
 import net.hungerstruck.renaissance.modules.*
 import net.hungerstruck.renaissance.modules.region.*
+import net.hungerstruck.renaissance.util.RandomCollection
 import net.hungerstruck.renaissance.xml.Contributor
 import net.hungerstruck.renaissance.xml.RLobbyProperties
 import org.bukkit.Difficulty
 import org.bukkit.World
+import org.bukkit.inventory.ItemStack
 import org.bukkit.util.Vector
 
 /**
@@ -67,7 +69,7 @@ class MapBuilder : AbstractMapBuilder<MapBuilder>() {
     fun boundary(x: BoundarySettings.() -> Unit)
             = register<BoundaryModule>(BoundarySettings().build(x))
 
-    class ChestSettings : BuilderPropertySet<ChestSettings>() {
+    class ChestSettings(val instance: MapBuilder) : BuilderPropertySet<ChestSettings>() {
         var mode: ChestModule.Mode = ChestModule.Mode.AUTOMATIC
         var chests: MutableList<BlockRegion> = arrayListOf()
 
@@ -78,13 +80,21 @@ class MapBuilder : AbstractMapBuilder<MapBuilder>() {
         operator fun BlockRegion.unaryMinus() {
             chests.add(this)
         }
+
+        fun setupInitialItems(f: (RandomCollection<ItemStack>) -> Unit) {
+            instance.register<ChestModule>("setupInitialItems", f)
+        }
+
+        fun setupFeastItems(f: (RandomCollection<ItemStack>, Double) -> Unit) {
+            instance.register<ChestModule>("setupFeastItems", f)
+        }
     }
 
     /**
      * Specifies chest settings.
      */
     fun chests(x: ChestSettings.() -> Unit)
-            = register<ChestModule>(ChestSettings().build(x))
+            = register<ChestModule>(ChestSettings(this).build(x))
 
     class GameRuleSettings : BuilderPropertySet<GameRuleSettings>() {
         var rules: MutableList<Pair<String, Boolean>> = arrayListOf()
