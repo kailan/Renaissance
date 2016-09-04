@@ -137,6 +137,7 @@ class MapBuilder : AbstractMapBuilder<MapBuilder>() {
         var blockDamage = false
         var instantIgnite = false
         var `yield` = -1
+        var damageUnderWater = false
     }
 
     /**
