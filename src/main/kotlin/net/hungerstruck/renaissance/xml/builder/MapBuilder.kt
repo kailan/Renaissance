@@ -132,6 +132,19 @@ class MapBuilder : AbstractMapBuilder<MapBuilder>() {
         var locked = false
     }
 
+
+    class TNTSettings : BuilderPropertySet<TNTSettings>() {
+        var blockDamage = false
+        var instantIgnite = false
+        var `yield` = -1
+    }
+
+    /**
+     * Specifies sanity settings.
+     */
+    fun tnt(x: TNTSettings.() -> Unit)
+            = register<TNTSettingsModule>(TNTSettings().build(x))
+
     /**
      * Specifies timelock settings.
      */
