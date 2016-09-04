@@ -39,7 +39,7 @@ class ChestModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCtx
     @inject var mode: Mode = Mode.AUTOMATIC
 
     @inject var setupInitialItems: (RandomCollection<ItemStack>) -> Unit = {}
-    @inject var setupFeastItems: (RandomCollection<ItemStack>, Double) -> Unit = {}
+    @inject var setupFeastItems: (RandomCollection<ItemStack>, Double) -> Unit = {x,y -> }
 
     override fun init() {
         setupItems()
