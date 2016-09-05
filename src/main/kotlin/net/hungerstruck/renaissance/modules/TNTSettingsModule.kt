@@ -2,11 +2,9 @@ package net.hungerstruck.renaissance.modules
 
 import com.google.common.collect.Sets
 import net.hungerstruck.renaissance.match.RMatch
-import net.hungerstruck.renaissance.util.BlockOverride
 import net.hungerstruck.renaissance.xml.builder.inject
 import net.hungerstruck.renaissance.xml.module.RModule
 import net.hungerstruck.renaissance.xml.module.RModuleContext
-import net.minecraft.server.v1_8_R3.BlockPosition
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.block.Block
@@ -100,14 +98,12 @@ class TNTSettingsModule(match: RMatch, modCtx: RModuleContext) : RModule(match, 
                         var d5 = event.location.y
                         var d6 = event.location.z
                         while (f > 0.0f) {
-                            val blockposition = BlockPosition(d4, d5, d6)
-                            val block = event.world.getBlockAt(blockposition.x, blockposition.y, blockposition.z)
+                            val block = event.world.getBlockAt(Math.floor(d4).toInt(), Math.floor(d5).toInt(), Math.floor(d6).toInt())
                             if (block.type != Material.AIR && block.type != Material.WATER && block.type != Material.STATIONARY_WATER ) {
-
-                                val f2 = BlockOverride(net.minecraft.server.v1_8_R3.Block.getById(block.typeId)).get("durability") as Float
+                                val f2 = block.durability // relies on Strukkit durability api patch
                                 f -= (f2 + 0.3f) * 0.3f
                             }
-                            if (f > 0.0f && blockposition.getY() < 256 && blockposition.getY() >= 0) {
+                            if (f > 0.0f && d5 < 256 && d5 >= 0) {
                                 hashset.add(block)
                             }
                             d4 += d0 * 0.30000001192092896
