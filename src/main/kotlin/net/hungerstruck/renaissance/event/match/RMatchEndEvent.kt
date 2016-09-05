@@ -5,8 +5,16 @@ import net.hungerstruck.renaissance.match.RMatch
 import org.bukkit.event.HandlerList
 
 class RMatchEndEvent(match: RMatch, val winner: RPlayer?) : StruckMatchEvent(match) {
-    private val handlers = HandlerList()
+
+    companion object {
+        val handlers = HandlerList()
+
+        @JvmStatic fun getHandlerList(): HandlerList {
+            return handlers
+        }
+    }
+
     override fun getHandlers(): HandlerList {
-        return handlers
+        return Companion.handlers
     }
 }

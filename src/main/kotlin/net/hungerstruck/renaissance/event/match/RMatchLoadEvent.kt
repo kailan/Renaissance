@@ -7,8 +7,16 @@ import org.bukkit.event.HandlerList
  * Created by molenzwiebel on 03-01-16.
  */
 class RMatchLoadEvent(match: RMatch) : StruckMatchEvent(match) {
-    private val handlers = HandlerList()
+
+    companion object {
+        val handlers = HandlerList()
+
+        @JvmStatic fun getHandlerList(): HandlerList {
+            return handlers
+        }
+    }
+
     override fun getHandlers(): HandlerList {
-        return handlers
+        return Companion.handlers
     }
 }

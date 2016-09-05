@@ -8,8 +8,17 @@ import org.bukkit.event.HandlerList
  * Created by molenzwiebel on 01-01-16.
  */
 class RLobbyEndEvent(lobby: RLobby) : StruckLobbyEvent(lobby) {
-    private val handlers = HandlerList()
+
+    companion object {
+        val handlers = HandlerList()
+
+        @JvmStatic fun getHandlerList(): HandlerList {
+            return handlers
+        }
+    }
+
     override fun getHandlers(): HandlerList {
-        return handlers
+        return Companion.handlers
     }
 }
+

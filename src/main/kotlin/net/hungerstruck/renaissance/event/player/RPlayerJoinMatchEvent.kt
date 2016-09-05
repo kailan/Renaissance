@@ -8,8 +8,16 @@ import org.bukkit.event.HandlerList
  * Created by molenzwiebel on 01-02-16.
  */
 class RPlayerJoinMatchEvent(player: RPlayer, val match: RMatch) : RPlayerEvent(player) {
-    private val handlers = HandlerList()
+
+    companion object {
+        val handlers = HandlerList()
+
+        @JvmStatic fun getHandlerList(): HandlerList {
+            return handlers
+        }
+    }
+
     override fun getHandlers(): HandlerList {
-        return handlers
+        return Companion.handlers
     }
 }

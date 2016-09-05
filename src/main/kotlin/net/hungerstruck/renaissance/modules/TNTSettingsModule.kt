@@ -1,6 +1,7 @@
 package net.hungerstruck.renaissance.modules
 
 import net.hungerstruck.renaissance.match.RMatch
+import net.hungerstruck.renaissance.util.BlockOverride
 import net.hungerstruck.renaissance.xml.builder.inject
 import net.hungerstruck.renaissance.xml.module.RModule
 import net.hungerstruck.renaissance.xml.module.RModuleContext
@@ -14,7 +15,6 @@ import org.bukkit.event.EventPriority
 import org.bukkit.event.block.BlockPlaceEvent
 import org.bukkit.event.entity.EntityExplodeEvent
 import org.bukkit.event.entity.ExplosionPrimeEvent
-import java.lang.reflect.Field
 import java.util.*
 
 class TNTSettingsModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCtx) {
@@ -43,12 +43,11 @@ class TNTSettingsModule(match: RMatch, modCtx: RModuleContext) : RModule(match, 
         if (!isMatch(event.world)) return
         if (!(event.getEntity() is TNTPrimed)) return;
 
-        // TODO: Underwater block explosions in a not bad way
+
         if (!event.isCancelled && event.entityType !== EntityType.ENDER_DRAGON && entityPowerMap.containsKey(Integer.valueOf(event.entity.entityId))) {
             correctExplosion(event, (entityPowerMap.get(Integer.valueOf(event.entity.entityId)) as Float).toFloat())
             entityPowerMap.remove(Integer.valueOf(event.entity.entityId))
         }
-
         if(!blockDamage)
             event.blockList().clear()
 
@@ -61,8 +60,11 @@ class TNTSettingsModule(match: RMatch, modCtx: RModuleContext) : RModule(match, 
     fun onTNTPlaceEvent(event: BlockPlaceEvent) {
         if (!isMatch(event.world)) return
         if (!event.block.type.equals(Material.TNT)) return
+
+
         if (instantIgnite) {
             event.block.type = Material.AIR
+
             event.block.world.spawnEntity(Location(event.block.world, event.block.x + 0.5, event.block.y + 0.5, event.block.z + 0.5), EntityType.PRIMED_TNT)
         }
     }
@@ -92,16 +94,10 @@ class TNTSettingsModule(match: RMatch, modCtx: RModuleContext) : RModule(match, 
                             val l = MathHelper.floor(d0)
                             val i1 = MathHelper.floor(d1)
                             val j1 = MathHelper.floor(d2)
-                            //val k1 = world.getBlockTypeIdAt(l, i1, j1)
                             val k1 = world.getBlockAt(1, i1, j1).typeId
 
-                            val k1block = net.minecraft.server.v1_8_R3.Block.getById(k1)
-                            val field : Field = k1block.javaClass.getDeclaredField("strength")
-                            field.isAccessible = true
-                            val k1BlastDamage = field.getFloat(k1block)
-
                             if (k1 > 0 && k1 != 8 && k1 != 9 && k1 != 10 && k1 != 11) {
-                                f1 -= (k1BlastDamage + 0.3f) * f2
+                                f1 -= (BlockOverride(net.minecraft.server.v1_8_R3.Block.getById(k1)).get("durability") as Float + 0.3f) * f2
                             }
                             if (f1 > 0.0f && i1 < 256 && i1 >= 0 && k1 != 8 && k1 != 9 && k1 != 10 && k1 != 11) {
                                 val block = world.getBlockAt(l, i1, j1)
