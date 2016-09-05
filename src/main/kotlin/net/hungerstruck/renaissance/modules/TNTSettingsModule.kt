@@ -33,28 +33,9 @@ class TNTSettingsModule(match: RMatch, modCtx: RModuleContext) : RModule(match, 
 
     @EventHandler(priority = EventPriority.HIGHEST)
     fun onExplosionPrime(event: ExplosionPrimeEvent) {
-        if (damageUnderWater && !event.isCancelled()) {
-            entityPowerMap.put(Integer.valueOf(event.getEntity().getEntityId()), java.lang.Float.valueOf(event.getRadius()))
+        if (damageUnderWater && !event.isCancelled) {
+            entityPowerMap.put(Integer.valueOf(event.entity.entityId), event.radius)
         }
-    }
-
-    @EventHandler
-    fun onEntityExplodeEvent(event: EntityExplodeEvent) {
-        if (!isMatch(event.world)) return
-        if (!(event.getEntity() is TNTPrimed)) return;
-
-        // Runs simulated explosion for every explosion if damage under water is enabled, the simulated explosion treats water like air
-        if (damageUnderWater && !event.isCancelled && event.entityType !== EntityType.ENDER_DRAGON && entityPowerMap.containsKey(Integer.valueOf(event.entity.entityId))) {
-            correctExplosion(event, (entityPowerMap.get(Integer.valueOf(event.entity.entityId)) as Float).toFloat())
-            entityPowerMap.remove(Integer.valueOf(event.entity.entityId))
-        }
-
-        if(!blockDamage)
-            event.blockList().clear()
-
-        if(`yield` != -1.0f)
-            event.`yield` = `yield`.toFloat()
-
     }
 
     @EventHandler
@@ -68,6 +49,25 @@ class TNTSettingsModule(match: RMatch, modCtx: RModuleContext) : RModule(match, 
             event.block.world.spawnEntity(Location(event.block.world, event.block.x + 0.5, event.block.y + 0.5, event.block.z + 0.5), EntityType.PRIMED_TNT)
             // TODO: Does spawning it call ExplosionPrime (and thus allow for fun underwater explosions?), or does this need to manually add itself to entityPowerMap?
         }
+    }
+
+    @EventHandler
+    fun onEntityExplodeEvent(event: EntityExplodeEvent) {
+        if (!isMatch(event.world)) return
+        if (event.entity !is TNTPrimed) return
+
+        // Runs simulated explosion for every explosion if damage under water is enabled, the simulated explosion treats water like air
+        if (damageUnderWater && !event.isCancelled && event.entityType !== EntityType.ENDER_DRAGON && entityPowerMap.containsKey(Integer.valueOf(event.entity.entityId))) {
+            correctExplosion(event, entityPowerMap[Integer.valueOf(event.entity.entityId)] as Float)
+            entityPowerMap.remove(Integer.valueOf(event.entity.entityId))
+        }
+
+        if(!blockDamage)
+            event.blockList().clear()
+
+        if(`yield` != -1.0f)
+            event.`yield` = `yield`.toFloat()
+
     }
 
     /**
