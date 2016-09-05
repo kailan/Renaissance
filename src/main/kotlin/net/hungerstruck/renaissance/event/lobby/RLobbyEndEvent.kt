@@ -7,4 +7,9 @@ import org.bukkit.event.HandlerList
 /**
  * Created by molenzwiebel on 01-01-16.
  */
-class RLobbyEndEvent(lobby: RLobby) : StruckLobbyEvent(lobby)
+class RLobbyEndEvent(lobby: RLobby) : StruckLobbyEvent(lobby) {
+    private val handlers = HandlerList()
+    override fun getHandlers(): HandlerList {
+        return handlers
+    }
+}
