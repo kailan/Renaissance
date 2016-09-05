@@ -1,14 +1,15 @@
 package net.hungerstruck.renaissance.modules
 
+import com.google.common.collect.Sets
 import net.hungerstruck.renaissance.match.RMatch
 import net.hungerstruck.renaissance.util.BlockOverride
 import net.hungerstruck.renaissance.xml.builder.inject
 import net.hungerstruck.renaissance.xml.module.RModule
 import net.hungerstruck.renaissance.xml.module.RModuleContext
-import net.minecraft.server.v1_8_R3.MathHelper
-import org.bukkit.Bukkit
+import net.minecraft.server.v1_8_R3.BlockPosition
 import org.bukkit.Location
 import org.bukkit.Material
+import org.bukkit.block.Block
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.TNTPrimed
 import org.bukkit.event.EventHandler
@@ -65,56 +66,60 @@ class TNTSettingsModule(match: RMatch, modCtx: RModuleContext) : RModule(match, 
 
         if (instantIgnite) {
             event.block.type = Material.AIR
-
             event.block.world.spawnEntity(Location(event.block.world, event.block.x + 0.5, event.block.y + 0.5, event.block.z + 0.5), EntityType.PRIMED_TNT)
+            // TODO: Does spawning it call ExplosionPrime (and thus allow for fun underwater explosions?), or does this need to manually add itself to entityPowerMap?
         }
     }
 
+    /**
+     * Code taken from decompiled nms code at the Explosion patch, method a()
+     * 1.8.8
+     *
+     * Modified to treat stationary water and water as air blocks during an explosion
+     */
     fun correctExplosion(event: EntityExplodeEvent, power: Float) {
-        val world = event.entity.world
+        if (power < 0.1f) {
+            return
+        }
         event.blockList().clear()
-        for (i in 0..15) {
-            for (j in 0..15) {
-                for (k in 0..15) {
-                    if (i == 0 || i == 15 || j == 0 || j == 15 || k == 0 || k == 15) {
-                        var d3 = (i / 15.0f * 2.0f - 1.0f).toDouble()
-                        var d4 = (j / 15.0f * 2.0f - 1.0f).toDouble()
-                        var d5 = (k / 15.0f * 2.0f - 1.0f).toDouble()
-                        val d6 = Math.sqrt(d3 * d3 + d4 * d4 + d5 * d5)
+        val hashset = Sets.newHashSet<Block>()
+        for (k in 0..15) {
+            for (i in 0..15) {
+                for (j in 0..15) {
+                    if (k == 0 || k == 15 || i == 0 || i == 15 || j == 0 || j == 15) {
+                        var d0 = (k / 15.0f * 2.0f - 1.0f).toDouble()
+                        var d1 = (i / 15.0f * 2.0f - 1.0f).toDouble()
+                        var d2 = (j / 15.0f * 2.0f - 1.0f).toDouble()
+                        val d3 = Math.sqrt(d0 * d0 + d1 * d1 + d2 * d2)
 
-                        d3 /= d6
-                        d4 /= d6
-                        d5 /= d6
-                        var f1 = power * (0.7f + random.nextFloat() * 0.6f)
+                        d0 /= d3
+                        d1 /= d3
+                        d2 /= d3
+                        var f = power * (0.7f + random.nextFloat() * 0.6f)
+                        var d4 = event.location.x
+                        var d5 = event.location.y
+                        var d6 = event.location.z
+                        while (f > 0.0f) {
+                            val blockposition = BlockPosition(d4, d5, d6)
+                            val block = event.world.getBlockAt(blockposition.x, blockposition.y, blockposition.z)
+                            if (block.type != Material.AIR && block.type != Material.WATER && block.type != Material.STATIONARY_WATER ) {
 
-                        var d0 = event.location.x
-                        var d1 = event.location.y
-                        var d2 = event.location.z
-                        val f2 = 0.3f
-                        while (f1 > 0.0f) {
-                            val l = MathHelper.floor(d0)
-                            val i1 = MathHelper.floor(d1)
-                            val j1 = MathHelper.floor(d2)
-                            val k1 = world.getBlockAt(1, i1, j1).typeId
-
-                            if (k1 > 0 && k1 != 8 && k1 != 9 && k1 != 10 && k1 != 11) {
-                                Bukkit.getLogger().info(Material.getMaterial(k1).name + " durability = " + BlockOverride(net.minecraft.server.v1_8_R3.Block.getById(k1)).get("durability"))
-                                f1 -= (BlockOverride(net.minecraft.server.v1_8_R3.Block.getById(k1)).get("durability") as Float + 0.3f) * f2
+                                val f2 = BlockOverride(net.minecraft.server.v1_8_R3.Block.getById(block.typeId)).get("durability") as Float
+                                f -= (f2 + 0.3f) * 0.3f
                             }
-                            if (f1 > 0.0f && i1 < 256 && i1 >= 0 && k1 != 8 && k1 != 9 && k1 != 10 && k1 != 11) {
-                                val block = world.getBlockAt(l, i1, j1)
-                                if (block.type != Material.AIR && !event.blockList().contains(block)) {
-                                    event.blockList().add(block)
-                                }
+                            if (f > 0.0f && blockposition.getY() < 256 && blockposition.getY() >= 0) {
+                                hashset.add(block)
                             }
-                            d0 += d3 * f2
-                            d1 += d4 * f2
-                            d2 += d5 * f2
-                            f1 -= f2 * 0.75f
+                            d4 += d0 * 0.30000001192092896
+                            d5 += d1 * 0.30000001192092896
+                            d6 += d2 * 0.30000001192092896
+                            f -= 0.22500001f
                         }
                     }
                 }
             }
         }
+
+        event.blockList().addAll(hashset)
     }
 }
