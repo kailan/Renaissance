@@ -20,7 +20,7 @@ import java.util.*
 class TNTSettingsModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCtx) {
     @inject val blockDamage = false
     @inject val instantIgnite = false
-    @inject val damageUnderWater = true
+    @inject val damageUnderWater = false // Note: Damage under water cannot occur if blockDamage is false
     @inject val `yield`: Float = -1.0f
 
     private val entityPowerMap = HashMap<Int, Float>()
@@ -33,7 +33,7 @@ class TNTSettingsModule(match: RMatch, modCtx: RModuleContext) : RModule(match, 
 
     @EventHandler(priority = EventPriority.HIGHEST)
     fun onExplosionPrime(event: ExplosionPrimeEvent) {
-        if (!event.isCancelled()) {
+        if (damageUnderWater && !event.isCancelled()) {
             entityPowerMap.put(Integer.valueOf(event.getEntity().getEntityId()), java.lang.Float.valueOf(event.getRadius()))
         }
     }
@@ -43,11 +43,12 @@ class TNTSettingsModule(match: RMatch, modCtx: RModuleContext) : RModule(match, 
         if (!isMatch(event.world)) return
         if (!(event.getEntity() is TNTPrimed)) return;
 
-
-        if (!event.isCancelled && event.entityType !== EntityType.ENDER_DRAGON && entityPowerMap.containsKey(Integer.valueOf(event.entity.entityId))) {
+        // Runs simulated explosion for every explosion if damage under water is enabled, the simulated explosion treats water like air
+        if (damageUnderWater && !event.isCancelled && event.entityType !== EntityType.ENDER_DRAGON && entityPowerMap.containsKey(Integer.valueOf(event.entity.entityId))) {
             correctExplosion(event, (entityPowerMap.get(Integer.valueOf(event.entity.entityId)) as Float).toFloat())
             entityPowerMap.remove(Integer.valueOf(event.entity.entityId))
         }
+
         if(!blockDamage)
             event.blockList().clear()
 
