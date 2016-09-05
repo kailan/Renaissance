@@ -6,6 +6,7 @@ import net.hungerstruck.renaissance.xml.builder.inject
 import net.hungerstruck.renaissance.xml.module.RModule
 import net.hungerstruck.renaissance.xml.module.RModuleContext
 import net.minecraft.server.v1_8_R3.MathHelper
+import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.entity.EntityType
@@ -97,6 +98,7 @@ class TNTSettingsModule(match: RMatch, modCtx: RModuleContext) : RModule(match, 
                             val k1 = world.getBlockAt(1, i1, j1).typeId
 
                             if (k1 > 0 && k1 != 8 && k1 != 9 && k1 != 10 && k1 != 11) {
+                                Bukkit.getLogger().info(Material.getMaterial(k1).name + " durability = " + BlockOverride(net.minecraft.server.v1_8_R3.Block.getById(k1)).get("durability"))
                                 f1 -= (BlockOverride(net.minecraft.server.v1_8_R3.Block.getById(k1)).get("durability") as Float + 0.3f) * f2
                             }
                             if (f1 > 0.0f && i1 < 256 && i1 >= 0 && k1 != 8 && k1 != 9 && k1 != 10 && k1 != 11) {
