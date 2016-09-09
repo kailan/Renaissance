@@ -56,6 +56,7 @@ object Renaissance {
         RModuleRegistry.register<ParticleModule>()
         RModuleRegistry.register<BloodModule>()
         RModuleRegistry.register<ChunkLoadModule>()
+        RModuleRegistry.register<TNTSettingsModule>()
 
         mapContext.loadMaps(File(RConfig.Maps.mapDir))
         mapContext.resolveLobbies()
