@@ -141,10 +141,21 @@ class MapBuilder : AbstractMapBuilder<MapBuilder>() {
     }
 
     /**
-     * Specifies sanity settings.
+     * Specifies tnt settings.
      */
     fun tnt(x: TNTSettings.() -> Unit)
             = register<TNTSettingsModule>(TNTSettings().build(x))
+
+
+    class ProjectileSettings : BuilderPropertySet<ProjectileSettings>() {
+        var underwaterVelocityModifier = 0.6f
+    }
+
+    /**
+     * Specifies projectile settings.
+     */
+    fun projectiles(x: ProjectileSettings.() -> Unit)
+            = register<ProjectileModule>(ProjectileSettings().build(x))
 
     /**
      * Specifies timelock settings.

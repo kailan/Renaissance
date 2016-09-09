@@ -16,6 +16,7 @@ import net.hungerstruck.renaissance.modules.ux.SoundModule
 import net.hungerstruck.renaissance.settings.Settings
 import net.hungerstruck.renaissance.util.ActionBarSender
 import net.hungerstruck.renaissance.xml.RMapContext
+import net.hungerstruck.renaissance.xml.builder.MapBuilder
 import net.hungerstruck.renaissance.xml.module.RModuleRegistry
 import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
@@ -57,6 +58,7 @@ object Renaissance {
         RModuleRegistry.register<BloodModule>()
         RModuleRegistry.register<ChunkLoadModule>()
         RModuleRegistry.register<TNTSettingsModule>()
+        RModuleRegistry.register<ProjectileModule>()
 
         mapContext.loadMaps(File(RConfig.Maps.mapDir))
         mapContext.resolveLobbies()
