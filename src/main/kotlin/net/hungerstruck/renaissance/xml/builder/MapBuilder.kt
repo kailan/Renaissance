@@ -7,8 +7,10 @@ import net.hungerstruck.renaissance.xml.Contributor
 import net.hungerstruck.renaissance.xml.RLobbyProperties
 import org.bukkit.Difficulty
 import org.bukkit.World
+import org.bukkit.entity.EntityType
 import org.bukkit.inventory.ItemStack
 import org.bukkit.util.Vector
+import java.util.*
 
 /**
  * Class that builds maps.
@@ -148,7 +150,7 @@ class MapBuilder : AbstractMapBuilder<MapBuilder>() {
 
 
     class ProjectileSettings : BuilderPropertySet<ProjectileSettings>() {
-        var underwaterVelocityModifier = 0.6f
+        var underwaterVelocityModifier: HashMap<EntityType, Float> = hashMapOf()
     }
 
     /**
