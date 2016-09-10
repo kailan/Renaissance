@@ -1,10 +1,12 @@
 package net.hungerstruck.renaissance.xml.builder
 
+import net.hungerstruck.renaissance.match.RMatch
 import net.hungerstruck.renaissance.modules.*
 import net.hungerstruck.renaissance.modules.region.*
 import net.hungerstruck.renaissance.util.RandomCollection
 import net.hungerstruck.renaissance.xml.Contributor
 import net.hungerstruck.renaissance.xml.RLobbyProperties
+import net.hungerstruck.renaissance.xml.module.RModuleContext
 import org.bukkit.Difficulty
 import org.bukkit.World
 import org.bukkit.entity.EntityType
@@ -70,6 +72,18 @@ class MapBuilder : AbstractMapBuilder<MapBuilder>() {
      */
     fun boundary(x: BoundarySettings.() -> Unit)
             = register<BoundaryModule>(BoundarySettings().build(x))
+
+    class RegionEventSettings(val instance: MapBuilder) : BuilderPropertySet<RegionEventSettings>() {
+        fun events(f: (RMatch, RModuleContext) -> Unit) {
+            instance.register<RegionEventModule>("events", f)
+        }
+    }
+
+    /**
+     * Specifies region event settings.
+     */
+    fun region(x: RegionEventSettings.() -> Unit)
+            = register<RegionEventModule>(RegionEventSettings(this).build(x))
 
     class ChestSettings(val instance: MapBuilder) : BuilderPropertySet<ChestSettings>() {
         var mode: ChestModule.Mode = ChestModule.Mode.AUTOMATIC
