@@ -73,17 +73,29 @@ class MapBuilder : AbstractMapBuilder<MapBuilder>() {
     fun boundary(x: BoundarySettings.() -> Unit)
             = register<BoundaryModule>(BoundarySettings().build(x))
 
-    class RegionEventSettings(val instance: MapBuilder) : BuilderPropertySet<RegionEventSettings>() {
-        fun events(f: (RMatch, RModuleContext) -> Unit) {
-            instance.register<RegionEventModule>("events", f)
+    class SpecCallback(val instance: MapBuilder) : BuilderPropertySet<SpecCallback>() {
+        fun onMatchLoad(f: (RMatch, RModuleContext) -> Unit) {
+            instance.register<SpecCallbackModule>("onMatchLoad", f)
+        }
+
+        fun onMatchStart(f: (RMatch, RModuleContext) -> Unit) {
+            instance.register<SpecCallbackModule>("onMatchStart", f)
+        }
+
+        fun onMatchEnd(f: (RMatch, RModuleContext) -> Unit) {
+            instance.register<SpecCallbackModule>("onMatchEnd", f)
+        }
+
+        fun onMatchCountdownTick(f: (RMatch, RModuleContext) -> Unit) {
+            instance.register<SpecCallbackModule>("onMatchCountdownTick", f)
         }
     }
 
     /**
      * Specifies region event settings.
      */
-    fun region(x: RegionEventSettings.() -> Unit)
-            = register<RegionEventModule>(RegionEventSettings(this).build(x))
+    fun callbacks(x: SpecCallback.() -> Unit)
+            = register<SpecCallbackModule>(SpecCallback(this).build(x))
 
     class ChestSettings(val instance: MapBuilder) : BuilderPropertySet<ChestSettings>() {
         var mode: ChestModule.Mode = ChestModule.Mode.AUTOMATIC
