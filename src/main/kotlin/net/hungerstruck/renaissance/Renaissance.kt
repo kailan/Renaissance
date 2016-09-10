@@ -57,7 +57,7 @@ object Renaissance {
         RModuleRegistry.register<BloodModule>()
         RModuleRegistry.register<ChunkLoadModule>()
         RModuleRegistry.register<TNTSettingsModule>()
-        RModuleRegistry.register<SpecCallbackModule>()
+        RModuleRegistry.register<EventModule>()
 
         mapContext.loadMaps(File(RConfig.Maps.mapDir))
         mapContext.resolveLobbies()

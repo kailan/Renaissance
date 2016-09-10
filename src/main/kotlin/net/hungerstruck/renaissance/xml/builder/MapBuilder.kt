@@ -7,9 +7,11 @@ import net.hungerstruck.renaissance.util.RandomCollection
 import net.hungerstruck.renaissance.xml.Contributor
 import net.hungerstruck.renaissance.xml.RLobbyProperties
 import net.hungerstruck.renaissance.xml.module.RModuleContext
+import org.bukkit.Bukkit
 import org.bukkit.Difficulty
 import org.bukkit.World
 import org.bukkit.entity.EntityType
+import org.bukkit.event.Event
 import org.bukkit.inventory.ItemStack
 import org.bukkit.util.Vector
 import java.util.*
@@ -73,29 +75,27 @@ class MapBuilder : AbstractMapBuilder<MapBuilder>() {
     fun boundary(x: BoundarySettings.() -> Unit)
             = register<BoundaryModule>(BoundarySettings().build(x))
 
-    class SpecCallback(val instance: MapBuilder) : BuilderPropertySet<SpecCallback>() {
-        fun onMatchLoad(f: (RMatch, RModuleContext) -> Unit) {
-            instance.register<SpecCallbackModule>("onMatchLoad", f)
+    class EventModuleData(val instance: MapBuilder) : BuilderPropertySet<EventModuleData>() {
+        val timerMap: MutableList<RScheduledEvent> = arrayListOf()
+
+        fun every(ticks: Long, f: (RMatch, RModuleContext) -> Unit) {
+            timerMap += RScheduledEvent(ticks, RScheduledEvent.Type.REPEATED, f)
         }
 
-        fun onMatchStart(f: (RMatch, RModuleContext) -> Unit) {
-            instance.register<SpecCallbackModule>("onMatchStart", f)
+        fun after(ticks: Long, f: (RMatch, RModuleContext) -> Unit) {
+            timerMap += RScheduledEvent(ticks, RScheduledEvent.Type.SINGLE, f)
         }
 
-        fun onMatchEnd(f: (RMatch, RModuleContext) -> Unit) {
-            instance.register<SpecCallbackModule>("onMatchEnd", f)
-        }
-
-        fun onMatchCountdownTick(f: (RMatch, RModuleContext) -> Unit) {
-            instance.register<SpecCallbackModule>("onMatchCountdownTick", f)
+        fun <T : Class<Event>> whenEvent(f: (RMatch, RModuleContext) -> Unit) {
+            // TODO: molenzwiebel do this thanks
         }
     }
 
     /**
-     * Specifies region event settings.
+     * Specifies event settings.
      */
-    fun callbacks(x: SpecCallback.() -> Unit)
-            = register<SpecCallbackModule>(SpecCallback(this).build(x))
+    fun events(x: EventModuleData.() -> Unit)
+            = register<EventModule>(EventModuleData(this).build(x))
 
     class ChestSettings(val instance: MapBuilder) : BuilderPropertySet<ChestSettings>() {
         var mode: ChestModule.Mode = ChestModule.Mode.AUTOMATIC
