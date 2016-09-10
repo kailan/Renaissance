@@ -5,6 +5,7 @@ import net.hungerstruck.renaissance.config.RConfig
 import net.hungerstruck.renaissance.event.match.RMatchStartEvent
 import net.hungerstruck.renaissance.event.player.RPlayerThirstUpdateEvent
 import net.hungerstruck.renaissance.match.RMatch
+import net.hungerstruck.renaissance.xml.builder.inject
 import net.hungerstruck.renaissance.xml.module.RModule
 import net.hungerstruck.renaissance.xml.module.RModuleContext
 import org.bukkit.Bukkit
@@ -26,10 +27,12 @@ import java.util.*
  * Created by molenzwiebel on 17-01-16.
  */
 class ThirstModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCtx) {
+    @inject val enabled = true
+
     val playerThirst: WeakHashMap<Player, Int> = WeakHashMap()
 
     override fun init() {
-        registerEvents()
+        if(enabled) registerEvents()
     }
 
     private fun refreshThirst() {
