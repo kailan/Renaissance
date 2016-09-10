@@ -86,13 +86,15 @@ class ScoreboardModule(match: RMatch, modCtx: RModuleContext) : RModule(match, m
     @EventHandler
     fun onThirstUpdate(event: RPlayerThirstUpdateEvent){
         if(!isMatch(event.player)) return
-        scoreboardMap[event.player.uniqueId]?.setScore(-15, event.thirst.toString() + "%§2 ")?.show()
+        if(match.moduleContext.getModule<ThirstModule>()!!.enabled)
+            scoreboardMap[event.player.uniqueId]?.setScore(-15, event.thirst.toString() + "%§2 ")?.show()
     }
 
     @EventHandler
     fun onSanityUpdate(event: RPlayerSanityUpdateEvent){
         if(!isMatch(event.player)) return
-        scoreboardMap[event.player.uniqueId]?.setScore(-12, event.sanity.toString() + "%§3 ")?.show()
+        if(match.moduleContext.getModule<SanityModule>()!!.isEnabled())
+            scoreboardMap[event.player.uniqueId]?.setScore(-12, event.sanity.toString() + "%§3 ")?.show()
     }
 
     fun showScoreboard(player: RPlayer) {
@@ -112,8 +114,10 @@ class ScoreboardModule(match: RMatch, modCtx: RModuleContext) : RModule(match, m
         scoreboard.setScore(-4, "§2 ").setScore(-5, RConfig.Scoreboard.killsString).setScore(-6, "0 §1")
         scoreboard.setScore(-7, "§3 ").setScore(-8, RConfig.Scoreboard.aliveString).setScore(-9, this.match.alivePlayers.size.toString())
         if (match.alivePlayers.contains(player)) {
-            scoreboard.setScore(-10, "§4 ").setScore(-11, RConfig.Scoreboard.sanityString).setScore(-12, "${match.moduleContext.getModule<SanityModule>()!!.playerSanity[player]}%§2 ")
-            scoreboard.setScore(-13, "§5 ").setScore(-14, RConfig.Scoreboard.thirstString).setScore(-15, "${match.moduleContext.getModule<ThirstModule>()!!.playerThirst[player]}%§3 ")
+            if(match.moduleContext.getModule<SanityModule>()!!.isEnabled())
+                scoreboard.setScore(-10, "§4 ").setScore(-11, RConfig.Scoreboard.sanityString).setScore(-12, "${match.moduleContext.getModule<SanityModule>()!!.playerSanity[player]}%§2 ")
+            if(match.moduleContext.getModule<ThirstModule>()!!.enabled)
+                scoreboard.setScore(-13, "§5 ").setScore(-14, RConfig.Scoreboard.thirstString).setScore(-15, "${match.moduleContext.getModule<ThirstModule>()!!.playerThirst[player]}%§3 ")
         }
     }
 }

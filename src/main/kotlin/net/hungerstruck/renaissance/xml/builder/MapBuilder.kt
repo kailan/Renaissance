@@ -120,15 +120,28 @@ class MapBuilder : AbstractMapBuilder<MapBuilder>() {
             = register<PedestalModule>("pedestals", BlockRegionListBuilder().run(x))
 
     class SanitySettings : BuilderPropertySet<SanitySettings>() {
+        var enabledCauses = listOf(SanityModule.Cause.HEIGHT, SanityModule.Cause.CAVE, SanityModule.Cause.LIGHT, SanityModule.Cause.RADIUS)
         var airHeight = 0
         var overallLightLevel = 0
     }
+
 
     /**
      * Specifies sanity settings.
      */
     fun sanity(x: SanitySettings.() -> Unit)
             = register<SanityModule>(SanitySettings().build(x))
+
+    class ThirstSettings : BuilderPropertySet<ThirstSettings>() {
+        var enabled = true
+    }
+
+    /**
+     * Specifies thirst settings.
+     */
+    fun thirst(x: ThirstSettings.() -> Unit)
+            = register<ThirstModule>(ThirstSettings().build(x))
+
 
     class TimeLockSettings : BuilderPropertySet<TimeLockSettings>() {
         var locked = false
