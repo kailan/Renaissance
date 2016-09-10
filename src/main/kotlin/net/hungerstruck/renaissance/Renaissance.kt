@@ -59,7 +59,7 @@ object Renaissance {
         RModuleRegistry.register<ChunkLoadModule>()
         RModuleRegistry.register<TNTSettingsModule>()
         RModuleRegistry.register<ProjectileModule>()
-        RModuleRegistry.register<RegionEventModule>()
+        RModuleRegistry.register<SpecCallbackModule>()
 
         mapContext.loadMaps(File(RConfig.Maps.mapDir))
         mapContext.resolveLobbies()
