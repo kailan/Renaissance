@@ -70,7 +70,7 @@ class ChestModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCtx
 
         processedChunks.add(event.chunk)
         for (tEntity in event.chunk.tileEntities) {
-            val loc = BlockRegion(tEntity.location)
+            val loc = BlockRegion(tEntity.location.toVector())
             if (tEntity.type == Material.CHEST || tEntity.type == Material.TRAPPED_CHEST) chests.add(loc)
             if (lastItems != null && !processedChests.contains(loc)) fillChest(lastItems!!, loc)
         }
@@ -83,19 +83,30 @@ class ChestModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCtx
         fillChests(initialItems)
 
         val feastTime = RConfig.Match.feastTime.toLong()
-        var id = 0
-        id = Bukkit.getScheduler().runTaskTimer(Renaissance.plugin, {
-            if (match.state != RMatch.State.PLAYING) {
-                Bukkit.getScheduler().cancelTask(id)
-            } else {
-                match.sendMessage(RConfig.Match.feastMessage)
-                
-                rareMultiplier += RConfig.Match.feastRarityIncrease
-                setupItems()
+        /**
+         *
+         *
+         * OOPS
+         * had to disable feast chests
+         *
+         * needs reimplementing as part of twenty-twenty
+         */
+        //taskID = Bukkit.getScheduler().runTaskTimer(Renaissance.plugin!!, this::updateIncrease, feastTime * 20, feastTime * 20).taskId
+    }
 
-                fillChests(feastItems)
-            }
-        }, feastTime * 20, feastTime * 20).taskId
+    private var taskID: Int = 0
+
+    private fun updateIncrease() {
+        if (match.state != RMatch.State.PLAYING) {
+            Bukkit.getScheduler().cancelTask(taskID)
+        } else {
+            match.sendMessage(RConfig.Match.feastMessage)
+
+            rareMultiplier += RConfig.Match.feastRarityIncrease
+            setupItems()
+
+            fillChests(feastItems)
+        }
     }
 
     private fun fillChests(coll: RandomCollection<ItemStack>) {
@@ -140,9 +151,9 @@ class ChestModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCtx
         feastItems.clear()
         initialItems.clear()
 
-        initialItems[0.1] = ItemStack(Material.WOOD_SWORD, 1)
-        initialItems[0.3] = ItemStack(Material.WOOD_SPADE, 1)
-        initialItems[0.15] = ItemStack(Material.LOG, 2)
+        initialItems[0.1] = ItemStack(Material.WOODEN_SWORD, 1)
+        initialItems[0.3] = ItemStack(Material.WOODEN_SHOVEL, 1)
+        initialItems[0.15] = ItemStack(Material.OAK_LOG, 2)
         initialItems[0.2] = ItemStack(Material.ARROW, 4)
         initialItems[0.25] = ItemStack(Material.ARROW, 3)
         initialItems[0.4] = ItemStack(Material.BOW, 1)
@@ -162,29 +173,29 @@ class ChestModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCtx
         initialItems[0.3] = ItemStack(Material.WATER_BUCKET, 1)
         initialItems[0.07] = ItemStack(Material.FLINT_AND_STEEL, 1)
         initialItems[0.23] = ItemStack(Material.ENDER_PEARL, 1)
-        initialItems[0.1] = ItemStack(Material.REDSTONE_TORCH_ON, 1)
+        initialItems[0.1] = ItemStack(Material.REDSTONE_TORCH, 1)
         initialItems[0.2] = ItemStack(Material.LADDER, 16)
         initialItems[0.2] = ItemStack(Material.SADDLE, 1)
         initialItems[0.25] = ItemStack(Material.COBBLESTONE, 4)
         initialItems[0.2] = ItemStack(Material.VINE, 16)
 
-        initialItems[0.25] = ItemStack(Material.WOOD_PICKAXE, 1)
+        initialItems[0.25] = ItemStack(Material.WOODEN_PICKAXE, 1)
         initialItems[0.2] = ItemStack(Material.STONE_PICKAXE, 1)
-        initialItems[0.25] = ItemStack(Material.WOOD_AXE, 1)
+        initialItems[0.25] = ItemStack(Material.WOODEN_AXE, 1)
         initialItems[0.18] = ItemStack(Material.STONE_AXE, 1)
-        initialItems[0.25] = ItemStack(Material.WOOD_HOE, 1)
+        initialItems[0.25] = ItemStack(Material.WOODEN_HOE, 1)
         initialItems[0.2] = ItemStack(Material.STONE_HOE, 1)
         setupInitialItems(initialItems)
         
         feastItems[0.4] = ItemStack(Material.STONE_SWORD, 1)
         feastItems[0.06] = ItemStack(Material.IRON_SWORD, 1)
-        feastItems[0.5] = ItemStack(Material.STONE_SPADE, 1)
+        feastItems[0.5] = ItemStack(Material.STONE_SHOVEL, 1)
         feastItems[0.3 * rareMultiplier] = ItemStack(Material.ARROW, 5)
         feastItems[0.5] = ItemStack(Material.BOW, 1)
-        feastItems[0.3] = ItemStack(Material.GOLD_HELMET, 1)
-        feastItems[0.2] = ItemStack(Material.GOLD_CHESTPLATE, 1)
-        feastItems[0.3] = ItemStack(Material.GOLD_LEGGINGS, 1)
-        feastItems[0.3] = ItemStack(Material.GOLD_BOOTS, 1)
+        feastItems[0.3] = ItemStack(Material.GOLDEN_HELMET, 1)
+        feastItems[0.2] = ItemStack(Material.GOLDEN_CHESTPLATE, 1)
+        feastItems[0.3] = ItemStack(Material.GOLDEN_LEGGINGS, 1)
+        feastItems[0.3] = ItemStack(Material.GOLDEN_BOOTS, 1)
 
         feastItems[0.08 * rareMultiplier] = ItemStack(Material.IRON_HELMET, 1)
         feastItems[0.06 * rareMultiplier] = ItemStack(Material.IRON_CHESTPLATE, 1)
@@ -202,17 +213,17 @@ class ChestModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCtx
         feastItems[0.2] = ItemStack(Material.BREAD, 3)
         feastItems[0.22 * rareMultiplier] = ItemStack(Material.COOKED_CHICKEN, 3)
         feastItems[0.22 * rareMultiplier] = ItemStack(Material.COOKED_BEEF, 3)
-        feastItems[0.22 * rareMultiplier] = ItemStack(Material.COOKED_FISH, 3)
+        feastItems[0.22 * rareMultiplier] = ItemStack(Material.COOKED_COD, 3)
         feastItems[0.4] = ItemStack(Material.STONE_AXE, 1)
         feastItems[0.3 * rareMultiplier] = ItemStack(Material.TNT, 3)
         feastItems[0.5] = ItemStack(Material.BUCKET, 1)
         feastItems[0.3] = ItemStack(Material.WATER_BUCKET, 1)
         feastItems[0.1 * rareMultiplier] = ItemStack(Material.FLINT_AND_STEEL, 1)
         feastItems[0.3 * rareMultiplier] = ItemStack(Material.ENDER_PEARL, 1)
-        feastItems[0.3] = ItemStack(Material.REDSTONE_TORCH_ON, 1)
+        feastItems[0.3] = ItemStack(Material.REDSTONE_TORCH, 1)
         feastItems[0.2] = ItemStack(Material.LADDER, 16)
         feastItems[0.2] = ItemStack(Material.SADDLE, 1)
-        feastItems[0.25] = ItemStack(Material.LOG, 32)
+        feastItems[0.25] = ItemStack(Material.OAK_LOG, 32)
         feastItems[0.2] = ItemStack(Material.VINE, 16)
         
         feastItems[0.2] = ItemStack(Material.STONE_PICKAXE, 1)

@@ -58,7 +58,7 @@ class DeathModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCtx
 
         event.player.state = RPlayer.State.SPECTATING
         event.player.reset()
-        event.player.collidesWithEntities = false
+        event.player.isCollidable = false
         event.player.allowFlight = true
         event.player.inventory.setItem(0, ItemStack(Material.COMPASS, 1))
         event.player.teleport(match.world.spawnLocation.teleportable)
@@ -74,12 +74,12 @@ class DeathModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCtx
         val victim = event.entity.rplayer
         victim.state = RPlayer.State.SPECTATING
         victim.reset(false)
-        victim.collidesWithEntities = false
+        victim.isCollidable = false
         victim.allowFlight = true
 
         //val message = if (victim.killer != null) RConfig.Match.playerDeathByPlayerMessage else RConfig.Match.playerDeathByOtherMessage
         //match.sendMessage(message.replace("%0\$s", victim.displayName).replace("%1\$c", (victim.killer?.displayName).toString()))
-        match.sendMessage(event.deathMessage)
+        match.sendMessage(event.deathMessage!!)
 
         if (match.shouldEnd) {
             var winner: RPlayer
@@ -160,22 +160,22 @@ class DeathModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCtx
             inv.setItem(i + 18 + 27, if (it == null) null else ItemStack(it))
         }
 
-        val hp = ItemStack(Material.SPECKLED_MELON, clicked.health.toInt())
+        val hp = ItemStack(Material.MELON, clicked.health.toInt())
         var im = hp.itemMeta
-        im.displayName = "${ChatColor.RED}Health"
+        im.setDisplayName("${ChatColor.RED}Health")
         hp.setItemMeta(im)
         inv.setItem(0, hp)
 
-        val hunger = ItemStack(Material.GRILLED_PORK, clicked.foodLevel)
+        val hunger = ItemStack(Material.PORKCHOP, clicked.foodLevel)
         im = hunger.itemMeta
-        im.displayName = "${ChatColor.GREEN}Hunger"
+        im.setDisplayName("${ChatColor.GREEN}Hunger")
         hunger.setItemMeta(im)
         inv.setItem(1, hunger)
 
-        if (clicked.inventory.helmet != null) inv.setItem(5, ItemStack(clicked.inventory.helmet))
-        if (clicked.inventory.chestplate != null) inv.setItem(6, ItemStack(clicked.inventory.chestplate))
-        if (clicked.inventory.leggings != null) inv.setItem(7, ItemStack(clicked.inventory.leggings))
-        if (clicked.inventory.boots != null) inv.setItem(8, ItemStack(clicked.inventory.boots))
+        if (clicked.inventory.helmet != null) inv.setItem(5, ItemStack(clicked.inventory.helmet!!))
+        if (clicked.inventory.chestplate != null) inv.setItem(6, ItemStack(clicked.inventory.chestplate!!))
+        if (clicked.inventory.leggings != null) inv.setItem(7, ItemStack(clicked.inventory.leggings!!))
+        if (clicked.inventory.boots != null) inv.setItem(8, ItemStack(clicked.inventory.boots!!))
 
         event.player.openInventory(inv)
     }
@@ -256,7 +256,7 @@ class DeathModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCtx
     @EventHandler
     fun onPlayerInteractEvent(e: PlayerInteractEvent) {
         if (isSpectator(e.player) && e.action == Action.RIGHT_CLICK_BLOCK) {
-            val blockState = e.clickedBlock.state
+            val blockState = e.clickedBlock?.state
             if (blockState is InventoryHolder) {
                 val player = e.player
                 val initInventory = blockState.inventory

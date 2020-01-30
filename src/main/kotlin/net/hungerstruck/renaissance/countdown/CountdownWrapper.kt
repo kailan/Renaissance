@@ -17,7 +17,7 @@ class CountdownWrapper(val countdown: Countdown) : BukkitRunnable() {
 
         countdown.onStart(seconds)
         // Run every 20 ticks, assuming the server runs on 20 TPS.
-        this.runTaskTimer(Renaissance.plugin, 0, 20)
+        this.runTaskTimer(Renaissance.plugin!!, 0, 20)
     }
 
     override fun cancel() {

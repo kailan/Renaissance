@@ -1,10 +1,7 @@
 package net.hungerstruck.renaissance
 
-import me.anxuiz.settings.Setting
-import me.anxuiz.settings.bukkit.PlayerSettings
 import net.hungerstruck.renaissance.lobby.RLobby
 import net.hungerstruck.renaissance.match.RMatch
-import net.hungerstruck.renaissance.settings.Settings
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
@@ -65,11 +62,6 @@ class RPlayer(val bukkit: Player) : Player by bukkit {
     val isForcedSpectator: Boolean
         get() = Renaissance.eventManager.isForcedSpectator(this)
 
-    /**
-     * @return Setting value from Settings
-     */
-    inline fun <reified T : Any> getSetting(setting: Setting) = PlayerSettings.getManager(bukkit).getValue(setting, T::class.java)
-
     public fun reset(resetHealth: Boolean = true) {
         if (resetHealth) health = 20.0
         saturation = 20.0f
@@ -90,7 +82,7 @@ class RPlayer(val bukkit: Player) : Player by bukkit {
             removePotionEffect(effect.type)
 
         inventory.clear()
-        inventory.armorContents = arrayOfNulls<ItemStack>(inventory.armorContents.size)
+        inventory.setArmorContents(arrayOfNulls<ItemStack>(inventory.armorContents.size))
 
         updateInventory()
     }
@@ -106,7 +98,7 @@ class RPlayer(val bukkit: Player) : Player by bukkit {
      *  - The game has not started
      */
     public fun canSee(other: RPlayer): Boolean {
-        return other.match == match && (other.state == State.PARTICIPATING || (other.state == State.SPECTATING && state == State.SPECTATING && getSetting<Boolean>(Settings.SPECTATOR_OPTIONS)!!) || match?.state != RMatch.State.PLAYING)
+        return other.match == match && (other.state == State.PARTICIPATING || (other.state == State.SPECTATING && state == State.SPECTATING) || match?.state != RMatch.State.PLAYING)
     }
 
     enum class State {

@@ -51,7 +51,7 @@ class RLobby {
         player.reset()
         player.gameMode = GameMode.SURVIVAL
 
-        Bukkit.getScheduler().scheduleSyncDelayedTask(Renaissance.plugin, {player.teleport(lobbyWorld.spawnLocation.teleportable)}, 1)
+        Bukkit.getScheduler().scheduleSyncDelayedTask(Renaissance.plugin!!, {player.teleport(lobbyWorld.spawnLocation.teleportable)}, 1)
 
         updateInformation()
 

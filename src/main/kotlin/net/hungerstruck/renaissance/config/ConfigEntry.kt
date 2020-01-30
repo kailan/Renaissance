@@ -29,7 +29,7 @@ class DefaultConfigEntry<T>(private val path: String, private val default: T) {
 
 class ComputedConfigEntry<T>(private val path: String, private val read: (String) -> T, private val write: (T) -> String) {
     operator fun getValue(thisRef: Any?, property: KProperty<*>): T {
-        return read(RConfig.config.getString(path))
+        return read(RConfig.config.getString(path)!!)
     }
 
     operator fun setValue(thisRef: Any?, property: KProperty<*>, value: T) {

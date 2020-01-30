@@ -7,11 +7,6 @@ import net.hungerstruck.renaissance.util.RandomCollection
 import net.hungerstruck.renaissance.xml.module.Dependencies
 import net.hungerstruck.renaissance.xml.module.RModule
 import net.hungerstruck.renaissance.xml.module.RModuleContext
-import net.minecraft.server.v1_8_R3.BlockPosition
-import net.minecraft.server.v1_8_R3.Blocks
-import net.minecraft.server.v1_8_R3.IBlockData
-import net.minecraft.server.v1_8_R3.WorldGenMinable
-import org.bukkit.craftbukkit.v1_8_R3.CraftWorld
 import org.bukkit.event.EventHandler
 import java.util.*
 
@@ -20,9 +15,21 @@ import java.util.*
  *
  * Created by molenzwiebel on 10-01-16.
  */
+/**
+ *
+ *
+ *
+ * STUBBED
+ * needs revamp with supported api for twenty-twenty
+ */
 @Dependencies(BoundaryModule::class)
 class OregenModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCtx) {
-    val ores: RandomCollection<IBlockData> = RandomCollection()
+
+    override fun init() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    /**val ores: RandomCollection<IBlockData> = RandomCollection()
     val random: Random = Random()
 
     val oresPerChunk: Int = 10
@@ -70,5 +77,5 @@ class OregenModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCt
         }
 
         println("Generated ores in ${System.currentTimeMillis() - start} ms!")
-    }
+    }**/
 }

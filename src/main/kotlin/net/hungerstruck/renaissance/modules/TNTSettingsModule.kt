@@ -40,7 +40,7 @@ class TNTSettingsModule(match: RMatch, modCtx: RModuleContext) : RModule(match, 
 
     @EventHandler
     fun onTNTPlaceEvent(event: BlockPlaceEvent) {
-        if (!isMatch(event.world)) return
+        if (!isMatch(event.block.world)) return
         if (!event.block.type.equals(Material.TNT)) return
 
 
@@ -53,7 +53,7 @@ class TNTSettingsModule(match: RMatch, modCtx: RModuleContext) : RModule(match, 
 
     @EventHandler
     fun onEntityExplodeEvent(event: EntityExplodeEvent) {
-        if (!isMatch(event.world)) return
+        if (!isMatch(event.entity.world)) return
         if (event.entity !is TNTPrimed) return
 
         // Runs simulated explosion for every explosion if damage under water is enabled, the simulated explosion treats water like air
@@ -99,10 +99,12 @@ class TNTSettingsModule(match: RMatch, modCtx: RModuleContext) : RModule(match, 
                         var d5 = event.location.y
                         var d6 = event.location.z
                         while (f > 0.0f) {
-                            val block = event.world.getBlockAt(Math.floor(d4).toInt(), Math.floor(d5).toInt(), Math.floor(d6).toInt())
-                            if (block.type != Material.AIR && block.type != Material.WATER && block.type != Material.STATIONARY_WATER ) {
-                                val f2 = block.durability // relies on Strukkit durability api patch
-                                f -= (f2 + 0.3f) * 0.3f
+                            val block = event.entity.world.getBlockAt(Math.floor(d4).toInt(), Math.floor(d5).toInt(), Math.floor(d6).toInt())
+                            if (block.type != Material.AIR && block.type != Material.WATER && block.type != Material.LEGACY_STATIONARY_WATER ) {
+                                //val f2 = block.durability // relies on Strukkit durability api patch
+                                // uh oh
+                                // STUBBED
+                                //f -= (f2 + 0.3f) * 0.3f
                             }
                             if (f > 0.0f && d5 < 256 && d5 >= 0) {
                                 hashset.add(block)

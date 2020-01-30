@@ -40,7 +40,7 @@ abstract class RModule : Listener {
         }
 
         listeners.add(instance)
-        Bukkit.getPluginManager().registerEvents(instance, Renaissance.plugin)
+        Bukkit.getPluginManager().registerEvents(instance, Renaissance.plugin!!)
     }
 
     protected fun isMatch(block: Block) = isMatch(block.world)

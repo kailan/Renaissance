@@ -72,7 +72,7 @@ class ThirstModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCt
         val refreshRate = 20L
 
         var id = 0
-        id = Bukkit.getScheduler().runTaskTimer(Renaissance.plugin, {
+        id = Bukkit.getScheduler().runTaskTimer(Renaissance.plugin!!, { ->
             if (match.state != RMatch.State.PLAYING) {
                 Bukkit.getScheduler().cancelTask(id)
             } else {
@@ -99,7 +99,7 @@ class ThirstModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCt
 
         if (event.action == Action.RIGHT_CLICK_BLOCK &&
                 (Material.WATER in event.player.getLineOfSight(setOf(Material.AIR), 4).map { it.type } ||
-                 Material.STATIONARY_WATER in event.player.getLineOfSight(setOf(Material.AIR), 4).map { it.type })
+                 Material.LEGACY_STATIONARY_WATER in event.player.getLineOfSight(setOf(Material.AIR), 4).map { it.type })
                 && playerThirst.getOrPut(event.player.rplayer, { 100 }) < 100) {
             // Completely refresh water
             playerThirst[event.player.rplayer] = 100

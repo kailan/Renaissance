@@ -11,7 +11,6 @@ import net.hungerstruck.renaissance.match.RMatch
 import net.hungerstruck.renaissance.modules.SanityModule
 import net.hungerstruck.renaissance.modules.ThirstModule
 import net.hungerstruck.renaissance.rplayer
-import net.hungerstruck.renaissance.settings.Settings
 import net.hungerstruck.renaissance.xml.module.Dependencies
 import net.hungerstruck.renaissance.xml.module.RModule
 import net.hungerstruck.renaissance.xml.module.RModuleContext
@@ -36,10 +35,9 @@ class ScoreboardModule(match: RMatch, modCtx: RModuleContext) : RModule(match, m
     @EventHandler
     fun onMatchStart(event: RMatchStartEvent) {
         for (p in event.match.players)
-            if(p.getSetting<Boolean>(Settings.SCOREBOARD_OPTIONS)!!)
-                showScoreboard(p)
+            showScoreboard(p)
 
-        timer = Bukkit.getScheduler().scheduleSyncRepeatingTask(Renaissance.plugin, ScoreboardTimer(this), 0, 20)
+        timer = Bukkit.getScheduler().scheduleSyncRepeatingTask(Renaissance.plugin!!, ScoreboardTimer(this), 0, 20)
     }
 
     @EventHandler
@@ -56,7 +54,7 @@ class ScoreboardModule(match: RMatch, modCtx: RModuleContext) : RModule(match, m
     fun onPlayerDeath(event: PlayerDeathEvent){
         if (match.players.contains(event.entity.rplayer)){
             if (event.entity.killer is Player){
-                val killer: Player = event.entity.killer
+                val killer: Player = event.entity.killer!!
 
                 if (killMap.containsKey(killer.uniqueId)){
                     killMap.put(killer.uniqueId, killMap[killer.uniqueId]!!.toInt()+1)
@@ -78,8 +76,7 @@ class ScoreboardModule(match: RMatch, modCtx: RModuleContext) : RModule(match, m
     @EventHandler(priority = EventPriority.HIGHEST)
     fun onJoin(event: PlayerJoinEvent){
         if(event.player.rplayer.match == match) {
-            if(event.player.rplayer.getSetting<Boolean>(Settings.SCOREBOARD_OPTIONS)!!)
-                showScoreboard(event.player.rplayer)
+            showScoreboard(event.player.rplayer)
         }
     }
 

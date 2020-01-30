@@ -35,10 +35,10 @@ class RMatchManager {
 
         val gen = WorldCreator(worldName).generator(RGenerator()).generateStructures(false).environment(nextMap.mapInfo.dimension)
         val world = Bukkit.createWorld(gen)
-        world.isAutoSave = false
-        world.difficulty = nextMap.mapInfo.difficulty
+        world!!.isAutoSave = false
+        world!!.difficulty = nextMap.mapInfo.difficulty
 
-        val match = RMatch(matchCount, nextMap, world)
+        val match = RMatch(matchCount, nextMap, world!!)
         matches[world] = match
 
         println("[+] Loaded ${nextMap.mapInfo.friendlyDescription}")

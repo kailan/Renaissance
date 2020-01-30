@@ -57,10 +57,10 @@ class RScoreboard(private var title: String?, vararg players: UUID) {
 
     fun show() {
         val scoreboard = Bukkit.getScoreboardManager().newScoreboard
-        val objective = scoreboard.registerNewObjective(title, "dummy")
+        val objective = scoreboard.registerNewObjective(title!!, "dummy")
         objective.displaySlot = DisplaySlot.SIDEBAR
 
-        for (index in scores.keys) objective.getScore(scores[index]).score = index
+        for (index in scores.keys) objective.getScore(scores[index]!!).score = index
 
         for (uuid in players) {
             val offlinePlayer = Bukkit.getOfflinePlayer(uuid)

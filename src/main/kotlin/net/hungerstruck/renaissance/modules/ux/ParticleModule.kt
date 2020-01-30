@@ -11,9 +11,18 @@ import net.hungerstruck.renaissance.xml.module.RModuleContext
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.event.EventHandler
+import org.bukkit.plugin.Plugin
+import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.scheduler.BukkitTask
 import java.util.*
 
+/**
+ *
+ *
+ *
+ * STUBBED
+ * needs revamp with new scheduler api for twenty-twenty
+ */
 class ParticleModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCtx) {
     private val random: Random = Random()
     private var timer: BukkitTask? = null
@@ -22,7 +31,7 @@ class ParticleModule(match: RMatch, modCtx: RModuleContext) : RModule(match, mod
         registerEvents()
     }
 
-    @EventHandler
+  /**  @EventHandler
     fun onMatchCountdownTick(event: RMatchCountdownTickEvent) {
         if (event.timeLeft == 5) {
             timer = ParticlePedestalRunnable(event.match.moduleContext.getModule<PedestalModule>() as PedestalModule, true).runTaskTimer(Renaissance.plugin, 0, 8)
@@ -38,7 +47,7 @@ class ParticleModule(match: RMatch, modCtx: RModuleContext) : RModule(match, mod
         val fireworkEffect = RFirework.randomEffect
         for (pedistal in (event.match.moduleContext.getModule<PedestalModule>())?.pedestals!!) {
             var fwork = RFirework(1, fireworkEffect).play(pedistal.loc.toLocation(match.world))
-            Bukkit.getScheduler().runTaskLater(Renaissance.plugin, { fwork.detonate() }, 20)
+            Bukkit.getScheduler().runTaskLater(Renaissance.plugin!!, { fwork.detonate() }, 20)
         }
     }
 
@@ -58,5 +67,5 @@ class ParticleModule(match: RMatch, modCtx: RModuleContext) : RModule(match, mod
         if (random.nextBoolean()) i *= -1
 
         return i.toDouble()
-    }
+    }**/
 }

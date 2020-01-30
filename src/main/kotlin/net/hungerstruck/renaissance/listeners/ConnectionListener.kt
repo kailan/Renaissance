@@ -55,7 +55,7 @@ class ConnectionListener : Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     fun onPlayerKick(event: PlayerKickEvent) {
-        event.leaveMessage = null
+        event.leaveMessage = ""
         
         if (event.player.rplayer.match != null) {
             val match = event.player.rplayer.match

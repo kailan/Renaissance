@@ -29,10 +29,10 @@ class RLobbyManager {
 
         val gen = WorldCreator(worldName).generator(object : ChunkGenerator() {}).generateStructures(false).environment(lobbyMap.mapInfo.dimension)
         val world = Bukkit.createWorld(gen)
-        world.isAutoSave = false
-        world.difficulty = lobbyMap.mapInfo.difficulty
+        world?.isAutoSave = false
+        world?.difficulty = lobbyMap.mapInfo.difficulty
 
-        val lobby = RLobby(lobbyCount, world, lobbyMap = lobbyMap, nextMap = map)
+        val lobby = RLobby(lobbyCount, world!!, lobbyMap = lobbyMap, nextMap = map)
         lobbies[world] = lobby
 
         return lobby

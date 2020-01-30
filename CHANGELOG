@@ -1,0 +1,23 @@
+Removed Strukkit API dependency in favor of Paper-API. 
+
+Removed unsupported BukkitSettings dependency. Patched uses of the Settings API
+with sane defaults for now. (this includes removing PlayerSettingCallback impls)
+
+Implement Title utility using new title API
+
+Implement Action Bar utility using new API
+
+Stub BloodModule (TODO: reimplement)
+
+Update default ItemStacks in ChestModule to use new naming (god damnit mojang)
+
+Stub ChunkLoadModule (this does not sound like a good idea at all, TODO: reimplement)
+
+Disable ChestModule runnable (TODO: reimplement)
+
+Update various player APIs in modules
+
+Stub OregenModule (TODO: reimplement)
+
+
+

@@ -17,12 +17,8 @@
 
     <repositories>
         <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
-        </repository>
-        <repository>
-            <id>repo.oc.tc</id>
-            <url>http://repo.oc.tc/content/repositories/snapshots/</url>
+            <id>papermc</id>
+            <url>https://papermc.io/repo/repository/maven-public/</url>
         </repository>
     </repositories>
 
@@ -34,9 +30,10 @@
         </dependency>
 
         <dependency>
-            <groupId>co.enviark</groupId>
-            <artifactId>strukkit</artifactId>
-            <version>1.8.7-R0.1-SNAPSHOT</version>
+            <groupId>com.destroystokyo.paper</groupId>
+            <artifactId>paper-api</artifactId>
+            <version>1.15.2-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -51,11 +48,11 @@
         </dependency>
 
         <dependency>
-            <groupId>me.anxuiz</groupId>
-            <artifactId>bukkit-settings</artifactId>
-            <version>1.9-SNAPSHOT</version>
-            <scope>provided</scope>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.6</version>
         </dependency>
+
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-test</artifactId>
@@ -166,10 +163,7 @@
                                 <excludes>
                                     <exclude>org.bukkit:bukkit</exclude>
                                     <exclude>org.bukkit:craftbukkit</exclude>
-                                    <exclude>co.enviark:strukkit</exclude>
-                                    <exclude>co.enviark:strukkit-api</exclude>
-                                    <exclude>me.anxuiz:settings</exclude>
-                                    <exclude>me.anxuiz.settings:bukkit-settings</exclude>
+                                    <exclude>com.destroystokyo.paper:paper-api</exclude>
                                 </excludes>
                             </artifactSet>
                         </configuration>

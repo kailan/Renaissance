@@ -14,7 +14,8 @@ class ParticlePedestalRunnable(private val module: PedestalModule, private val c
 
     override fun run() {
         var firework = RFirework(3, fireworkEffect).play(module.pedestals[ped].loc.toLocation(module.match.world).add(0.0, 6.5, 0.0))
-        Bukkit.getScheduler().scheduleSyncDelayedTask(Renaissance.plugin, { firework.detonate() }, 3)
+        //Bukkit.getScheduler().scheduleSyncDelayedTask(Renaissance.plugin, { firework.detonate() }, 3)
+        // STUBBED twenty-twenty
 
         ped += 2
 

@@ -11,12 +11,12 @@ import net.hungerstruck.renaissance.xml.builder.inject
 import net.hungerstruck.renaissance.xml.module.Dependencies
 import net.hungerstruck.renaissance.xml.module.RModule
 import net.hungerstruck.renaissance.xml.module.RModuleContext
-import net.minecraft.server.v1_8_R3.PacketPlayOutWorldBorder
-import net.minecraft.server.v1_8_R3.WorldBorder
+//import net.minecraft.server.v1_8_R3.PacketPlayOutWorldBorder
+//import net.minecraft.server.v1_8_R3.WorldBorder
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.Material
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer
+//import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.entity.PlayerDeathEvent
@@ -75,7 +75,7 @@ class SanityModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCt
         match.alivePlayers.forEach { sendWarningRadius(it) }
 
         var id = 0
-        id = Bukkit.getScheduler().runTaskTimer(Renaissance.plugin, {
+        id = Bukkit.getScheduler().runTaskTimer(Renaissance.plugin!!, { ->
             if (match.state != RMatch.State.PLAYING) {
                 Bukkit.getScheduler().cancelTask(id)
             } else {

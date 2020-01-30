@@ -27,8 +27,8 @@ class RPlayerState internal constructor() {
     private var allowFlight: Boolean = false
 
     fun restore(target: Player) {
-        target.inventory.contents = inventory
-        target.inventory.armorContents = armorSlots
+        target.inventory.contents = inventory ?: emptyArray()
+        target.inventory.setArmorContents(armorSlots)
 
         for (existingPotionEffect in target.activePotionEffects) {
             target.removePotionEffect(existingPotionEffect.type)
@@ -36,8 +36,8 @@ class RPlayerState internal constructor() {
         for (potionEffect in potionEffects!!) {
             target.addPotionEffect(potionEffect)
         }
-        target.gameMode = playerGamemode
-        target.teleport(playerLocation)
+        target.gameMode = playerGamemode ?: GameMode.SURVIVAL
+        playerLocation?.let { target.teleport(it) }
 
         target.health = health
         target.maxHealth = maxHealth

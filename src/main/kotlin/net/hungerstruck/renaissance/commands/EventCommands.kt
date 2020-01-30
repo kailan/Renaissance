@@ -48,7 +48,7 @@ object EventCommands {
             sender.sendMessage("${ChatColor.GOLD}Forced spectators:")
             for (id in Renaissance.eventManager.getForcedSpectators()) {
                 val online = Bukkit.getPlayer(id) != null
-                sender.sendMessage("${if (online) ChatColor.GREEN else ChatColor.RED}$id${if (online) " (${Bukkit.getPlayer(id).name})" else ""}")
+                sender.sendMessage("${if (online) ChatColor.GREEN else ChatColor.RED}$id${if (online) " (${Bukkit.getPlayer(id)?.name})" else ""}")
             }
         }
 
@@ -56,7 +56,7 @@ object EventCommands {
             if (flag) {
                 return UUID.fromString(nameOrUUID)
             }
-            if (Bukkit.getPlayer(nameOrUUID) != null) return Bukkit.getPlayer(nameOrUUID).uniqueId
+            if (Bukkit.getPlayer(nameOrUUID) != null) return Bukkit.getPlayer(nameOrUUID)?.uniqueId!!
             throw CommandException("Unknown player '$nameOrUUID'. Use -u to add/remove UUIDs.");
         }
     }

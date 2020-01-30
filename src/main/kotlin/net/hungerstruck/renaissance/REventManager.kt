@@ -14,11 +14,11 @@ class REventManager {
     private val forcedSpectators: MutableList<UUID>
 
     constructor() {
-        try {
+        forcedSpectators = try {
             val contents = FileUtils.readFileToString(File("forced-spectators.txt"))
-            forcedSpectators = ArrayList(contents.split("\n").map { UUID.fromString(it) })
+            ArrayList(contents.split("\n").map { UUID.fromString(it) })
         } catch (ignored: Exception) {
-            forcedSpectators = ArrayList()
+            ArrayList()
         }
     }
 
