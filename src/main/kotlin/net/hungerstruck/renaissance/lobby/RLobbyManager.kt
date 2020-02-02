@@ -1,6 +1,7 @@
 package net.hungerstruck.renaissance.lobby
 
 import net.hungerstruck.renaissance.config.RConfig
+import net.hungerstruck.renaissance.match.RGenerator
 import net.hungerstruck.renaissance.util.FileUtil
 import net.hungerstruck.renaissance.xml.RMap
 import org.bukkit.Bukkit
@@ -27,7 +28,7 @@ class RLobbyManager {
         if(worldFolder.exists()) worldFolder.deleteRecursively()
         FileUtil.copyWorldFolder(lobbyMap.location, worldFolder)
 
-        val gen = WorldCreator(worldName).generator(object : ChunkGenerator() {}).generateStructures(false).environment(lobbyMap.mapInfo.dimension)
+        val gen = WorldCreator(worldName).generator(RGenerator()).generateStructures(false).environment(lobbyMap.mapInfo.dimension)
         val world = Bukkit.createWorld(gen)
         world?.isAutoSave = false
         world?.difficulty = lobbyMap.mapInfo.difficulty

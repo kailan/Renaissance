@@ -26,7 +26,7 @@ import java.util.*
 class OregenModule(match: RMatch, modCtx: RModuleContext) : RModule(match, modCtx) {
 
     override fun init() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     /**val ores: RandomCollection<IBlockData> = RandomCollection()
